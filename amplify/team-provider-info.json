@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-yomihomies-dev-152950-authRole",
+      "UnauthRoleArn": "arn:aws:iam::812753336504:role/amplify-yomihomies-dev-152950-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::812753336504:role/amplify-yomihomies-dev-152950-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-yomihomies-dev-152950-deployment",
+      "UnauthRoleName": "amplify-yomihomies-dev-152950-unauthRole",
+      "StackName": "amplify-yomihomies-dev-152950",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:812753336504:stack/amplify-yomihomies-dev-152950/a6e37370-9c21-11eb-bf31-0a5f9b17c5df",
+      "AmplifyAppId": "dxea6frgp5dim"
+    },
+    "categories": {
+      "auth": {
+        "yomihomiesf4579134": {}
+      }
+    }
+  }
+}
