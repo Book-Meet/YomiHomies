@@ -1,7 +1,10 @@
 {
+<<<<<<< HEAD
   "providers": [
     "awscloudformation"
   ],
+=======
+>>>>>>> faf2d5673fae4875e148191bdc664c072aab3f93
   "projectName": "YomiHomies",
   "version": "3.1",
   "frontend": "javascript",
@@ -10,8 +13,18 @@
     "config": {
       "SourceDir": "src",
       "DistributionDir": "/",
+<<<<<<< HEAD
       "BuildCommand": "npm run-script build",
       "StartCommand": "npm run-script start"
     }
   }
+=======
+      "BuildCommand": "npm.cmd run-script build",
+      "StartCommand": "npm.cmd run-script start"
+    }
+  },
+  "providers": [
+    "awscloudformation"
+  ]
+>>>>>>> faf2d5673fae4875e148191bdc664c072aab3f93
 }

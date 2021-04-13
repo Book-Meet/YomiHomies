@@ -6,5 +6,25 @@
       "dependsOn": [],
       "customAuth": false
     }
+<<<<<<< HEAD
+=======
+  },
+  "api": {
+    "yomihomies": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authyomihomiesf4579134"
+            }
+          },
+          "additionalAuthenticationProviders": []
+        }
+      }
+    }
+>>>>>>> faf2d5673fae4875e148191bdc664c072aab3f93
   }
 }
