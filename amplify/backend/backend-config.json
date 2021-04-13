@@ -1,0 +1,10 @@
+{
+  "auth": {
+    "yomihomiesf4579134": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  }
+}
