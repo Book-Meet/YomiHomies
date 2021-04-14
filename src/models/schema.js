@@ -1,7 +1,7 @@
 export const schema = {
     "models": {
-        "Genres": {
-            "name": "Genres",
+        "Genre": {
+            "name": "Genre",
             "fields": {
                 "id": {
                     "name": "id",
@@ -35,7 +35,7 @@ export const schema = {
                 {
                     "type": "key",
                     "properties": {
-                        "name": "byProfiles",
+                        "name": "byProfile",
                         "fields": [
                             "profileID"
                         ]
@@ -59,8 +59,8 @@ export const schema = {
                 }
             ]
         },
-        "Authors": {
-            "name": "Authors",
+        "Author": {
+            "name": "Author",
             "fields": {
                 "id": {
                     "name": "id",
@@ -94,7 +94,7 @@ export const schema = {
                 {
                     "type": "key",
                     "properties": {
-                        "name": "byProfiles",
+                        "name": "byProfile",
                         "fields": [
                             "profileID"
                         ]
@@ -118,8 +118,8 @@ export const schema = {
                 }
             ]
         },
-        "Books": {
-            "name": "Books",
+        "Book": {
+            "name": "Book",
             "fields": {
                 "id": {
                     "name": "id",
@@ -160,7 +160,7 @@ export const schema = {
                 {
                     "type": "key",
                     "properties": {
-                        "name": "byProfiles",
+                        "name": "byProfile",
                         "fields": [
                             "profileID"
                         ]
@@ -184,8 +184,8 @@ export const schema = {
                 }
             ]
         },
-        "Profiles": {
-            "name": "Profiles",
+        "Profile": {
+            "name": "Profile",
             "fields": {
                 "id": {
                     "name": "id",
@@ -254,7 +254,7 @@ export const schema = {
                     "name": "books",
                     "isArray": true,
                     "type": {
-                        "model": "Books"
+                        "model": "Book"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -268,7 +268,7 @@ export const schema = {
                     "name": "authors",
                     "isArray": true,
                     "type": {
-                        "model": "Authors"
+                        "model": "Author"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -282,7 +282,7 @@ export const schema = {
                     "name": "genres",
                     "isArray": true,
                     "type": {
-                        "model": "Genres"
+                        "model": "Genre"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -291,6 +291,13 @@ export const schema = {
                         "connectionType": "HAS_MANY",
                         "associatedWith": "profileID"
                     }
+                },
+                "photo_source": {
+                    "name": "photo_source",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
                 }
             },
             "syncable": true,
@@ -299,6 +306,15 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byMatch",
+                        "fields": [
+                            "id"
+                        ]
+                    }
                 },
                 {
                     "type": "auth",
@@ -317,43 +333,9 @@ export const schema = {
                     }
                 }
             ]
-        },
-        "Todo": {
-            "name": "Todo",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "name": {
-                    "name": "name",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "description": {
-                    "name": "description",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                }
-            },
-            "syncable": true,
-            "pluralName": "Todos",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                }
-            ]
         }
     },
     "enums": {},
     "nonModels": {},
-    "version": "ce5eb978d8c946d4d97f731a73090d80"
+    "version": "9db50ee978597f118be973a264c2c429"
 };

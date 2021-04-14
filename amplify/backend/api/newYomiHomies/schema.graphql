@@ -1,23 +1,23 @@
-type Genres @model @auth(rules: [{allow: private}]) @key(name: "byProfiles", fields: ["profileID"]) {
+type Genre @model @key(name: "byProfile", fields: ["profileID"]) @auth(rules: [{allow: private}]) {
   id: ID!
   genre: String
   profileID: ID
 }
 
-type Authors @model @auth(rules: [{allow: private}]) @key(name: "byProfiles", fields: ["profileID"]) {
+type Author @model @key(name: "byProfile", fields: ["profileID"]) @auth(rules: [{allow: private}]) {
   id: ID!
   profileID: ID
   name: String
 }
 
-type Books @model @auth(rules: [{allow: private}]) @key(name: "byProfiles", fields: ["profileID"]) {
+type Book @model @key(name: "byProfile", fields: ["profileID"]) @auth(rules: [{allow: private}]) {
   id: ID!
   profileID: ID
   title: String
   author: String
 }
 
-type Profiles @model @auth(rules: [{allow: private}]) {
+type Profile @model @key(name: "byMatch", fields: ["id"]) @auth(rules: [{allow: private}]) {
   id: ID!
   username: String
   nickname: String
@@ -27,14 +27,11 @@ type Profiles @model @auth(rules: [{allow: private}]) {
   longitude: Float
   gender: String
   open_to_meet: Boolean
-  books: [Books] @connection(keyName: "byProfiles", fields: ["id"])
-  authors: [Authors] @connection(keyName: "byProfiles", fields: ["id"])
-  genres: [Genres] @connection(keyName: "byProfiles", fields: ["id"])
-}
-
-type Todo @model {
-  id: ID!
-  name: String!
-  description: String
+  books: [Book] @connection(keyName: "byProfile", fields: ["id"])
+  authors: [Author] @connection(keyName: "byProfile", fields: ["id"])
+  genres: [Genre] @connection(keyName: "byProfile", fields: ["id"])
+  matches: [Profile] @connection(keyName: "byMatch", fields: ["id"])
+  rejections: [Profile] @connection(keyName: "byMatch", fields: ["id"])
+  photo_source: String
 }
  
