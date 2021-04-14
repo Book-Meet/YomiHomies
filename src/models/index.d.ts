@@ -34,7 +34,7 @@ export declare class Profile {
   readonly username?: string;
   readonly nickname?: string;
   readonly about_me?: string;
-  readonly birth_dat?: string;
+  readonly birth_date?: string;
   readonly latitude?: number;
   readonly longitude?: number;
   readonly gender?: string;
