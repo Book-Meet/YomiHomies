@@ -4,32 +4,32 @@ import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplif
 
 
 
-export declare class Genres {
+export declare class Genre {
   readonly id: string;
   readonly genre?: string;
   readonly profileID?: string;
-  constructor(init: ModelInit<Genres>);
-  static copyOf(source: Genres, mutator: (draft: MutableModel<Genres>) => MutableModel<Genres> | void): Genres;
+  constructor(init: ModelInit<Genre>);
+  static copyOf(source: Genre, mutator: (draft: MutableModel<Genre>) => MutableModel<Genre> | void): Genre;
 }
 
-export declare class Authors {
+export declare class Author {
   readonly id: string;
   readonly profileID?: string;
   readonly name?: string;
-  constructor(init: ModelInit<Authors>);
-  static copyOf(source: Authors, mutator: (draft: MutableModel<Authors>) => MutableModel<Authors> | void): Authors;
+  constructor(init: ModelInit<Author>);
+  static copyOf(source: Author, mutator: (draft: MutableModel<Author>) => MutableModel<Author> | void): Author;
 }
 
-export declare class Books {
+export declare class Book {
   readonly id: string;
   readonly profileID?: string;
   readonly title?: string;
   readonly author?: string;
-  constructor(init: ModelInit<Books>);
-  static copyOf(source: Books, mutator: (draft: MutableModel<Books>) => MutableModel<Books> | void): Books;
+  constructor(init: ModelInit<Book>);
+  static copyOf(source: Book, mutator: (draft: MutableModel<Book>) => MutableModel<Book> | void): Book;
 }
 
-export declare class Profiles {
+export declare class Profile {
   readonly id: string;
   readonly username?: string;
   readonly nickname?: string;
@@ -39,9 +39,10 @@ export declare class Profiles {
   readonly longitude?: number;
   readonly gender?: string;
   readonly open_to_meet?: boolean;
-  readonly books?: (Books | null)[];
-  readonly authors?: (Authors | null)[];
-  readonly genres?: (Genres | null)[];
-  constructor(init: ModelInit<Profiles>);
-  static copyOf(source: Profiles, mutator: (draft: MutableModel<Profiles>) => MutableModel<Profiles> | void): Profiles;
+  readonly books?: (Book | null)[];
+  readonly authors?: (Author | null)[];
+  readonly genres?: (Genre | null)[];
+  readonly photo_source?: string;
+  constructor(init: ModelInit<Profile>);
+  static copyOf(source: Profile, mutator: (draft: MutableModel<Profile>) => MutableModel<Profile> | void): Profile;
 }
