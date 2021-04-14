@@ -1,5 +1,5 @@
 {
-  "AppSyncApiName": "yomihomies",
+  "AppSyncApiName": "newYomiHomies",
   "DynamoDBBillingMode": "PAY_PER_REQUEST",
   "DynamoDBEnableServerSideEncryption": false,
   "AuthCognitoUserPoolId": {

@@ -8,7 +8,7 @@
     }
   },
   "api": {
-    "yomihomies": {
+    "newYomiHomies": {
       "service": "AppSync",
       "providerPlugin": "awscloudformation",
       "output": {
