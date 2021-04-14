@@ -138,7 +138,7 @@ export const onCreateProfile = /* GraphQL */ `
       username
       nickname
       about_me
-      birth_dat
+      birth_date
       latitude
       longitude
       gender
@@ -198,7 +198,7 @@ export const onCreateProfile = /* GraphQL */ `
           username
           nickname
           about_me
-          birth_dat
+          birth_date
           latitude
           longitude
           gender
@@ -219,7 +219,7 @@ export const onCreateProfile = /* GraphQL */ `
           username
           nickname
           about_me
-          birth_dat
+          birth_date
           latitude
           longitude
           gender
@@ -244,7 +244,7 @@ export const onUpdateProfile = /* GraphQL */ `
       username
       nickname
       about_me
-      birth_dat
+      birth_date
       latitude
       longitude
       gender
@@ -304,7 +304,7 @@ export const onUpdateProfile = /* GraphQL */ `
           username
           nickname
           about_me
-          birth_dat
+          birth_date
           latitude
           longitude
           gender
@@ -325,7 +325,7 @@ export const onUpdateProfile = /* GraphQL */ `
           username
           nickname
           about_me
-          birth_dat
+          birth_date
           latitude
           longitude
           gender
@@ -350,7 +350,7 @@ export const onDeleteProfile = /* GraphQL */ `
       username
       nickname
       about_me
-      birth_dat
+      birth_date
       latitude
       longitude
       gender
@@ -410,7 +410,7 @@ export const onDeleteProfile = /* GraphQL */ `
           username
           nickname
           about_me
-          birth_dat
+          birth_date
           latitude
           longitude
           gender
@@ -431,7 +431,7 @@ export const onDeleteProfile = /* GraphQL */ `
           username
           nickname
           about_me
-          birth_dat
+          birth_date
           latitude
           longitude
           gender
