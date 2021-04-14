@@ -2,19 +2,19 @@
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
-export type CreateTodoInput = {
+export type CreateGenreInput = {
   id?: string | null,
-  name: string,
-  description?: string | null,
+  genre?: string | null,
+  profileID?: string | null,
   _version?: number | null,
 };
 
-export type ModelTodoConditionInput = {
-  name?: ModelStringInput | null,
-  description?: ModelStringInput | null,
-  and?: Array< ModelTodoConditionInput | null > | null,
-  or?: Array< ModelTodoConditionInput | null > | null,
-  not?: ModelTodoConditionInput | null,
+export type ModelGenreConditionInput = {
+  genre?: ModelStringInput | null,
+  profileID?: ModelIDInput | null,
+  and?: Array< ModelGenreConditionInput | null > | null,
+  or?: Array< ModelGenreConditionInput | null > | null,
+  not?: ModelGenreConditionInput | null,
 };
 
 export type ModelStringInput = {
@@ -57,39 +57,6 @@ export type ModelSizeInput = {
   between?: Array< number | null > | null,
 };
 
-export type Todo = {
-  __typename: "Todo",
-  id?: string,
-  name?: string,
-  description?: string | null,
-  _version?: number,
-  _deleted?: boolean | null,
-  _lastChangedAt?: number,
-  createdAt?: string,
-  updatedAt?: string,
-};
-
-export type UpdateTodoInput = {
-  id: string,
-  name?: string | null,
-  description?: string | null,
-  _version?: number | null,
-};
-
-export type DeleteTodoInput = {
-  id?: string | null,
-  _version?: number | null,
-};
-
-export type ModelTodoFilterInput = {
-  id?: ModelIDInput | null,
-  name?: ModelStringInput | null,
-  description?: ModelStringInput | null,
-  and?: Array< ModelTodoFilterInput | null > | null,
-  or?: Array< ModelTodoFilterInput | null > | null,
-  not?: ModelTodoFilterInput | null,
-};
-
 export type ModelIDInput = {
   ne?: string | null,
   eq?: string | null,
@@ -106,24 +73,286 @@ export type ModelIDInput = {
   size?: ModelSizeInput | null,
 };
 
-export type ModelTodoConnection = {
-  __typename: "ModelTodoConnection",
-  items?:  Array<Todo | null > | null,
+export type Genre = {
+  __typename: "Genre",
+  id?: string,
+  genre?: string | null,
+  profileID?: string | null,
+  _version?: number,
+  _deleted?: boolean | null,
+  _lastChangedAt?: number,
+  createdAt?: string,
+  updatedAt?: string,
+};
+
+export type UpdateGenreInput = {
+  id: string,
+  genre?: string | null,
+  profileID?: string | null,
+  _version?: number | null,
+};
+
+export type DeleteGenreInput = {
+  id?: string | null,
+  _version?: number | null,
+};
+
+export type CreateAuthorInput = {
+  id?: string | null,
+  profileID?: string | null,
+  name?: string | null,
+  _version?: number | null,
+};
+
+export type ModelAuthorConditionInput = {
+  profileID?: ModelIDInput | null,
+  name?: ModelStringInput | null,
+  and?: Array< ModelAuthorConditionInput | null > | null,
+  or?: Array< ModelAuthorConditionInput | null > | null,
+  not?: ModelAuthorConditionInput | null,
+};
+
+export type Author = {
+  __typename: "Author",
+  id?: string,
+  profileID?: string | null,
+  name?: string | null,
+  _version?: number,
+  _deleted?: boolean | null,
+  _lastChangedAt?: number,
+  createdAt?: string,
+  updatedAt?: string,
+};
+
+export type UpdateAuthorInput = {
+  id: string,
+  profileID?: string | null,
+  name?: string | null,
+  _version?: number | null,
+};
+
+export type DeleteAuthorInput = {
+  id?: string | null,
+  _version?: number | null,
+};
+
+export type CreateBookInput = {
+  id?: string | null,
+  profileID?: string | null,
+  title?: string | null,
+  author?: string | null,
+  _version?: number | null,
+};
+
+export type ModelBookConditionInput = {
+  profileID?: ModelIDInput | null,
+  title?: ModelStringInput | null,
+  author?: ModelStringInput | null,
+  and?: Array< ModelBookConditionInput | null > | null,
+  or?: Array< ModelBookConditionInput | null > | null,
+  not?: ModelBookConditionInput | null,
+};
+
+export type Book = {
+  __typename: "Book",
+  id?: string,
+  profileID?: string | null,
+  title?: string | null,
+  author?: string | null,
+  _version?: number,
+  _deleted?: boolean | null,
+  _lastChangedAt?: number,
+  createdAt?: string,
+  updatedAt?: string,
+};
+
+export type UpdateBookInput = {
+  id: string,
+  profileID?: string | null,
+  title?: string | null,
+  author?: string | null,
+  _version?: number | null,
+};
+
+export type DeleteBookInput = {
+  id?: string | null,
+  _version?: number | null,
+};
+
+export type CreateProfileInput = {
+  id?: string | null,
+  username?: string | null,
+  nickname?: string | null,
+  about_me?: string | null,
+  birth_dat?: string | null,
+  latitude?: number | null,
+  longitude?: number | null,
+  gender?: string | null,
+  open_to_meet?: boolean | null,
+  photo_source?: string | null,
+  _version?: number | null,
+};
+
+export type ModelProfileConditionInput = {
+  username?: ModelStringInput | null,
+  nickname?: ModelStringInput | null,
+  about_me?: ModelStringInput | null,
+  birth_dat?: ModelStringInput | null,
+  latitude?: ModelFloatInput | null,
+  longitude?: ModelFloatInput | null,
+  gender?: ModelStringInput | null,
+  open_to_meet?: ModelBooleanInput | null,
+  photo_source?: ModelStringInput | null,
+  and?: Array< ModelProfileConditionInput | null > | null,
+  or?: Array< ModelProfileConditionInput | null > | null,
+  not?: ModelProfileConditionInput | null,
+};
+
+export type ModelFloatInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
+export type ModelBooleanInput = {
+  ne?: boolean | null,
+  eq?: boolean | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
+export type Profile = {
+  __typename: "Profile",
+  id?: string,
+  username?: string | null,
+  nickname?: string | null,
+  about_me?: string | null,
+  birth_dat?: string | null,
+  latitude?: number | null,
+  longitude?: number | null,
+  gender?: string | null,
+  open_to_meet?: boolean | null,
+  photo_source?: string | null,
+  _version?: number,
+  _deleted?: boolean | null,
+  _lastChangedAt?: number,
+  createdAt?: string,
+  updatedAt?: string,
+  genres?: ModelGenreConnection,
+  authors?: ModelAuthorConnection,
+  books?: ModelBookConnection,
+  matches?: ModelProfileConnection,
+  rejections?: ModelProfileConnection,
+};
+
+export type ModelGenreConnection = {
+  __typename: "ModelGenreConnection",
+  items?:  Array<Genre | null > | null,
   nextToken?: string | null,
   startedAt?: number | null,
 };
 
-export type CreateTodoMutationVariables = {
-  input?: CreateTodoInput,
-  condition?: ModelTodoConditionInput | null,
+export type ModelAuthorConnection = {
+  __typename: "ModelAuthorConnection",
+  items?:  Array<Author | null > | null,
+  nextToken?: string | null,
+  startedAt?: number | null,
 };
 
-export type CreateTodoMutation = {
-  createTodo?:  {
-    __typename: "Todo",
+export type ModelBookConnection = {
+  __typename: "ModelBookConnection",
+  items?:  Array<Book | null > | null,
+  nextToken?: string | null,
+  startedAt?: number | null,
+};
+
+export type ModelProfileConnection = {
+  __typename: "ModelProfileConnection",
+  items?:  Array<Profile | null > | null,
+  nextToken?: string | null,
+  startedAt?: number | null,
+};
+
+export type UpdateProfileInput = {
+  id: string,
+  username?: string | null,
+  nickname?: string | null,
+  about_me?: string | null,
+  birth_dat?: string | null,
+  latitude?: number | null,
+  longitude?: number | null,
+  gender?: string | null,
+  open_to_meet?: boolean | null,
+  photo_source?: string | null,
+  _version?: number | null,
+};
+
+export type DeleteProfileInput = {
+  id?: string | null,
+  _version?: number | null,
+};
+
+export type ModelGenreFilterInput = {
+  id?: ModelIDInput | null,
+  genre?: ModelStringInput | null,
+  profileID?: ModelIDInput | null,
+  and?: Array< ModelGenreFilterInput | null > | null,
+  or?: Array< ModelGenreFilterInput | null > | null,
+  not?: ModelGenreFilterInput | null,
+};
+
+export type ModelAuthorFilterInput = {
+  id?: ModelIDInput | null,
+  profileID?: ModelIDInput | null,
+  name?: ModelStringInput | null,
+  and?: Array< ModelAuthorFilterInput | null > | null,
+  or?: Array< ModelAuthorFilterInput | null > | null,
+  not?: ModelAuthorFilterInput | null,
+};
+
+export type ModelBookFilterInput = {
+  id?: ModelIDInput | null,
+  profileID?: ModelIDInput | null,
+  title?: ModelStringInput | null,
+  author?: ModelStringInput | null,
+  and?: Array< ModelBookFilterInput | null > | null,
+  or?: Array< ModelBookFilterInput | null > | null,
+  not?: ModelBookFilterInput | null,
+};
+
+export type ModelProfileFilterInput = {
+  id?: ModelIDInput | null,
+  username?: ModelStringInput | null,
+  nickname?: ModelStringInput | null,
+  about_me?: ModelStringInput | null,
+  birth_dat?: ModelStringInput | null,
+  latitude?: ModelFloatInput | null,
+  longitude?: ModelFloatInput | null,
+  gender?: ModelStringInput | null,
+  open_to_meet?: ModelBooleanInput | null,
+  photo_source?: ModelStringInput | null,
+  and?: Array< ModelProfileFilterInput | null > | null,
+  or?: Array< ModelProfileFilterInput | null > | null,
+  not?: ModelProfileFilterInput | null,
+};
+
+export type CreateGenreMutationVariables = {
+  input?: CreateGenreInput,
+  condition?: ModelGenreConditionInput | null,
+};
+
+export type CreateGenreMutation = {
+  createGenre?:  {
+    __typename: "Genre",
     id: string,
-    name: string,
-    description?: string | null,
+    genre?: string | null,
+    profileID?: string | null,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
@@ -132,17 +361,17 @@ export type CreateTodoMutation = {
   } | null,
 };
 
-export type UpdateTodoMutationVariables = {
-  input?: UpdateTodoInput,
-  condition?: ModelTodoConditionInput | null,
+export type UpdateGenreMutationVariables = {
+  input?: UpdateGenreInput,
+  condition?: ModelGenreConditionInput | null,
 };
 
-export type UpdateTodoMutation = {
-  updateTodo?:  {
-    __typename: "Todo",
+export type UpdateGenreMutation = {
+  updateGenre?:  {
+    __typename: "Genre",
     id: string,
-    name: string,
-    description?: string | null,
+    genre?: string | null,
+    profileID?: string | null,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
@@ -151,17 +380,17 @@ export type UpdateTodoMutation = {
   } | null,
 };
 
-export type DeleteTodoMutationVariables = {
-  input?: DeleteTodoInput,
-  condition?: ModelTodoConditionInput | null,
+export type DeleteGenreMutationVariables = {
+  input?: DeleteGenreInput,
+  condition?: ModelGenreConditionInput | null,
 };
 
-export type DeleteTodoMutation = {
-  deleteTodo?:  {
-    __typename: "Todo",
+export type DeleteGenreMutation = {
+  deleteGenre?:  {
+    __typename: "Genre",
     id: string,
-    name: string,
-    description?: string | null,
+    genre?: string | null,
+    profileID?: string | null,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
@@ -170,21 +399,544 @@ export type DeleteTodoMutation = {
   } | null,
 };
 
-export type SyncTodosQueryVariables = {
-  filter?: ModelTodoFilterInput | null,
+export type CreateAuthorMutationVariables = {
+  input?: CreateAuthorInput,
+  condition?: ModelAuthorConditionInput | null,
+};
+
+export type CreateAuthorMutation = {
+  createAuthor?:  {
+    __typename: "Author",
+    id: string,
+    profileID?: string | null,
+    name?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateAuthorMutationVariables = {
+  input?: UpdateAuthorInput,
+  condition?: ModelAuthorConditionInput | null,
+};
+
+export type UpdateAuthorMutation = {
+  updateAuthor?:  {
+    __typename: "Author",
+    id: string,
+    profileID?: string | null,
+    name?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteAuthorMutationVariables = {
+  input?: DeleteAuthorInput,
+  condition?: ModelAuthorConditionInput | null,
+};
+
+export type DeleteAuthorMutation = {
+  deleteAuthor?:  {
+    __typename: "Author",
+    id: string,
+    profileID?: string | null,
+    name?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateBookMutationVariables = {
+  input?: CreateBookInput,
+  condition?: ModelBookConditionInput | null,
+};
+
+export type CreateBookMutation = {
+  createBook?:  {
+    __typename: "Book",
+    id: string,
+    profileID?: string | null,
+    title?: string | null,
+    author?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateBookMutationVariables = {
+  input?: UpdateBookInput,
+  condition?: ModelBookConditionInput | null,
+};
+
+export type UpdateBookMutation = {
+  updateBook?:  {
+    __typename: "Book",
+    id: string,
+    profileID?: string | null,
+    title?: string | null,
+    author?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteBookMutationVariables = {
+  input?: DeleteBookInput,
+  condition?: ModelBookConditionInput | null,
+};
+
+export type DeleteBookMutation = {
+  deleteBook?:  {
+    __typename: "Book",
+    id: string,
+    profileID?: string | null,
+    title?: string | null,
+    author?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateProfileMutationVariables = {
+  input?: CreateProfileInput,
+  condition?: ModelProfileConditionInput | null,
+};
+
+export type CreateProfileMutation = {
+  createProfile?:  {
+    __typename: "Profile",
+    id: string,
+    username?: string | null,
+    nickname?: string | null,
+    about_me?: string | null,
+    birth_dat?: string | null,
+    latitude?: number | null,
+    longitude?: number | null,
+    gender?: string | null,
+    open_to_meet?: boolean | null,
+    photo_source?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+    genres?:  {
+      __typename: "ModelGenreConnection",
+      items?:  Array< {
+        __typename: "Genre",
+        id: string,
+        genre?: string | null,
+        profileID?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    authors?:  {
+      __typename: "ModelAuthorConnection",
+      items?:  Array< {
+        __typename: "Author",
+        id: string,
+        profileID?: string | null,
+        name?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    books?:  {
+      __typename: "ModelBookConnection",
+      items?:  Array< {
+        __typename: "Book",
+        id: string,
+        profileID?: string | null,
+        title?: string | null,
+        author?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    matches?:  {
+      __typename: "ModelProfileConnection",
+      items?:  Array< {
+        __typename: "Profile",
+        id: string,
+        username?: string | null,
+        nickname?: string | null,
+        about_me?: string | null,
+        birth_dat?: string | null,
+        latitude?: number | null,
+        longitude?: number | null,
+        gender?: string | null,
+        open_to_meet?: boolean | null,
+        photo_source?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    rejections?:  {
+      __typename: "ModelProfileConnection",
+      items?:  Array< {
+        __typename: "Profile",
+        id: string,
+        username?: string | null,
+        nickname?: string | null,
+        about_me?: string | null,
+        birth_dat?: string | null,
+        latitude?: number | null,
+        longitude?: number | null,
+        gender?: string | null,
+        open_to_meet?: boolean | null,
+        photo_source?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+  } | null,
+};
+
+export type UpdateProfileMutationVariables = {
+  input?: UpdateProfileInput,
+  condition?: ModelProfileConditionInput | null,
+};
+
+export type UpdateProfileMutation = {
+  updateProfile?:  {
+    __typename: "Profile",
+    id: string,
+    username?: string | null,
+    nickname?: string | null,
+    about_me?: string | null,
+    birth_dat?: string | null,
+    latitude?: number | null,
+    longitude?: number | null,
+    gender?: string | null,
+    open_to_meet?: boolean | null,
+    photo_source?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+    genres?:  {
+      __typename: "ModelGenreConnection",
+      items?:  Array< {
+        __typename: "Genre",
+        id: string,
+        genre?: string | null,
+        profileID?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    authors?:  {
+      __typename: "ModelAuthorConnection",
+      items?:  Array< {
+        __typename: "Author",
+        id: string,
+        profileID?: string | null,
+        name?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    books?:  {
+      __typename: "ModelBookConnection",
+      items?:  Array< {
+        __typename: "Book",
+        id: string,
+        profileID?: string | null,
+        title?: string | null,
+        author?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    matches?:  {
+      __typename: "ModelProfileConnection",
+      items?:  Array< {
+        __typename: "Profile",
+        id: string,
+        username?: string | null,
+        nickname?: string | null,
+        about_me?: string | null,
+        birth_dat?: string | null,
+        latitude?: number | null,
+        longitude?: number | null,
+        gender?: string | null,
+        open_to_meet?: boolean | null,
+        photo_source?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    rejections?:  {
+      __typename: "ModelProfileConnection",
+      items?:  Array< {
+        __typename: "Profile",
+        id: string,
+        username?: string | null,
+        nickname?: string | null,
+        about_me?: string | null,
+        birth_dat?: string | null,
+        latitude?: number | null,
+        longitude?: number | null,
+        gender?: string | null,
+        open_to_meet?: boolean | null,
+        photo_source?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+  } | null,
+};
+
+export type DeleteProfileMutationVariables = {
+  input?: DeleteProfileInput,
+  condition?: ModelProfileConditionInput | null,
+};
+
+export type DeleteProfileMutation = {
+  deleteProfile?:  {
+    __typename: "Profile",
+    id: string,
+    username?: string | null,
+    nickname?: string | null,
+    about_me?: string | null,
+    birth_dat?: string | null,
+    latitude?: number | null,
+    longitude?: number | null,
+    gender?: string | null,
+    open_to_meet?: boolean | null,
+    photo_source?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+    genres?:  {
+      __typename: "ModelGenreConnection",
+      items?:  Array< {
+        __typename: "Genre",
+        id: string,
+        genre?: string | null,
+        profileID?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    authors?:  {
+      __typename: "ModelAuthorConnection",
+      items?:  Array< {
+        __typename: "Author",
+        id: string,
+        profileID?: string | null,
+        name?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    books?:  {
+      __typename: "ModelBookConnection",
+      items?:  Array< {
+        __typename: "Book",
+        id: string,
+        profileID?: string | null,
+        title?: string | null,
+        author?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    matches?:  {
+      __typename: "ModelProfileConnection",
+      items?:  Array< {
+        __typename: "Profile",
+        id: string,
+        username?: string | null,
+        nickname?: string | null,
+        about_me?: string | null,
+        birth_dat?: string | null,
+        latitude?: number | null,
+        longitude?: number | null,
+        gender?: string | null,
+        open_to_meet?: boolean | null,
+        photo_source?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    rejections?:  {
+      __typename: "ModelProfileConnection",
+      items?:  Array< {
+        __typename: "Profile",
+        id: string,
+        username?: string | null,
+        nickname?: string | null,
+        about_me?: string | null,
+        birth_dat?: string | null,
+        latitude?: number | null,
+        longitude?: number | null,
+        gender?: string | null,
+        open_to_meet?: boolean | null,
+        photo_source?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+  } | null,
+};
+
+export type GetGenreQueryVariables = {
+  id?: string,
+};
+
+export type GetGenreQuery = {
+  getGenre?:  {
+    __typename: "Genre",
+    id: string,
+    genre?: string | null,
+    profileID?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListGenresQueryVariables = {
+  filter?: ModelGenreFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListGenresQuery = {
+  listGenres?:  {
+    __typename: "ModelGenreConnection",
+    items?:  Array< {
+      __typename: "Genre",
+      id: string,
+      genre?: string | null,
+      profileID?: string | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncGenresQueryVariables = {
+  filter?: ModelGenreFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
   lastSync?: number | null,
 };
 
-export type SyncTodosQuery = {
-  syncTodos?:  {
-    __typename: "ModelTodoConnection",
+export type SyncGenresQuery = {
+  syncGenres?:  {
+    __typename: "ModelGenreConnection",
     items?:  Array< {
-      __typename: "Todo",
+      __typename: "Genre",
       id: string,
-      name: string,
-      description?: string | null,
+      genre?: string | null,
+      profileID?: string | null,
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
@@ -196,16 +948,16 @@ export type SyncTodosQuery = {
   } | null,
 };
 
-export type GetTodoQueryVariables = {
+export type GetAuthorQueryVariables = {
   id?: string,
 };
 
-export type GetTodoQuery = {
-  getTodo?:  {
-    __typename: "Todo",
+export type GetAuthorQuery = {
+  getAuthor?:  {
+    __typename: "Author",
     id: string,
-    name: string,
-    description?: string | null,
+    profileID?: string | null,
+    name?: string | null,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
@@ -214,20 +966,20 @@ export type GetTodoQuery = {
   } | null,
 };
 
-export type ListTodosQueryVariables = {
-  filter?: ModelTodoFilterInput | null,
+export type ListAuthorsQueryVariables = {
+  filter?: ModelAuthorFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type ListTodosQuery = {
-  listTodos?:  {
-    __typename: "ModelTodoConnection",
+export type ListAuthorsQuery = {
+  listAuthors?:  {
+    __typename: "ModelAuthorConnection",
     items?:  Array< {
-      __typename: "Todo",
+      __typename: "Author",
       id: string,
-      name: string,
-      description?: string | null,
+      profileID?: string | null,
+      name?: string | null,
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
@@ -239,12 +991,43 @@ export type ListTodosQuery = {
   } | null,
 };
 
-export type OnCreateTodoSubscription = {
-  onCreateTodo?:  {
-    __typename: "Todo",
+export type SyncAuthorsQueryVariables = {
+  filter?: ModelAuthorFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncAuthorsQuery = {
+  syncAuthors?:  {
+    __typename: "ModelAuthorConnection",
+    items?:  Array< {
+      __typename: "Author",
+      id: string,
+      profileID?: string | null,
+      name?: string | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type GetBookQueryVariables = {
+  id?: string,
+};
+
+export type GetBookQuery = {
+  getBook?:  {
+    __typename: "Book",
     id: string,
-    name: string,
-    description?: string | null,
+    profileID?: string | null,
+    title?: string | null,
+    author?: string | null,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
@@ -253,12 +1036,300 @@ export type OnCreateTodoSubscription = {
   } | null,
 };
 
-export type OnUpdateTodoSubscription = {
-  onUpdateTodo?:  {
-    __typename: "Todo",
+export type ListBooksQueryVariables = {
+  filter?: ModelBookFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListBooksQuery = {
+  listBooks?:  {
+    __typename: "ModelBookConnection",
+    items?:  Array< {
+      __typename: "Book",
+      id: string,
+      profileID?: string | null,
+      title?: string | null,
+      author?: string | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncBooksQueryVariables = {
+  filter?: ModelBookFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncBooksQuery = {
+  syncBooks?:  {
+    __typename: "ModelBookConnection",
+    items?:  Array< {
+      __typename: "Book",
+      id: string,
+      profileID?: string | null,
+      title?: string | null,
+      author?: string | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type GetProfileQueryVariables = {
+  id?: string,
+};
+
+export type GetProfileQuery = {
+  getProfile?:  {
+    __typename: "Profile",
     id: string,
-    name: string,
-    description?: string | null,
+    username?: string | null,
+    nickname?: string | null,
+    about_me?: string | null,
+    birth_dat?: string | null,
+    latitude?: number | null,
+    longitude?: number | null,
+    gender?: string | null,
+    open_to_meet?: boolean | null,
+    photo_source?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+    genres?:  {
+      __typename: "ModelGenreConnection",
+      items?:  Array< {
+        __typename: "Genre",
+        id: string,
+        genre?: string | null,
+        profileID?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    authors?:  {
+      __typename: "ModelAuthorConnection",
+      items?:  Array< {
+        __typename: "Author",
+        id: string,
+        profileID?: string | null,
+        name?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    books?:  {
+      __typename: "ModelBookConnection",
+      items?:  Array< {
+        __typename: "Book",
+        id: string,
+        profileID?: string | null,
+        title?: string | null,
+        author?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    matches?:  {
+      __typename: "ModelProfileConnection",
+      items?:  Array< {
+        __typename: "Profile",
+        id: string,
+        username?: string | null,
+        nickname?: string | null,
+        about_me?: string | null,
+        birth_dat?: string | null,
+        latitude?: number | null,
+        longitude?: number | null,
+        gender?: string | null,
+        open_to_meet?: boolean | null,
+        photo_source?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    rejections?:  {
+      __typename: "ModelProfileConnection",
+      items?:  Array< {
+        __typename: "Profile",
+        id: string,
+        username?: string | null,
+        nickname?: string | null,
+        about_me?: string | null,
+        birth_dat?: string | null,
+        latitude?: number | null,
+        longitude?: number | null,
+        gender?: string | null,
+        open_to_meet?: boolean | null,
+        photo_source?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+  } | null,
+};
+
+export type ListProfilesQueryVariables = {
+  filter?: ModelProfileFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListProfilesQuery = {
+  listProfiles?:  {
+    __typename: "ModelProfileConnection",
+    items?:  Array< {
+      __typename: "Profile",
+      id: string,
+      username?: string | null,
+      nickname?: string | null,
+      about_me?: string | null,
+      birth_dat?: string | null,
+      latitude?: number | null,
+      longitude?: number | null,
+      gender?: string | null,
+      open_to_meet?: boolean | null,
+      photo_source?: string | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+      genres?:  {
+        __typename: "ModelGenreConnection",
+        nextToken?: string | null,
+        startedAt?: number | null,
+      } | null,
+      authors?:  {
+        __typename: "ModelAuthorConnection",
+        nextToken?: string | null,
+        startedAt?: number | null,
+      } | null,
+      books?:  {
+        __typename: "ModelBookConnection",
+        nextToken?: string | null,
+        startedAt?: number | null,
+      } | null,
+      matches?:  {
+        __typename: "ModelProfileConnection",
+        nextToken?: string | null,
+        startedAt?: number | null,
+      } | null,
+      rejections?:  {
+        __typename: "ModelProfileConnection",
+        nextToken?: string | null,
+        startedAt?: number | null,
+      } | null,
+    } | null > | null,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncProfilesQueryVariables = {
+  filter?: ModelProfileFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncProfilesQuery = {
+  syncProfiles?:  {
+    __typename: "ModelProfileConnection",
+    items?:  Array< {
+      __typename: "Profile",
+      id: string,
+      username?: string | null,
+      nickname?: string | null,
+      about_me?: string | null,
+      birth_dat?: string | null,
+      latitude?: number | null,
+      longitude?: number | null,
+      gender?: string | null,
+      open_to_meet?: boolean | null,
+      photo_source?: string | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+      genres?:  {
+        __typename: "ModelGenreConnection",
+        nextToken?: string | null,
+        startedAt?: number | null,
+      } | null,
+      authors?:  {
+        __typename: "ModelAuthorConnection",
+        nextToken?: string | null,
+        startedAt?: number | null,
+      } | null,
+      books?:  {
+        __typename: "ModelBookConnection",
+        nextToken?: string | null,
+        startedAt?: number | null,
+      } | null,
+      matches?:  {
+        __typename: "ModelProfileConnection",
+        nextToken?: string | null,
+        startedAt?: number | null,
+      } | null,
+      rejections?:  {
+        __typename: "ModelProfileConnection",
+        nextToken?: string | null,
+        startedAt?: number | null,
+      } | null,
+    } | null > | null,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type OnCreateGenreSubscription = {
+  onCreateGenre?:  {
+    __typename: "Genre",
+    id: string,
+    genre?: string | null,
+    profileID?: string | null,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
@@ -267,16 +1338,465 @@ export type OnUpdateTodoSubscription = {
   } | null,
 };
 
-export type OnDeleteTodoSubscription = {
-  onDeleteTodo?:  {
-    __typename: "Todo",
+export type OnUpdateGenreSubscription = {
+  onUpdateGenre?:  {
+    __typename: "Genre",
     id: string,
-    name: string,
-    description?: string | null,
+    genre?: string | null,
+    profileID?: string | null,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteGenreSubscription = {
+  onDeleteGenre?:  {
+    __typename: "Genre",
+    id: string,
+    genre?: string | null,
+    profileID?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateAuthorSubscription = {
+  onCreateAuthor?:  {
+    __typename: "Author",
+    id: string,
+    profileID?: string | null,
+    name?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateAuthorSubscription = {
+  onUpdateAuthor?:  {
+    __typename: "Author",
+    id: string,
+    profileID?: string | null,
+    name?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteAuthorSubscription = {
+  onDeleteAuthor?:  {
+    __typename: "Author",
+    id: string,
+    profileID?: string | null,
+    name?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateBookSubscription = {
+  onCreateBook?:  {
+    __typename: "Book",
+    id: string,
+    profileID?: string | null,
+    title?: string | null,
+    author?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateBookSubscription = {
+  onUpdateBook?:  {
+    __typename: "Book",
+    id: string,
+    profileID?: string | null,
+    title?: string | null,
+    author?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteBookSubscription = {
+  onDeleteBook?:  {
+    __typename: "Book",
+    id: string,
+    profileID?: string | null,
+    title?: string | null,
+    author?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateProfileSubscription = {
+  onCreateProfile?:  {
+    __typename: "Profile",
+    id: string,
+    username?: string | null,
+    nickname?: string | null,
+    about_me?: string | null,
+    birth_dat?: string | null,
+    latitude?: number | null,
+    longitude?: number | null,
+    gender?: string | null,
+    open_to_meet?: boolean | null,
+    photo_source?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+    genres?:  {
+      __typename: "ModelGenreConnection",
+      items?:  Array< {
+        __typename: "Genre",
+        id: string,
+        genre?: string | null,
+        profileID?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    authors?:  {
+      __typename: "ModelAuthorConnection",
+      items?:  Array< {
+        __typename: "Author",
+        id: string,
+        profileID?: string | null,
+        name?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    books?:  {
+      __typename: "ModelBookConnection",
+      items?:  Array< {
+        __typename: "Book",
+        id: string,
+        profileID?: string | null,
+        title?: string | null,
+        author?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    matches?:  {
+      __typename: "ModelProfileConnection",
+      items?:  Array< {
+        __typename: "Profile",
+        id: string,
+        username?: string | null,
+        nickname?: string | null,
+        about_me?: string | null,
+        birth_dat?: string | null,
+        latitude?: number | null,
+        longitude?: number | null,
+        gender?: string | null,
+        open_to_meet?: boolean | null,
+        photo_source?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    rejections?:  {
+      __typename: "ModelProfileConnection",
+      items?:  Array< {
+        __typename: "Profile",
+        id: string,
+        username?: string | null,
+        nickname?: string | null,
+        about_me?: string | null,
+        birth_dat?: string | null,
+        latitude?: number | null,
+        longitude?: number | null,
+        gender?: string | null,
+        open_to_meet?: boolean | null,
+        photo_source?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+  } | null,
+};
+
+export type OnUpdateProfileSubscription = {
+  onUpdateProfile?:  {
+    __typename: "Profile",
+    id: string,
+    username?: string | null,
+    nickname?: string | null,
+    about_me?: string | null,
+    birth_dat?: string | null,
+    latitude?: number | null,
+    longitude?: number | null,
+    gender?: string | null,
+    open_to_meet?: boolean | null,
+    photo_source?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+    genres?:  {
+      __typename: "ModelGenreConnection",
+      items?:  Array< {
+        __typename: "Genre",
+        id: string,
+        genre?: string | null,
+        profileID?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    authors?:  {
+      __typename: "ModelAuthorConnection",
+      items?:  Array< {
+        __typename: "Author",
+        id: string,
+        profileID?: string | null,
+        name?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    books?:  {
+      __typename: "ModelBookConnection",
+      items?:  Array< {
+        __typename: "Book",
+        id: string,
+        profileID?: string | null,
+        title?: string | null,
+        author?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    matches?:  {
+      __typename: "ModelProfileConnection",
+      items?:  Array< {
+        __typename: "Profile",
+        id: string,
+        username?: string | null,
+        nickname?: string | null,
+        about_me?: string | null,
+        birth_dat?: string | null,
+        latitude?: number | null,
+        longitude?: number | null,
+        gender?: string | null,
+        open_to_meet?: boolean | null,
+        photo_source?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    rejections?:  {
+      __typename: "ModelProfileConnection",
+      items?:  Array< {
+        __typename: "Profile",
+        id: string,
+        username?: string | null,
+        nickname?: string | null,
+        about_me?: string | null,
+        birth_dat?: string | null,
+        latitude?: number | null,
+        longitude?: number | null,
+        gender?: string | null,
+        open_to_meet?: boolean | null,
+        photo_source?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+  } | null,
+};
+
+export type OnDeleteProfileSubscription = {
+  onDeleteProfile?:  {
+    __typename: "Profile",
+    id: string,
+    username?: string | null,
+    nickname?: string | null,
+    about_me?: string | null,
+    birth_dat?: string | null,
+    latitude?: number | null,
+    longitude?: number | null,
+    gender?: string | null,
+    open_to_meet?: boolean | null,
+    photo_source?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+    genres?:  {
+      __typename: "ModelGenreConnection",
+      items?:  Array< {
+        __typename: "Genre",
+        id: string,
+        genre?: string | null,
+        profileID?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    authors?:  {
+      __typename: "ModelAuthorConnection",
+      items?:  Array< {
+        __typename: "Author",
+        id: string,
+        profileID?: string | null,
+        name?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    books?:  {
+      __typename: "ModelBookConnection",
+      items?:  Array< {
+        __typename: "Book",
+        id: string,
+        profileID?: string | null,
+        title?: string | null,
+        author?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    matches?:  {
+      __typename: "ModelProfileConnection",
+      items?:  Array< {
+        __typename: "Profile",
+        id: string,
+        username?: string | null,
+        nickname?: string | null,
+        about_me?: string | null,
+        birth_dat?: string | null,
+        latitude?: number | null,
+        longitude?: number | null,
+        gender?: string | null,
+        open_to_meet?: boolean | null,
+        photo_source?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    rejections?:  {
+      __typename: "ModelProfileConnection",
+      items?:  Array< {
+        __typename: "Profile",
+        id: string,
+        username?: string | null,
+        nickname?: string | null,
+        about_me?: string | null,
+        birth_dat?: string | null,
+        latitude?: number | null,
+        longitude?: number | null,
+        gender?: string | null,
+        open_to_meet?: boolean | null,
+        photo_source?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
   } | null,
 };

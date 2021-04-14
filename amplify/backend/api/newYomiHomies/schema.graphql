@@ -1,0 +1,37 @@
+type Genre @model @key(name: "byProfile", fields: ["profileID"]) @auth(rules: [{allow: private}]) {
+  id: ID!
+  genre: String
+  profileID: ID
+}
+
+type Author @model @key(name: "byProfile", fields: ["profileID"]) @auth(rules: [{allow: private}]) {
+  id: ID!
+  profileID: ID
+  name: String
+}
+
+type Book @model @key(name: "byProfile", fields: ["profileID"]) @auth(rules: [{allow: private}]) {
+  id: ID!
+  profileID: ID
+  title: String
+  author: String
+}
+
+type Profile @model @key(name: "byMatch", fields: ["id"]) @auth(rules: [{allow: private}]) {
+  id: ID!
+  username: String
+  nickname: String
+  about_me: String
+  birth_dat: AWSDate
+  latitude: Float
+  longitude: Float
+  gender: String
+  open_to_meet: Boolean
+  books: [Book] @connection(keyName: "byProfile", fields: ["id"])
+  authors: [Author] @connection(keyName: "byProfile", fields: ["id"])
+  genres: [Genre] @connection(keyName: "byProfile", fields: ["id"])
+  matches: [Profile] @connection(keyName: "byMatch", fields: ["id"])
+  rejections: [Profile] @connection(keyName: "byMatch", fields: ["id"])
+  photo_source: String
+}
+ 
