@@ -22,7 +22,7 @@ type Profile @model @key(name: "byMatch", fields: ["id"]) @auth(rules: [{allow: 
   username: String
   nickname: String
   about_me: String
-  birth_dat: AWSDate
+  birth_date: AWSDate
   latitude: Float
   longitude: Float
   gender: String
