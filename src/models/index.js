@@ -4,8 +4,12 @@ import { schema } from './schema';
 
 
 
-const { Todo } = initSchema(schema);
+const { Genres, Authors, Books, Profiles, Todo } = initSchema(schema);
 
 export {
+  Genres,
+  Authors,
+  Books,
+  Profiles,
   Todo
 };

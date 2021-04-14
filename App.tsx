@@ -27,10 +27,10 @@ function App() {
   } else {
     return (
       <>
-      {/* <div> */}
-        {/* <AmplifySignOut />
+      <div>
+        <AmplifySignOut />
         My App
-        </div> */}
+        </div>
       <SafeAreaProvider>
         <Navigation colorScheme={colorScheme} />
         <StatusBar />
