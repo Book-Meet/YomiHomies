@@ -45,11 +45,3 @@ export declare class Profiles {
   constructor(init: ModelInit<Profiles>);
   static copyOf(source: Profiles, mutator: (draft: MutableModel<Profiles>) => MutableModel<Profiles> | void): Profiles;
 }
-
-export declare class Todo {
-  readonly id: string;
-  readonly name: string;
-  readonly description?: string;
-  constructor(init: ModelInit<Todo>);
-  static copyOf(source: Todo, mutator: (draft: MutableModel<Todo>) => MutableModel<Todo> | void): Todo;
-}

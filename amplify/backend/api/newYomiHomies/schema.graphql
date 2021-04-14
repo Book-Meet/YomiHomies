@@ -31,10 +31,4 @@ type Profiles @model @auth(rules: [{allow: private}]) {
   authors: [Authors] @connection(keyName: "byProfiles", fields: ["id"])
   genres: [Genres] @connection(keyName: "byProfiles", fields: ["id"])
 }
-
-type Todo @model {
-  id: ID!
-  name: String!
-  description: String
-}
  

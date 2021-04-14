@@ -317,43 +317,9 @@ export const schema = {
                     }
                 }
             ]
-        },
-        "Todo": {
-            "name": "Todo",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "name": {
-                    "name": "name",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "description": {
-                    "name": "description",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                }
-            },
-            "syncable": true,
-            "pluralName": "Todos",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                }
-            ]
         }
     },
     "enums": {},
     "nonModels": {},
-    "version": "ce5eb978d8c946d4d97f731a73090d80"
+    "version": "70b6f772bcb163110bc9588c78d3e081"
 };

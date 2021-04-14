@@ -26,10 +26,10 @@ function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
 
-  (async function () {
-    const todos = await API.graphql(graphqlOperation(listTodos));
-    console.log('todos are :', todos);
-  })()
+  // (async function () {
+  //   const profiles = await API.graphql(graphqlOperation());
+  //   console.log('profiles are :', profiles);
+  // })()
 
   if (!isLoadingComplete) {
     return null;
