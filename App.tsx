@@ -4,15 +4,23 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
-import Amplify from 'aws-amplify'; 
-import { API, graphqlOperation } from 'aws-amplify'
+import Amplify, {API, graphqlOperation} from 'aws-amplify'; 
 import config from './src/aws-exports'
 import { listTodos } from './src/graphql/queries';
 import { Auth } from "@aws-amplify/auth";
-import { withAuthenticator, AmplifySignOut } from 'aws-amplify-react-native';
+// @ts-ignore
+import { withAuthenticator} from 'aws-amplify-react-native';
 
 
-Amplify.configure(config)
+// Amplify.configure(config) //this was the original config import 
+// issue was given a solution here https://github.com/aws-amplify/amplify-js/issues/5918
+//aws amplify throws an error when analytics isn't disabled
+Amplify.configure({
+  ...config,
+  Analytics: {
+    disabled: true,
+  },
+});
 
 function App() {
   const isLoadingComplete = useCachedResources();
@@ -21,7 +29,6 @@ function App() {
   (async function () {
     const todos = await API.graphql(graphqlOperation(listTodos));
     console.log('todos are :', todos);
-    // Auth.signOut();
   })()
 
   if (!isLoadingComplete) {
@@ -29,10 +36,6 @@ function App() {
   } else {
     return (
       <>
-      {/* <div>
-        <AmplifySignOut />
-        My App
-        </div> */}
       <SafeAreaProvider>
         <Navigation colorScheme={colorScheme} />
         <StatusBar />

@@ -1,5 +1,40 @@
+type Genres @model @auth(rules: [{allow: private}]) @key(name: "byProfiles", fields: ["profileID"]) {
+  id: ID!
+  genre: String
+  profileID: ID
+}
+
+type Authors @model @auth(rules: [{allow: private}]) @key(name: "byProfiles", fields: ["profileID"]) {
+  id: ID!
+  profileID: ID
+  name: String
+}
+
+type Books @model @auth(rules: [{allow: private}]) @key(name: "byProfiles", fields: ["profileID"]) {
+  id: ID!
+  profileID: ID
+  title: String
+  author: String
+}
+
+type Profiles @model @auth(rules: [{allow: private}]) {
+  id: ID!
+  username: String
+  nickname: String
+  about_me: String
+  birth_dat: AWSDate
+  latitude: Float
+  longitude: Float
+  gender: String
+  open_to_meet: Boolean
+  books: [Books] @connection(keyName: "byProfiles", fields: ["id"])
+  authors: [Authors] @connection(keyName: "byProfiles", fields: ["id"])
+  genres: [Genres] @connection(keyName: "byProfiles", fields: ["id"])
+}
+
 type Todo @model {
   id: ID!
   name: String!
   description: String
 }
+ 
