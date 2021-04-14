@@ -27,7 +27,7 @@ function App() {
   const colorScheme = useColorScheme();
 
   (async function () {
-    const profiles = await API.graphql(graphqlOperation(listProfiless));
+    const profiles = await API.graphql(graphqlOperation(listProfiles));
     console.log('todos are :', profiles);
   })()
 
