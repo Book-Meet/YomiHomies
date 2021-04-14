@@ -2,15 +2,15 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createTodo = /* GraphQL */ `
-  mutation CreateTodo(
-    $input: CreateTodoInput!
-    $condition: ModelTodoConditionInput
+export const createGenre = /* GraphQL */ `
+  mutation CreateGenre(
+    $input: CreateGenreInput!
+    $condition: ModelGenreConditionInput
   ) {
-    createTodo(input: $input, condition: $condition) {
+    createGenre(input: $input, condition: $condition) {
       id
-      name
-      description
+      genre
+      profileID
       _version
       _deleted
       _lastChangedAt
@@ -19,15 +19,15 @@ export const createTodo = /* GraphQL */ `
     }
   }
 `;
-export const updateTodo = /* GraphQL */ `
-  mutation UpdateTodo(
-    $input: UpdateTodoInput!
-    $condition: ModelTodoConditionInput
+export const updateGenre = /* GraphQL */ `
+  mutation UpdateGenre(
+    $input: UpdateGenreInput!
+    $condition: ModelGenreConditionInput
   ) {
-    updateTodo(input: $input, condition: $condition) {
+    updateGenre(input: $input, condition: $condition) {
       id
-      name
-      description
+      genre
+      profileID
       _version
       _deleted
       _lastChangedAt
@@ -36,20 +36,452 @@ export const updateTodo = /* GraphQL */ `
     }
   }
 `;
-export const deleteTodo = /* GraphQL */ `
-  mutation DeleteTodo(
-    $input: DeleteTodoInput!
-    $condition: ModelTodoConditionInput
+export const deleteGenre = /* GraphQL */ `
+  mutation DeleteGenre(
+    $input: DeleteGenreInput!
+    $condition: ModelGenreConditionInput
   ) {
-    deleteTodo(input: $input, condition: $condition) {
+    deleteGenre(input: $input, condition: $condition) {
       id
-      name
-      description
+      genre
+      profileID
       _version
       _deleted
       _lastChangedAt
       createdAt
       updatedAt
+    }
+  }
+`;
+export const createAuthor = /* GraphQL */ `
+  mutation CreateAuthor(
+    $input: CreateAuthorInput!
+    $condition: ModelAuthorConditionInput
+  ) {
+    createAuthor(input: $input, condition: $condition) {
+      id
+      profileID
+      name
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateAuthor = /* GraphQL */ `
+  mutation UpdateAuthor(
+    $input: UpdateAuthorInput!
+    $condition: ModelAuthorConditionInput
+  ) {
+    updateAuthor(input: $input, condition: $condition) {
+      id
+      profileID
+      name
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteAuthor = /* GraphQL */ `
+  mutation DeleteAuthor(
+    $input: DeleteAuthorInput!
+    $condition: ModelAuthorConditionInput
+  ) {
+    deleteAuthor(input: $input, condition: $condition) {
+      id
+      profileID
+      name
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createBook = /* GraphQL */ `
+  mutation CreateBook(
+    $input: CreateBookInput!
+    $condition: ModelBookConditionInput
+  ) {
+    createBook(input: $input, condition: $condition) {
+      id
+      profileID
+      title
+      author
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateBook = /* GraphQL */ `
+  mutation UpdateBook(
+    $input: UpdateBookInput!
+    $condition: ModelBookConditionInput
+  ) {
+    updateBook(input: $input, condition: $condition) {
+      id
+      profileID
+      title
+      author
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteBook = /* GraphQL */ `
+  mutation DeleteBook(
+    $input: DeleteBookInput!
+    $condition: ModelBookConditionInput
+  ) {
+    deleteBook(input: $input, condition: $condition) {
+      id
+      profileID
+      title
+      author
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createProfile = /* GraphQL */ `
+  mutation CreateProfile(
+    $input: CreateProfileInput!
+    $condition: ModelProfileConditionInput
+  ) {
+    createProfile(input: $input, condition: $condition) {
+      id
+      username
+      nickname
+      about_me
+      birth_dat
+      latitude
+      longitude
+      gender
+      open_to_meet
+      photo_source
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      genres {
+        items {
+          id
+          genre
+          profileID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      authors {
+        items {
+          id
+          profileID
+          name
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      books {
+        items {
+          id
+          profileID
+          title
+          author
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      matches {
+        items {
+          id
+          username
+          nickname
+          about_me
+          birth_dat
+          latitude
+          longitude
+          gender
+          open_to_meet
+          photo_source
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      rejections {
+        items {
+          id
+          username
+          nickname
+          about_me
+          birth_dat
+          latitude
+          longitude
+          gender
+          open_to_meet
+          photo_source
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+    }
+  }
+`;
+export const updateProfile = /* GraphQL */ `
+  mutation UpdateProfile(
+    $input: UpdateProfileInput!
+    $condition: ModelProfileConditionInput
+  ) {
+    updateProfile(input: $input, condition: $condition) {
+      id
+      username
+      nickname
+      about_me
+      birth_dat
+      latitude
+      longitude
+      gender
+      open_to_meet
+      photo_source
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      genres {
+        items {
+          id
+          genre
+          profileID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      authors {
+        items {
+          id
+          profileID
+          name
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      books {
+        items {
+          id
+          profileID
+          title
+          author
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      matches {
+        items {
+          id
+          username
+          nickname
+          about_me
+          birth_dat
+          latitude
+          longitude
+          gender
+          open_to_meet
+          photo_source
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      rejections {
+        items {
+          id
+          username
+          nickname
+          about_me
+          birth_dat
+          latitude
+          longitude
+          gender
+          open_to_meet
+          photo_source
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+    }
+  }
+`;
+export const deleteProfile = /* GraphQL */ `
+  mutation DeleteProfile(
+    $input: DeleteProfileInput!
+    $condition: ModelProfileConditionInput
+  ) {
+    deleteProfile(input: $input, condition: $condition) {
+      id
+      username
+      nickname
+      about_me
+      birth_dat
+      latitude
+      longitude
+      gender
+      open_to_meet
+      photo_source
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      genres {
+        items {
+          id
+          genre
+          profileID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      authors {
+        items {
+          id
+          profileID
+          name
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      books {
+        items {
+          id
+          profileID
+          title
+          author
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      matches {
+        items {
+          id
+          username
+          nickname
+          about_me
+          birth_dat
+          latitude
+          longitude
+          gender
+          open_to_meet
+          photo_source
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      rejections {
+        items {
+          id
+          username
+          nickname
+          about_me
+          birth_dat
+          latitude
+          longitude
+          gender
+          open_to_meet
+          photo_source
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
     }
   }
 `;

@@ -6,7 +6,7 @@ import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 import Amplify, {API, graphqlOperation} from 'aws-amplify'; 
 import config from './src/aws-exports'
-import { listTodos } from './src/graphql/queries';
+import { listProfiles } from './src/graphql/queries';
 import { Auth } from "@aws-amplify/auth";
 // @ts-ignore
 import { withAuthenticator} from 'aws-amplify-react-native';
@@ -26,10 +26,10 @@ function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
 
-  // (async function () {
-  //   const profiles = await API.graphql(graphqlOperation());
-  //   console.log('profiles are :', profiles);
-  // })()
+  (async function () {
+    const profiles = await API.graphql(graphqlOperation(listProfiles));
+    console.log('todos are :', profiles);
+  })()
 
   if (!isLoadingComplete) {
     return null;
