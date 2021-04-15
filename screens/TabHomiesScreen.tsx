@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { StyleSheet, FlatList, SafeAreaView, Text, View } from 'react-native';
-import Navigation from '../navigation';
+import { StyleSheet, FlatList, SafeAreaView } from 'react-native';
+import {Text, View} from '../components/Themed'
 import Colors from '../constants/Colors';
-import EditScreenInfo from '../components/EditScreenInfo';
 import { navItem } from '@aws-amplify/ui';
 
 interface matchItem {
