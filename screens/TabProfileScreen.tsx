@@ -1,8 +1,6 @@
 import {useEffect, useState} from 'react';
 import * as React from 'react';
 import { StyleSheet, Image, Button, TextInput } from 'react-native';
-// import { StyleSheet, Image, Button, TextInput, StatusBar, SafeAreaView} from 'react-native';
-// import RNMultiSelect, { IMultiSelectDataTypes } from "@freakycoder/react-native-multiple-select";
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
@@ -12,73 +10,31 @@ import { Auth } from "@aws-amplify/auth";
 import AWSAppSyncClient from 'aws-appsync';
 import config from '../src/aws-exports';
 
+const items = [
+  {
+    id: 1,
+    name: 'Thrillers'
+  },
+  {
+    id: 2,
+    name: 'Business'
+  },
+  {
+    id: 3,
+    name: 'Romance'
+  },
+  {
+    id: 4,
+    name: 'Technology'
+  },
+  {
+    id: 5,
+    name: 'Comics'
+  }
+];
 
 export default function TabProfileScreen() {
-  // const [genre, setGenre] = React.useState([
-  //   {
-  //     key: '1',
-  //     label: 'Thrillers'
-  //   },
-  //   {
-  //     key: '2',
-  //     label: 'Business'
-  //   },
-  //   {
-  //     key: '3',
-  //     label: 'Romance'
-  //   },
-  //   {
-  //     key: '4',
-  //     label: 'Technology'
-  //   },
-  //   {
-  //     key: '5',
-  //     label: 'Comics'
-  //   }
-  // ]);
-  // const staticData: Array<IMultiSelectDataTypes> = [
-  //   {
-  //     id: 0,
-  //     value: 'Thrillers',
-  //     isChecked: false,
-  //   },
-  //   {
-  //     id: 1,
-  //     value: 'Business',
-  //     isChecked: false,
-  //   },
-  //   {
-  //     id: 2,
-  //     value: 'Romance',
-  //     isChecked: false,
-  //   },
-  //   {
-  //     id: 3,
-  //     value: 'Technology',
-  //     isChecked: false,
-  //   },
-  //   {
-  //     id: 4,
-  //     value: 'Comics',
-  //     isChecked: false,
-  //   }
-  // ];
-  
-  // const [selectedItems, setSelectedItems] = React.useState<string[]>([]);
-  // const onSelectedItemsChange = (value: string[]) => {
-  //   setSelectedItems(value);
-  // };
-
-  // const [dynamicData, setDynamicData] = React.useState<
-  //   Array<IMultiSelectDataTypes>
-  // >([]);
-
-  // React.useEffect(() => {
-  //   setTimeout(() => {
-  //     setDynamicData(staticData);
-  //   }, 2000);
-  // }, []);
-
+  const [selectedItems, setSelectedItems] = useState([]);
   const [count, setCount] = useState(0);
   const [user, setUser] = useState({});
   
@@ -108,6 +64,8 @@ export default function TabProfileScreen() {
             width: 100,
             height: 100
           }} source={require('../assets/images/arina-reading.jpeg')} />
+      
+      
       <Text>Username: {user.username}</Text>
       <Text>Nickname: Ari</Text>
       <Text>Gender: Female</Text>
@@ -120,7 +78,6 @@ export default function TabProfileScreen() {
           onPress={() => setCount(count + 1)}
           title="+"
         />
-      
       <Text>Top Genres: </Text>
         <Text>Genre1</Text>
         <Text>Genre2</Text>
@@ -145,32 +102,6 @@ export default function TabProfileScreen() {
         <Text>Hello!!</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <EditScreenInfo path="/screens/TabOneScreen.tsx" />
-
-      {/* <StatusBar barStyle="dark-content" />
-      <SafeAreaView
-        style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-      >
-        <View
-          style={{
-            shadowRadius: 8,
-            shadowOpacity: 0.3,
-            shadowColor: "#757575",
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
-          }}
-        >
-          <RNMultiSelect
-            disableAbsolute
-            // fillColor="red"
-            data={dynamicData}
-            onSelect={(selectedItems) =>
-              console.log("SelectedItems: ", selectedItems)
-            }
-          />
-        </View>
-      </SafeAreaView> */}
     </View>
   );
 }
