@@ -258,6 +258,27 @@ export const getProfile = /* GraphQL */ `
         nextToken
         startedAt
       }
+      pending {
+        items {
+          id
+          username
+          nickname
+          about_me
+          birth_date
+          latitude
+          longitude
+          gender
+          open_to_meet
+          photo_source
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
       matches {
         items {
           id
@@ -338,6 +359,10 @@ export const listProfiles = /* GraphQL */ `
           nextToken
           startedAt
         }
+        pending {
+          nextToken
+          startedAt
+        }
         matches {
           nextToken
           startedAt
@@ -390,6 +415,10 @@ export const syncProfiles = /* GraphQL */ `
           startedAt
         }
         books {
+          nextToken
+          startedAt
+        }
+        pending {
           nextToken
           startedAt
         }

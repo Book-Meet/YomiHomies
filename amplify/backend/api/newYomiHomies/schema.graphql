@@ -30,6 +30,7 @@ type Profile @model @key(name: "byMatch", fields: ["id"]) @auth(rules: [{allow: 
   books: [Book] @connection(keyName: "byProfile", fields: ["id"])
   authors: [Author] @connection(keyName: "byProfile", fields: ["id"])
   genres: [Genre] @connection(keyName: "byProfile", fields: ["id"])
+  pending: [Profile] @connection(keyName: "byMatch", fields: ["id"])
   matches: [Profile] @connection(keyName: "byMatch", fields: ["id"])
   rejections: [Profile] @connection(keyName: "byMatch", fields: ["id"])
   photo_source: String
