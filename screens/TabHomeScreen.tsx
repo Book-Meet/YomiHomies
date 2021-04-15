@@ -1,6 +1,6 @@
 import * as React from 'react';
 // import { useEffect, useState } from "react";
-import { StyleSheet, Image, View, Text, StatusBar, SafeAreaView, Dimensions } from 'react-native';
+import { StyleSheet, Image, StatusBar, SafeAreaView, Dimensions } from 'react-native';
 import Swiper from 'react-native-deck-swiper';
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Transitioning, Transition } from 'react-native-reanimated'
@@ -8,7 +8,7 @@ import { Transitioning, Transition } from 'react-native-reanimated'
 // import TinderCard from "react-tinder-card";
 // import { shouldUseActivityState } from 'react-native-screens';
 // import EditScreenInfo from '../components/EditScreenInfo';
-// import { Text, View } from '../components/Themed';
+import { Text, View } from '../components/Themed';
 
 const data = [
       {
