@@ -6,11 +6,10 @@ import { StyleSheet, Image, Button, TextInput } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
-import { getProfile, listProfiles } from '../src/graphql/queries';
-import Amplify, {API, graphqlOperation} from 'aws-amplify'; 
+import { getProfile } from '../src/graphql/queries';
+import {API, graphqlOperation} from 'aws-amplify'; 
 import { Auth } from "@aws-amplify/auth";
-import AWSAppSyncClient from 'aws-appsync';
-import config from '../src/aws-exports';
+import { updateProfile } from '../src/graphql/mutations';
 
 
 export default function TabProfileScreen() {
@@ -80,27 +79,26 @@ export default function TabProfileScreen() {
   // }, []);
 
   const [count, setCount] = useState(0);
-  const [user, setUser] = useState({});
+  const [user, setUser]:any = useState({});
   
-  // const client = new AWSAppSyncClient({
-  //   url: config.aws_appsync_graphqlEndpoint,
-  //   region: config.aws_appsync_region,
-  //   auth: {
-  //     type: 'API_KEY',
-  //     apiKey: config.aws_appsync_apiKey
-  //   }
-  // });
 
   useEffect(()=>{
     (async () =>{
-      let authUser = await Auth.currentUserInfo()
-      let temp:any = await API.graphql(graphqlOperation(getProfile,{id:authUser.id}));
-      temp = temp.data.getProfile;
-      setUser (temp);
-      // await client.mutate({query: })
+      let authUser = await Auth.currentUserInfo();
+      let query:any = await API.graphql(graphqlOperation(getProfile, {id:authUser.id}))
+      query = query.data.getProfile;
+      setUser(query);
     })()
   }, [])
-  
+
+  async function updateThisProfile(newInfo:Object){
+    newInfo = {id:user.id, ...newInfo};
+    console.log(newInfo);
+    let mutation:any = await API.graphql({query:updateProfile, variables: {input:newInfo, id:user.id}})
+    console.log(mutation.data.updateProfile);
+    setUser(mutation.data.updateProfile)
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Profile</Text>
