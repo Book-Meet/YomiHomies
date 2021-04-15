@@ -26,13 +26,12 @@ Amplify.configure({
 function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
+  // let user:any = {};
 
   useEffect(()=>{
     (async function () {
       let currentUser = await Auth.currentUserInfo()
-      console.log(currentUser);
-      const query = await API.graphql(graphqlOperation(getProfile, { id:currentUser.id  }));
-      console.log(query.data);
+      const query:any = await API.graphql(graphqlOperation(getProfile, { id:currentUser.id  }));
       if(query.data.getProfile === null){
         let input = {
           id: currentUser.id,
@@ -40,9 +39,10 @@ function App() {
         };
         console.log('no Profile')
         const newProfile = await API.graphql(graphqlOperation(createProfile, { input }))
-      }  
-      // const query2 = await API.graphql(graphqlOperation(getProfile, { id: currentUser.id }));
-      // console.log(query2);
+        // user = newProfile.data.createProfile;
+      }else {
+        // user = query.data.getProfile;  
+      }
     })()
   }, [])
 
@@ -52,7 +52,7 @@ function App() {
     return (
       <>
         <SafeAreaProvider>
-          <Navigation colorScheme={colorScheme} />
+          <Navigation colorScheme={colorScheme}/>
           <StatusBar />
         </SafeAreaProvider>
       </>
