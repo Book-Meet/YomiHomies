@@ -238,22 +238,22 @@ export type Profile = {
   longitude?: number | null,
   gender?: string | null,
   open_to_meet?: boolean | null,
+  books?: ModelBookConnection,
+  authors?: ModelAuthorConnection,
+  genres?: ModelGenreConnection,
+  matches?: ModelProfileConnection,
+  rejections?: ModelProfileConnection,
   photo_source?: string | null,
   _version?: number,
   _deleted?: boolean | null,
   _lastChangedAt?: number,
   createdAt?: string,
   updatedAt?: string,
-  genres?: ModelGenreConnection,
-  authors?: ModelAuthorConnection,
-  books?: ModelBookConnection,
-  matches?: ModelProfileConnection,
-  rejections?: ModelProfileConnection,
 };
 
-export type ModelGenreConnection = {
-  __typename: "ModelGenreConnection",
-  items?:  Array<Genre | null > | null,
+export type ModelBookConnection = {
+  __typename: "ModelBookConnection",
+  items?:  Array<Book | null > | null,
   nextToken?: string | null,
   startedAt?: number | null,
 };
@@ -265,9 +265,9 @@ export type ModelAuthorConnection = {
   startedAt?: number | null,
 };
 
-export type ModelBookConnection = {
-  __typename: "ModelBookConnection",
-  items?:  Array<Book | null > | null,
+export type ModelGenreConnection = {
+  __typename: "ModelGenreConnection",
+  items?:  Array<Genre | null > | null,
   nextToken?: string | null,
   startedAt?: number | null,
 };
@@ -533,19 +533,14 @@ export type CreateProfileMutation = {
     longitude?: number | null,
     gender?: string | null,
     open_to_meet?: boolean | null,
-    photo_source?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
-    genres?:  {
-      __typename: "ModelGenreConnection",
+    books?:  {
+      __typename: "ModelBookConnection",
       items?:  Array< {
-        __typename: "Genre",
+        __typename: "Book",
         id: string,
-        genre?: string | null,
         profileID?: string | null,
+        title?: string | null,
+        author?: string | null,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -571,14 +566,13 @@ export type CreateProfileMutation = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    books?:  {
-      __typename: "ModelBookConnection",
+    genres?:  {
+      __typename: "ModelGenreConnection",
       items?:  Array< {
-        __typename: "Book",
+        __typename: "Genre",
         id: string,
+        genre?: string | null,
         profileID?: string | null,
-        title?: string | null,
-        author?: string | null,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -634,6 +628,12 @@ export type CreateProfileMutation = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+    photo_source?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -654,19 +654,14 @@ export type UpdateProfileMutation = {
     longitude?: number | null,
     gender?: string | null,
     open_to_meet?: boolean | null,
-    photo_source?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
-    genres?:  {
-      __typename: "ModelGenreConnection",
+    books?:  {
+      __typename: "ModelBookConnection",
       items?:  Array< {
-        __typename: "Genre",
+        __typename: "Book",
         id: string,
-        genre?: string | null,
         profileID?: string | null,
+        title?: string | null,
+        author?: string | null,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -692,14 +687,13 @@ export type UpdateProfileMutation = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    books?:  {
-      __typename: "ModelBookConnection",
+    genres?:  {
+      __typename: "ModelGenreConnection",
       items?:  Array< {
-        __typename: "Book",
+        __typename: "Genre",
         id: string,
+        genre?: string | null,
         profileID?: string | null,
-        title?: string | null,
-        author?: string | null,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -755,6 +749,12 @@ export type UpdateProfileMutation = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+    photo_source?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -775,19 +775,14 @@ export type DeleteProfileMutation = {
     longitude?: number | null,
     gender?: string | null,
     open_to_meet?: boolean | null,
-    photo_source?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
-    genres?:  {
-      __typename: "ModelGenreConnection",
+    books?:  {
+      __typename: "ModelBookConnection",
       items?:  Array< {
-        __typename: "Genre",
+        __typename: "Book",
         id: string,
-        genre?: string | null,
         profileID?: string | null,
+        title?: string | null,
+        author?: string | null,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -813,14 +808,13 @@ export type DeleteProfileMutation = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    books?:  {
-      __typename: "ModelBookConnection",
+    genres?:  {
+      __typename: "ModelGenreConnection",
       items?:  Array< {
-        __typename: "Book",
+        __typename: "Genre",
         id: string,
+        genre?: string | null,
         profileID?: string | null,
-        title?: string | null,
-        author?: string | null,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -876,6 +870,38 @@ export type DeleteProfileMutation = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+    photo_source?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type SyncGenresQueryVariables = {
+  filter?: ModelGenreFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncGenresQuery = {
+  syncGenres?:  {
+    __typename: "ModelGenreConnection",
+    items?:  Array< {
+      __typename: "Genre",
+      id: string,
+      genre?: string | null,
+      profileID?: string | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+    startedAt?: number | null,
   } | null,
 };
 
@@ -922,21 +948,21 @@ export type ListGenresQuery = {
   } | null,
 };
 
-export type SyncGenresQueryVariables = {
-  filter?: ModelGenreFilterInput | null,
+export type SyncAuthorsQueryVariables = {
+  filter?: ModelAuthorFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
   lastSync?: number | null,
 };
 
-export type SyncGenresQuery = {
-  syncGenres?:  {
-    __typename: "ModelGenreConnection",
+export type SyncAuthorsQuery = {
+  syncAuthors?:  {
+    __typename: "ModelAuthorConnection",
     items?:  Array< {
-      __typename: "Genre",
+      __typename: "Author",
       id: string,
-      genre?: string | null,
       profileID?: string | null,
+      name?: string | null,
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
@@ -991,21 +1017,22 @@ export type ListAuthorsQuery = {
   } | null,
 };
 
-export type SyncAuthorsQueryVariables = {
-  filter?: ModelAuthorFilterInput | null,
+export type SyncBooksQueryVariables = {
+  filter?: ModelBookFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
   lastSync?: number | null,
 };
 
-export type SyncAuthorsQuery = {
-  syncAuthors?:  {
-    __typename: "ModelAuthorConnection",
+export type SyncBooksQuery = {
+  syncBooks?:  {
+    __typename: "ModelBookConnection",
     items?:  Array< {
-      __typename: "Author",
+      __typename: "Book",
       id: string,
       profileID?: string | null,
-      name?: string | null,
+      title?: string | null,
+      author?: string | null,
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
@@ -1062,22 +1089,53 @@ export type ListBooksQuery = {
   } | null,
 };
 
-export type SyncBooksQueryVariables = {
-  filter?: ModelBookFilterInput | null,
+export type SyncProfilesQueryVariables = {
+  filter?: ModelProfileFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
   lastSync?: number | null,
 };
 
-export type SyncBooksQuery = {
-  syncBooks?:  {
-    __typename: "ModelBookConnection",
+export type SyncProfilesQuery = {
+  syncProfiles?:  {
+    __typename: "ModelProfileConnection",
     items?:  Array< {
-      __typename: "Book",
+      __typename: "Profile",
       id: string,
-      profileID?: string | null,
-      title?: string | null,
-      author?: string | null,
+      username?: string | null,
+      nickname?: string | null,
+      about_me?: string | null,
+      birth_date?: string | null,
+      latitude?: number | null,
+      longitude?: number | null,
+      gender?: string | null,
+      open_to_meet?: boolean | null,
+      books?:  {
+        __typename: "ModelBookConnection",
+        nextToken?: string | null,
+        startedAt?: number | null,
+      } | null,
+      authors?:  {
+        __typename: "ModelAuthorConnection",
+        nextToken?: string | null,
+        startedAt?: number | null,
+      } | null,
+      genres?:  {
+        __typename: "ModelGenreConnection",
+        nextToken?: string | null,
+        startedAt?: number | null,
+      } | null,
+      matches?:  {
+        __typename: "ModelProfileConnection",
+        nextToken?: string | null,
+        startedAt?: number | null,
+      } | null,
+      rejections?:  {
+        __typename: "ModelProfileConnection",
+        nextToken?: string | null,
+        startedAt?: number | null,
+      } | null,
+      photo_source?: string | null,
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
@@ -1105,19 +1163,14 @@ export type GetProfileQuery = {
     longitude?: number | null,
     gender?: string | null,
     open_to_meet?: boolean | null,
-    photo_source?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
-    genres?:  {
-      __typename: "ModelGenreConnection",
+    books?:  {
+      __typename: "ModelBookConnection",
       items?:  Array< {
-        __typename: "Genre",
+        __typename: "Book",
         id: string,
-        genre?: string | null,
         profileID?: string | null,
+        title?: string | null,
+        author?: string | null,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -1143,14 +1196,13 @@ export type GetProfileQuery = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    books?:  {
-      __typename: "ModelBookConnection",
+    genres?:  {
+      __typename: "ModelGenreConnection",
       items?:  Array< {
-        __typename: "Book",
+        __typename: "Genre",
         id: string,
+        genre?: string | null,
         profileID?: string | null,
-        title?: string | null,
-        author?: string | null,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -1206,6 +1258,12 @@ export type GetProfileQuery = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+    photo_source?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -1229,14 +1287,8 @@ export type ListProfilesQuery = {
       longitude?: number | null,
       gender?: string | null,
       open_to_meet?: boolean | null,
-      photo_source?: string | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
-      genres?:  {
-        __typename: "ModelGenreConnection",
+      books?:  {
+        __typename: "ModelBookConnection",
         nextToken?: string | null,
         startedAt?: number | null,
       } | null,
@@ -1245,8 +1297,8 @@ export type ListProfilesQuery = {
         nextToken?: string | null,
         startedAt?: number | null,
       } | null,
-      books?:  {
-        __typename: "ModelBookConnection",
+      genres?:  {
+        __typename: "ModelGenreConnection",
         nextToken?: string | null,
         startedAt?: number | null,
       } | null,
@@ -1260,64 +1312,12 @@ export type ListProfilesQuery = {
         nextToken?: string | null,
         startedAt?: number | null,
       } | null,
-    } | null > | null,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
-};
-
-export type SyncProfilesQueryVariables = {
-  filter?: ModelProfileFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  lastSync?: number | null,
-};
-
-export type SyncProfilesQuery = {
-  syncProfiles?:  {
-    __typename: "ModelProfileConnection",
-    items?:  Array< {
-      __typename: "Profile",
-      id: string,
-      username?: string | null,
-      nickname?: string | null,
-      about_me?: string | null,
-      birth_date?: string | null,
-      latitude?: number | null,
-      longitude?: number | null,
-      gender?: string | null,
-      open_to_meet?: boolean | null,
       photo_source?: string | null,
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
       createdAt: string,
       updatedAt: string,
-      genres?:  {
-        __typename: "ModelGenreConnection",
-        nextToken?: string | null,
-        startedAt?: number | null,
-      } | null,
-      authors?:  {
-        __typename: "ModelAuthorConnection",
-        nextToken?: string | null,
-        startedAt?: number | null,
-      } | null,
-      books?:  {
-        __typename: "ModelBookConnection",
-        nextToken?: string | null,
-        startedAt?: number | null,
-      } | null,
-      matches?:  {
-        __typename: "ModelProfileConnection",
-        nextToken?: string | null,
-        startedAt?: number | null,
-      } | null,
-      rejections?:  {
-        __typename: "ModelProfileConnection",
-        nextToken?: string | null,
-        startedAt?: number | null,
-      } | null,
     } | null > | null,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -1465,19 +1465,14 @@ export type OnCreateProfileSubscription = {
     longitude?: number | null,
     gender?: string | null,
     open_to_meet?: boolean | null,
-    photo_source?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
-    genres?:  {
-      __typename: "ModelGenreConnection",
+    books?:  {
+      __typename: "ModelBookConnection",
       items?:  Array< {
-        __typename: "Genre",
+        __typename: "Book",
         id: string,
-        genre?: string | null,
         profileID?: string | null,
+        title?: string | null,
+        author?: string | null,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -1503,14 +1498,13 @@ export type OnCreateProfileSubscription = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    books?:  {
-      __typename: "ModelBookConnection",
+    genres?:  {
+      __typename: "ModelGenreConnection",
       items?:  Array< {
-        __typename: "Book",
+        __typename: "Genre",
         id: string,
+        genre?: string | null,
         profileID?: string | null,
-        title?: string | null,
-        author?: string | null,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -1566,6 +1560,12 @@ export type OnCreateProfileSubscription = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+    photo_source?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -1581,19 +1581,14 @@ export type OnUpdateProfileSubscription = {
     longitude?: number | null,
     gender?: string | null,
     open_to_meet?: boolean | null,
-    photo_source?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
-    genres?:  {
-      __typename: "ModelGenreConnection",
+    books?:  {
+      __typename: "ModelBookConnection",
       items?:  Array< {
-        __typename: "Genre",
+        __typename: "Book",
         id: string,
-        genre?: string | null,
         profileID?: string | null,
+        title?: string | null,
+        author?: string | null,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -1619,14 +1614,13 @@ export type OnUpdateProfileSubscription = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    books?:  {
-      __typename: "ModelBookConnection",
+    genres?:  {
+      __typename: "ModelGenreConnection",
       items?:  Array< {
-        __typename: "Book",
+        __typename: "Genre",
         id: string,
+        genre?: string | null,
         profileID?: string | null,
-        title?: string | null,
-        author?: string | null,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -1682,6 +1676,12 @@ export type OnUpdateProfileSubscription = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+    photo_source?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -1697,19 +1697,14 @@ export type OnDeleteProfileSubscription = {
     longitude?: number | null,
     gender?: string | null,
     open_to_meet?: boolean | null,
-    photo_source?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
-    genres?:  {
-      __typename: "ModelGenreConnection",
+    books?:  {
+      __typename: "ModelBookConnection",
       items?:  Array< {
-        __typename: "Genre",
+        __typename: "Book",
         id: string,
-        genre?: string | null,
         profileID?: string | null,
+        title?: string | null,
+        author?: string | null,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -1735,14 +1730,13 @@ export type OnDeleteProfileSubscription = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    books?:  {
-      __typename: "ModelBookConnection",
+    genres?:  {
+      __typename: "ModelGenreConnection",
       items?:  Array< {
-        __typename: "Book",
+        __typename: "Genre",
         id: string,
+        genre?: string | null,
         profileID?: string | null,
-        title?: string | null,
-        author?: string | null,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -1798,5 +1792,11 @@ export type OnDeleteProfileSubscription = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+    photo_source?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };

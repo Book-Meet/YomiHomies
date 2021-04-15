@@ -143,17 +143,12 @@ export const onCreateProfile = /* GraphQL */ `
       longitude
       gender
       open_to_meet
-      photo_source
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      genres {
+      books {
         items {
           id
-          genre
           profileID
+          title
+          author
           _version
           _deleted
           _lastChangedAt
@@ -177,12 +172,11 @@ export const onCreateProfile = /* GraphQL */ `
         nextToken
         startedAt
       }
-      books {
+      genres {
         items {
           id
+          genre
           profileID
-          title
-          author
           _version
           _deleted
           _lastChangedAt
@@ -234,6 +228,12 @@ export const onCreateProfile = /* GraphQL */ `
         nextToken
         startedAt
       }
+      photo_source
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -249,17 +249,12 @@ export const onUpdateProfile = /* GraphQL */ `
       longitude
       gender
       open_to_meet
-      photo_source
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      genres {
+      books {
         items {
           id
-          genre
           profileID
+          title
+          author
           _version
           _deleted
           _lastChangedAt
@@ -283,12 +278,11 @@ export const onUpdateProfile = /* GraphQL */ `
         nextToken
         startedAt
       }
-      books {
+      genres {
         items {
           id
+          genre
           profileID
-          title
-          author
           _version
           _deleted
           _lastChangedAt
@@ -340,6 +334,12 @@ export const onUpdateProfile = /* GraphQL */ `
         nextToken
         startedAt
       }
+      photo_source
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -355,17 +355,12 @@ export const onDeleteProfile = /* GraphQL */ `
       longitude
       gender
       open_to_meet
-      photo_source
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      genres {
+      books {
         items {
           id
-          genre
           profileID
+          title
+          author
           _version
           _deleted
           _lastChangedAt
@@ -389,12 +384,11 @@ export const onDeleteProfile = /* GraphQL */ `
         nextToken
         startedAt
       }
-      books {
+      genres {
         items {
           id
+          genre
           profileID
-          title
-          author
           _version
           _deleted
           _lastChangedAt
@@ -446,6 +440,12 @@ export const onDeleteProfile = /* GraphQL */ `
         nextToken
         startedAt
       }
+      photo_source
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
     }
   }
 `;

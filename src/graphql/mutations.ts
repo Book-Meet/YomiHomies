@@ -173,17 +173,12 @@ export const createProfile = /* GraphQL */ `
       longitude
       gender
       open_to_meet
-      photo_source
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      genres {
+      books {
         items {
           id
-          genre
           profileID
+          title
+          author
           _version
           _deleted
           _lastChangedAt
@@ -207,12 +202,11 @@ export const createProfile = /* GraphQL */ `
         nextToken
         startedAt
       }
-      books {
+      genres {
         items {
           id
+          genre
           profileID
-          title
-          author
           _version
           _deleted
           _lastChangedAt
@@ -264,6 +258,12 @@ export const createProfile = /* GraphQL */ `
         nextToken
         startedAt
       }
+      photo_source
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -282,17 +282,12 @@ export const updateProfile = /* GraphQL */ `
       longitude
       gender
       open_to_meet
-      photo_source
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      genres {
+      books {
         items {
           id
-          genre
           profileID
+          title
+          author
           _version
           _deleted
           _lastChangedAt
@@ -316,12 +311,11 @@ export const updateProfile = /* GraphQL */ `
         nextToken
         startedAt
       }
-      books {
+      genres {
         items {
           id
+          genre
           profileID
-          title
-          author
           _version
           _deleted
           _lastChangedAt
@@ -373,6 +367,12 @@ export const updateProfile = /* GraphQL */ `
         nextToken
         startedAt
       }
+      photo_source
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -391,17 +391,12 @@ export const deleteProfile = /* GraphQL */ `
       longitude
       gender
       open_to_meet
-      photo_source
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      genres {
+      books {
         items {
           id
-          genre
           profileID
+          title
+          author
           _version
           _deleted
           _lastChangedAt
@@ -425,12 +420,11 @@ export const deleteProfile = /* GraphQL */ `
         nextToken
         startedAt
       }
-      books {
+      genres {
         items {
           id
+          genre
           profileID
-          title
-          author
           _version
           _deleted
           _lastChangedAt
@@ -482,6 +476,12 @@ export const deleteProfile = /* GraphQL */ `
         nextToken
         startedAt
       }
+      photo_source
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
     }
   }
 `;
