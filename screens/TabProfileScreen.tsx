@@ -3,13 +3,13 @@ import * as React from 'react';
 import { StyleSheet, Image, Button, TextInput } from 'react-native';
 // import { StyleSheet, Image, Button, TextInput, StatusBar, SafeAreaView} from 'react-native';
 // import RNMultiSelect, { IMultiSelectDataTypes } from "@freakycoder/react-native-multiple-select";
-
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { getProfile } from '../src/graphql/queries';
 import {API, graphqlOperation} from 'aws-amplify'; 
 import { Auth } from "@aws-amplify/auth";
-import { updateProfile } from '../src/graphql/mutations';
+import { updateProfile, createBook, updateBook } from '../src/graphql/mutations';
+
 
 
 export default function TabProfileScreen() {
@@ -97,6 +97,17 @@ export default function TabProfileScreen() {
     let mutation:any = await API.graphql({query:updateProfile, variables: {input:newInfo, id:user.id}})
     console.log(mutation.data.updateProfile);
     setUser(mutation.data.updateProfile)
+  }
+
+  async function addBook(newBook:Object){
+    let book = {
+      title: newBook.title,
+      author: newBook.author
+    }
+    let create:any = await API.graphql({query:createBook, variables:{input: book}});
+    console.log(create.data.createBook);
+    let update:any = await API.graphql({query:updateBook, variables:{input:{id:create.data.createBook.id, profileID:user.id}}})
+    setUser({...user})
   }
 
   return (
