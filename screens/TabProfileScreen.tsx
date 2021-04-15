@@ -1,39 +1,79 @@
+import {useState} from 'react';
 import * as React from 'react';
-import { StyleSheet, Image, Button, TextInput, ScrollView } from 'react-native';
-import { MultiselectDropdown } from 'sharingan-rn-modal-dropdown';
+import { StyleSheet, Image, Button, TextInput} from 'react-native';
+// import { StyleSheet, Image, Button, TextInput, StatusBar, SafeAreaView} from 'react-native';
+// import RNMultiSelect, { IMultiSelectDataTypes } from "@freakycoder/react-native-multiple-select";
 
+// import Test from './test';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 
 
 export default function TabProfileScreen() {
-  const sample = [
-    {
-      value: '1',
-      label: 'Thrillers'
-    },
-    {
-      value: '2',
-      label: 'Business'
-    },
-    {
-      value: '3',
-      label: 'Romance'
-    },
-    {
-      value: '4',
-      label: 'Technology'
-    },
-    {
-      value: '5',
-      label: 'Comics'
-    }
-  ];
-  const [count, setCount] = React.useState(0);
-  const [valueMS, setValueMS] = React.useState<string[]>([]);
-  const onChangeMS = (value: string[]) => {
-    setValueMS(value);
-  };
+  // const [genre, setGenre] = React.useState([
+  //   {
+  //     key: '1',
+  //     label: 'Thrillers'
+  //   },
+  //   {
+  //     key: '2',
+  //     label: 'Business'
+  //   },
+  //   {
+  //     key: '3',
+  //     label: 'Romance'
+  //   },
+  //   {
+  //     key: '4',
+  //     label: 'Technology'
+  //   },
+  //   {
+  //     key: '5',
+  //     label: 'Comics'
+  //   }
+  // ]);
+  // const staticData: Array<IMultiSelectDataTypes> = [
+  //   {
+  //     id: 0,
+  //     value: 'Thrillers',
+  //     isChecked: false,
+  //   },
+  //   {
+  //     id: 1,
+  //     value: 'Business',
+  //     isChecked: false,
+  //   },
+  //   {
+  //     id: 2,
+  //     value: 'Romance',
+  //     isChecked: false,
+  //   },
+  //   {
+  //     id: 3,
+  //     value: 'Technology',
+  //     isChecked: false,
+  //   },
+  //   {
+  //     id: 4,
+  //     value: 'Comics',
+  //     isChecked: false,
+  //   }
+  // ];
+  const [count, setCount] = useState(0);
+  // const [selectedItems, setSelectedItems] = React.useState<string[]>([]);
+  // const onSelectedItemsChange = (value: string[]) => {
+  //   setSelectedItems(value);
+  // };
+
+  // const [dynamicData, setDynamicData] = React.useState<
+  //   Array<IMultiSelectDataTypes>
+  // >([]);
+
+  // React.useEffect(() => {
+  //   setTimeout(() => {
+  //     setDynamicData(staticData);
+  //   }, 2000);
+  // }, []);
 
   return (
     <View style={styles.container}>
@@ -48,6 +88,7 @@ export default function TabProfileScreen() {
       <Text>Top Books: </Text>
         <Text>Book1</Text>
         <Text>Book2</Text>
+        <Text>Book3</Text>
         <TextInput style={styles.input}/>
         <Button
           onPress={() => setCount(count + 1)}
@@ -55,24 +96,14 @@ export default function TabProfileScreen() {
         />
       
       <Text>Top Genres: </Text>
-        {/* <select>
-          <option value="" selected></option>
-          <option value="Thrillers">Thrillers</option>
-          <option value="Business">Business</option>
-          <option value="Romance">Romance</option>
-        </select> */}
-        <ScrollView style={styles.list}>
-          <MultiselectDropdown
-            label="Top Genres:"
-            data={sample}
-            chipType="outlined"
-            value={valueMS}
-            onChange={onChangeMS}
-          />
-        </ScrollView>
+        <Text>Genre1</Text>
+        <Text>Genre2</Text>
+        <Text>Genre3</Text>
+        
       <Text>Top Authors: </Text>
         <Text>Author1</Text>
         <Text>Author2</Text>
+        <Text>Author3</Text>
         <TextInput style={styles.input}/>
         <Button
           onPress={() => setCount(count + 1)}
@@ -82,6 +113,32 @@ export default function TabProfileScreen() {
         <Text>Hello!!</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <EditScreenInfo path="/screens/TabOneScreen.tsx" />
+
+      {/* <StatusBar barStyle="dark-content" />
+      <SafeAreaView
+        style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+      >
+        <View
+          style={{
+            shadowRadius: 8,
+            shadowOpacity: 0.3,
+            shadowColor: "#757575",
+            shadowOffset: {
+              width: 0,
+              height: 3,
+            },
+          }}
+        >
+          <RNMultiSelect
+            disableAbsolute
+            // fillColor="red"
+            data={dynamicData}
+            onSelect={(selectedItems) =>
+              console.log("SelectedItems: ", selectedItems)
+            }
+          />
+        </View>
+      </SafeAreaView> */}
     </View>
   );
 }
