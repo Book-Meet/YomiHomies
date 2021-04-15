@@ -204,7 +204,7 @@ export const getProfile = /* GraphQL */ `
       username
       nickname
       about_me
-      birth_dat
+      birth_date
       latitude
       longitude
       gender
@@ -264,7 +264,7 @@ export const getProfile = /* GraphQL */ `
           username
           nickname
           about_me
-          birth_dat
+          birth_date
           latitude
           longitude
           gender
@@ -285,7 +285,7 @@ export const getProfile = /* GraphQL */ `
           username
           nickname
           about_me
-          birth_dat
+          birth_date
           latitude
           longitude
           gender
@@ -315,7 +315,7 @@ export const listProfiles = /* GraphQL */ `
         username
         nickname
         about_me
-        birth_dat
+        birth_date
         latitude
         longitude
         gender
@@ -370,7 +370,7 @@ export const syncProfiles = /* GraphQL */ `
         username
         nickname
         about_me
-        birth_dat
+        birth_date
         latitude
         longitude
         gender

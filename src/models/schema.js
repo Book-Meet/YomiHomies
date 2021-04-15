@@ -215,8 +215,8 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "birth_dat": {
-                    "name": "birth_dat",
+                "birth_date": {
+                    "name": "birth_date",
                     "isArray": false,
                     "type": "AWSDate",
                     "isRequired": false,
@@ -337,5 +337,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "9db50ee978597f118be973a264c2c429"
+    "version": "efda840f2144c343174b0c5938570156"
 };
