@@ -6,16 +6,26 @@ export default {
     screens: {
       Root: {
         screens: {
-          TabOne: {
+          Home: {
             screens: {
-              TabOneScreen: 'one',
+              TabHomeScreen: 'Home',
             },
           },
-          TabTwo: {
+          Profile: {
             screens: {
-              TabTwoScreen: 'two',
+              TabProfileScreen: 'Profile',
             },
           },
+          Homies: {
+            screens: {
+              TabHomiesScreen: 'Homies',
+            },
+          },
+          Settings: {
+            screens: {
+              TabSettingsScreen: 'Settings',
+            },
+          }
         },
       },
       NotFound: '*',
