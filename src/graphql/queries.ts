@@ -2,34 +2,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const syncGenres = /* GraphQL */ `
-  query SyncGenres(
-    $filter: ModelGenreFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncGenres(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        genre
-        profileID
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
 export const getGenre = /* GraphQL */ `
   query GetGenre($id: ID!) {
     getGenre(id: $id) {
@@ -66,14 +38,14 @@ export const listGenres = /* GraphQL */ `
     }
   }
 `;
-export const syncAuthors = /* GraphQL */ `
-  query SyncAuthors(
-    $filter: ModelAuthorFilterInput
+export const syncGenres = /* GraphQL */ `
+  query SyncGenres(
+    $filter: ModelGenreFilterInput
     $limit: Int
     $nextToken: String
     $lastSync: AWSTimestamp
   ) {
-    syncAuthors(
+    syncGenres(
       filter: $filter
       limit: $limit
       nextToken: $nextToken
@@ -81,8 +53,8 @@ export const syncAuthors = /* GraphQL */ `
     ) {
       items {
         id
+        genre
         profileID
-        name
         _version
         _deleted
         _lastChangedAt
@@ -130,14 +102,14 @@ export const listAuthors = /* GraphQL */ `
     }
   }
 `;
-export const syncBooks = /* GraphQL */ `
-  query SyncBooks(
-    $filter: ModelBookFilterInput
+export const syncAuthors = /* GraphQL */ `
+  query SyncAuthors(
+    $filter: ModelAuthorFilterInput
     $limit: Int
     $nextToken: String
     $lastSync: AWSTimestamp
   ) {
-    syncBooks(
+    syncAuthors(
       filter: $filter
       limit: $limit
       nextToken: $nextToken
@@ -146,8 +118,7 @@ export const syncBooks = /* GraphQL */ `
       items {
         id
         profileID
-        title
-        author
+        name
         _version
         _deleted
         _lastChangedAt
@@ -197,14 +168,14 @@ export const listBooks = /* GraphQL */ `
     }
   }
 `;
-export const syncProfiles = /* GraphQL */ `
-  query SyncProfiles(
-    $filter: ModelProfileFilterInput
+export const syncBooks = /* GraphQL */ `
+  query SyncBooks(
+    $filter: ModelBookFilterInput
     $limit: Int
     $nextToken: String
     $lastSync: AWSTimestamp
   ) {
-    syncProfiles(
+    syncBooks(
       filter: $filter
       limit: $limit
       nextToken: $nextToken
@@ -212,35 +183,9 @@ export const syncProfiles = /* GraphQL */ `
     ) {
       items {
         id
-        username
-        nickname
-        about_me
-        birth_date
-        latitude
-        longitude
-        gender
-        open_to_meet
-        books {
-          nextToken
-          startedAt
-        }
-        authors {
-          nextToken
-          startedAt
-        }
-        genres {
-          nextToken
-          startedAt
-        }
-        matches {
-          nextToken
-          startedAt
-        }
-        rejections {
-          nextToken
-          startedAt
-        }
-        photo_source
+        profileID
+        title
+        author
         _version
         _deleted
         _lastChangedAt
@@ -264,12 +209,17 @@ export const getProfile = /* GraphQL */ `
       longitude
       gender
       open_to_meet
-      books {
+      photo_source
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      genres {
         items {
           id
+          genre
           profileID
-          title
-          author
           _version
           _deleted
           _lastChangedAt
@@ -293,11 +243,33 @@ export const getProfile = /* GraphQL */ `
         nextToken
         startedAt
       }
-      genres {
+      books {
         items {
           id
-          genre
           profileID
+          title
+          author
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      pending {
+        items {
+          id
+          username
+          nickname
+          about_me
+          birth_date
+          latitude
+          longitude
+          gender
+          open_to_meet
+          photo_source
           _version
           _deleted
           _lastChangedAt
@@ -349,12 +321,6 @@ export const getProfile = /* GraphQL */ `
         nextToken
         startedAt
       }
-      photo_source
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -375,7 +341,13 @@ export const listProfiles = /* GraphQL */ `
         longitude
         gender
         open_to_meet
-        books {
+        photo_source
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        genres {
           nextToken
           startedAt
         }
@@ -383,7 +355,11 @@ export const listProfiles = /* GraphQL */ `
           nextToken
           startedAt
         }
-        genres {
+        books {
+          nextToken
+          startedAt
+        }
+        pending {
           nextToken
           startedAt
         }
@@ -395,12 +371,65 @@ export const listProfiles = /* GraphQL */ `
           nextToken
           startedAt
         }
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncProfiles = /* GraphQL */ `
+  query SyncProfiles(
+    $filter: ModelProfileFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncProfiles(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        username
+        nickname
+        about_me
+        birth_date
+        latitude
+        longitude
+        gender
+        open_to_meet
         photo_source
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
+        genres {
+          nextToken
+          startedAt
+        }
+        authors {
+          nextToken
+          startedAt
+        }
+        books {
+          nextToken
+          startedAt
+        }
+        pending {
+          nextToken
+          startedAt
+        }
+        matches {
+          nextToken
+          startedAt
+        }
+        rejections {
+          nextToken
+          startedAt
+        }
       }
       nextToken
       startedAt
