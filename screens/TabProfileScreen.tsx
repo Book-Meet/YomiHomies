@@ -1,12 +1,16 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import * as React from 'react';
-import { StyleSheet, Image, Button, TextInput} from 'react-native';
+import { StyleSheet, Image, Button, TextInput } from 'react-native';
 // import { StyleSheet, Image, Button, TextInput, StatusBar, SafeAreaView} from 'react-native';
 // import RNMultiSelect, { IMultiSelectDataTypes } from "@freakycoder/react-native-multiple-select";
 
-// import Test from './test';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
+import { getProfile, listProfiles } from '../src/graphql/queries';
+import Amplify, {API, graphqlOperation} from 'aws-amplify'; 
+import { Auth } from "@aws-amplify/auth";
+import AWSAppSyncClient from 'aws-appsync';
+import config from '../src/aws-exports';
 
 
 export default function TabProfileScreen() {
@@ -59,7 +63,7 @@ export default function TabProfileScreen() {
   //     isChecked: false,
   //   }
   // ];
-  const [count, setCount] = useState(0);
+  
   // const [selectedItems, setSelectedItems] = React.useState<string[]>([]);
   // const onSelectedItemsChange = (value: string[]) => {
   //   setSelectedItems(value);
@@ -75,6 +79,28 @@ export default function TabProfileScreen() {
   //   }, 2000);
   // }, []);
 
+  const [count, setCount] = useState(0);
+  const [user, setUser] = useState({});
+  
+  // const client = new AWSAppSyncClient({
+  //   url: config.aws_appsync_graphqlEndpoint,
+  //   region: config.aws_appsync_region,
+  //   auth: {
+  //     type: 'API_KEY',
+  //     apiKey: config.aws_appsync_apiKey
+  //   }
+  // });
+
+  useEffect(()=>{
+    (async () =>{
+      let authUser = await Auth.currentUserInfo()
+      let temp:any = await API.graphql(graphqlOperation(getProfile,{id:authUser.id}));
+      temp = temp.data.getProfile;
+      setUser (temp);
+      // await client.mutate({query: })
+    })()
+  }, [])
+  
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Profile</Text>
@@ -82,7 +108,7 @@ export default function TabProfileScreen() {
             width: 100,
             height: 100
           }} source={require('../assets/images/arina-reading.jpeg')} />
-      <Text>Username: Arina</Text>
+      <Text>Username: {user.username}</Text>
       <Text>Nickname: Ari</Text>
       <Text>Gender: Female</Text>
       <Text>Top Books: </Text>
@@ -100,6 +126,12 @@ export default function TabProfileScreen() {
         <Text>Genre2</Text>
         <Text>Genre3</Text>
         
+        {/* <select>
+          <option value="" selected></option>
+          <option value="Thrillers">Thrillers</option>
+          <option value="Business">Business</option>
+          <option value="Romance">Romance</option>
+        </select> */}
       <Text>Top Authors: </Text>
         <Text>Author1</Text>
         <Text>Author2</Text>

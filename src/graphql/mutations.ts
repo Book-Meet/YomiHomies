@@ -222,6 +222,27 @@ export const createProfile = /* GraphQL */ `
         nextToken
         startedAt
       }
+      pending {
+        items {
+          id
+          username
+          nickname
+          about_me
+          birth_date
+          latitude
+          longitude
+          gender
+          open_to_meet
+          photo_source
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
       matches {
         items {
           id
@@ -331,6 +352,27 @@ export const updateProfile = /* GraphQL */ `
         nextToken
         startedAt
       }
+      pending {
+        items {
+          id
+          username
+          nickname
+          about_me
+          birth_date
+          latitude
+          longitude
+          gender
+          open_to_meet
+          photo_source
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
       matches {
         items {
           id
@@ -431,6 +473,27 @@ export const deleteProfile = /* GraphQL */ `
           profileID
           title
           author
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      pending {
+        items {
+          id
+          username
+          nickname
+          about_me
+          birth_date
+          latitude
+          longitude
+          gender
+          open_to_meet
+          photo_source
           _version
           _deleted
           _lastChangedAt
