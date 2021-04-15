@@ -11,7 +11,73 @@ import { Auth } from "@aws-amplify/auth";
 import { updateProfile, createBook, updateBook } from '../src/graphql/mutations';
 
 
+
 export default function TabProfileScreen() {
+  // const [genre, setGenre] = React.useState([
+  //   {
+  //     key: '1',
+  //     label: 'Thrillers'
+  //   },
+  //   {
+  //     key: '2',
+  //     label: 'Business'
+  //   },
+  //   {
+  //     key: '3',
+  //     label: 'Romance'
+  //   },
+  //   {
+  //     key: '4',
+  //     label: 'Technology'
+  //   },
+  //   {
+  //     key: '5',
+  //     label: 'Comics'
+  //   }
+  // ]);
+  // const staticData: Array<IMultiSelectDataTypes> = [
+  //   {
+  //     id: 0,
+  //     value: 'Thrillers',
+  //     isChecked: false,
+  //   },
+  //   {
+  //     id: 1,
+  //     value: 'Business',
+  //     isChecked: false,
+  //   },
+  //   {
+  //     id: 2,
+  //     value: 'Romance',
+  //     isChecked: false,
+  //   },
+  //   {
+  //     id: 3,
+  //     value: 'Technology',
+  //     isChecked: false,
+  //   },
+  //   {
+  //     id: 4,
+  //     value: 'Comics',
+  //     isChecked: false,
+  //   }
+  // ];
+  
+  // const [selectedItems, setSelectedItems] = React.useState<string[]>([]);
+  // const onSelectedItemsChange = (value: string[]) => {
+  //   setSelectedItems(value);
+  // };
+
+  // const [dynamicData, setDynamicData] = React.useState<
+  //   Array<IMultiSelectDataTypes>
+  // >([]);
+
+  // React.useEffect(() => {
+  //   setTimeout(() => {
+  //     setDynamicData(staticData);
+  //   }, 2000);
+  // }, []);
+
   const [count, setCount] = useState(0);
   const [user, setUser]:any = useState({});
   
@@ -56,7 +122,7 @@ export default function TabProfileScreen() {
       <Text>Gender: Female</Text>
       <Text>Top Books: </Text>
         <Text>Book1</Text>
-        <Text></Text>
+        <Text>Book2</Text>
         <Text>Book3</Text>
         <TextInput style={styles.input}/>
         <Button
