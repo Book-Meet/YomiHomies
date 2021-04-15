@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { StyleSheet, Image, Button, TextInput } from 'react-native';
-
+// import {Auth} from "@aws-amplify/auth";
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 
 export default function TabProfileScreen() {
   const [count, setCount] = React.useState(0);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Profile</Text>

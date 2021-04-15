@@ -1,23 +1,23 @@
-type Genre @model @key(name: "byProfile", fields: ["profileID"]) @auth(rules: [{allow: private}]) {
+type Genre @model @key(name: "byProfile", fields: ["profileID"]) @auth(rules: [{allow: public}]) {
   id: ID!
   genre: String
   profileID: ID
 }
 
-type Author @model @key(name: "byProfile", fields: ["profileID"]) @auth(rules: [{allow: private}]) {
+type Author @model @key(name: "byProfile", fields: ["profileID"]) @auth(rules: [{allow: public}]) {
   id: ID!
   profileID: ID
   name: String
 }
 
-type Book @model @key(name: "byProfile", fields: ["profileID"]) @auth(rules: [{allow: private}]) {
+type Book @model @key(name: "byProfile", fields: ["profileID"]) @auth(rules: [{allow: public}]) {
   id: ID!
   profileID: ID
   title: String
   author: String
 }
 
-type Profile @model @key(name: "byMatch", fields: ["id"]) @auth(rules: [{allow: private}]) {
+type Profile @model @key(name: "byMatch", fields: ["id"]) @auth(rules: [{allow: public}]) {
   id: ID!
   username: String
   nickname: String
