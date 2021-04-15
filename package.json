@@ -14,6 +14,8 @@
   "dependencies": {
     "@aws-amplify/ui-react": "^1.0.6",
     "@expo/vector-icons": "^12.0.0",
+    "@freakycoder/react-native-bounceable": "^0.1.0",
+    "@freakycoder/react-native-multiple-select": "^0.3.0",
     "@react-native-community/masked-view": "0.1.10",
     "@react-native-community/netinfo": "^6.0.0",
     "@react-navigation/bottom-tabs": "5.11.2",
@@ -21,6 +23,7 @@
     "@react-navigation/stack": "~5.12.8",
     "aws-amplify": "^3.3.26",
     "aws-amplify-react-native": "^4.3.2",
+    "aws-appsync": "^4.0.3",
     "aws-sdk": "^2.886.0",
     "expo": "~40.0.0",
     "expo-asset": "~8.2.1",
@@ -39,6 +42,11 @@
     "react-native-safe-area-context": "3.1.9",
     "react-native-screens": "~2.15.0",
     "react-native-view-overflow": "0.0.5",
+    "react-native-animated-spinkit": "^1.5.2",
+    "react-native-bouncy-checkbox": "^1.0.7",
+    "react-native-modal": "^11.10.0",
+    "react-native-paper": "^4.7.2",
+    "react-native-vector-icons": "^8.1.0",
     "react-native-web": "~0.13.12",
     "react-spring": "^9.1.1",
     "react-tinder-card": "^1.4.0"
