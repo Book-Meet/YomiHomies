@@ -40,6 +40,7 @@ export default function TabProfileScreen() {
   const [books, setBooks] = useState([]);
   const [bookInput, setBookInput] = useState('');
   const [bookAuthorinput, setBookAuthorInput] = useState('')
+  const [aboutMeText, setAboutMeText] = useState('')
 
   useEffect(()=>{
     (async () =>{
@@ -52,10 +53,9 @@ export default function TabProfileScreen() {
   }, [])
 
   async function handleUpdateProfile(newInfo:Object){ // send an object with the properties you want to change in the profiles
-    newInfo = {id:user.id, ...newInfo};
-    console.log(newInfo);
+    newInfo = {id:user.id, _version:user._version, ...newInfo};
     let mutation:any = await API.graphql({query:updateProfile, variables: {input:newInfo, id:user.id}})
-    console.log(mutation.data.updateProfile);
+    // console.log(mutation.data.updateProfile);
     setUser(mutation.data.updateProfile)
   }
 
@@ -160,7 +160,47 @@ export default function TabProfileScreen() {
           title="+"
         /> */}
       <Text>About me: </Text>
-        <Text>Hello!!</Text>
+        <Text>{user.about_me}</Text>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <TextInput placeholder="write here"
+                value={aboutMeText}
+                onChangeText={(text)=>{setAboutMeText(text)}}
+              />
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text style={styles.textStyle}>Close</Text>
+              </Pressable>
+              
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => {
+                  handleUpdateProfile({about_me:aboutMeText})
+                  setModalVisible(!modalVisible)}}
+              >
+                <Text style={styles.textStyle}>Submit</Text>
+              </Pressable>
+
+            </View>
+          </View>
+        </Modal>
+        <Pressable
+          style={[styles.button, styles.buttonOpen]}
+          onPress={() => setModalVisible(true)}
+        >
+          <Text style={styles.textStyle}>Change About Me</Text>
+        </Pressable>
     </View>
     </ScrollView>
   );
