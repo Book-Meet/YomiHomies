@@ -209,6 +209,30 @@ export const onCreateProfile = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
+          genres {
+            nextToken
+            startedAt
+          }
+          authors {
+            nextToken
+            startedAt
+          }
+          books {
+            nextToken
+            startedAt
+          }
+          pending {
+            nextToken
+            startedAt
+          }
+          matches {
+            nextToken
+            startedAt
+          }
+          rejections {
+            nextToken
+            startedAt
+          }
         }
         nextToken
         startedAt
@@ -230,6 +254,30 @@ export const onCreateProfile = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
+          genres {
+            nextToken
+            startedAt
+          }
+          authors {
+            nextToken
+            startedAt
+          }
+          books {
+            nextToken
+            startedAt
+          }
+          pending {
+            nextToken
+            startedAt
+          }
+          matches {
+            nextToken
+            startedAt
+          }
+          rejections {
+            nextToken
+            startedAt
+          }
         }
         nextToken
         startedAt
@@ -251,6 +299,30 @@ export const onCreateProfile = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
+          genres {
+            nextToken
+            startedAt
+          }
+          authors {
+            nextToken
+            startedAt
+          }
+          books {
+            nextToken
+            startedAt
+          }
+          pending {
+            nextToken
+            startedAt
+          }
+          matches {
+            nextToken
+            startedAt
+          }
+          rejections {
+            nextToken
+            startedAt
+          }
         }
         nextToken
         startedAt
@@ -336,6 +408,30 @@ export const onUpdateProfile = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
+          genres {
+            nextToken
+            startedAt
+          }
+          authors {
+            nextToken
+            startedAt
+          }
+          books {
+            nextToken
+            startedAt
+          }
+          pending {
+            nextToken
+            startedAt
+          }
+          matches {
+            nextToken
+            startedAt
+          }
+          rejections {
+            nextToken
+            startedAt
+          }
         }
         nextToken
         startedAt
@@ -357,6 +453,30 @@ export const onUpdateProfile = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
+          genres {
+            nextToken
+            startedAt
+          }
+          authors {
+            nextToken
+            startedAt
+          }
+          books {
+            nextToken
+            startedAt
+          }
+          pending {
+            nextToken
+            startedAt
+          }
+          matches {
+            nextToken
+            startedAt
+          }
+          rejections {
+            nextToken
+            startedAt
+          }
         }
         nextToken
         startedAt
@@ -378,6 +498,30 @@ export const onUpdateProfile = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
+          genres {
+            nextToken
+            startedAt
+          }
+          authors {
+            nextToken
+            startedAt
+          }
+          books {
+            nextToken
+            startedAt
+          }
+          pending {
+            nextToken
+            startedAt
+          }
+          matches {
+            nextToken
+            startedAt
+          }
+          rejections {
+            nextToken
+            startedAt
+          }
         }
         nextToken
         startedAt
@@ -463,6 +607,30 @@ export const onDeleteProfile = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
+          genres {
+            nextToken
+            startedAt
+          }
+          authors {
+            nextToken
+            startedAt
+          }
+          books {
+            nextToken
+            startedAt
+          }
+          pending {
+            nextToken
+            startedAt
+          }
+          matches {
+            nextToken
+            startedAt
+          }
+          rejections {
+            nextToken
+            startedAt
+          }
         }
         nextToken
         startedAt
@@ -484,6 +652,30 @@ export const onDeleteProfile = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
+          genres {
+            nextToken
+            startedAt
+          }
+          authors {
+            nextToken
+            startedAt
+          }
+          books {
+            nextToken
+            startedAt
+          }
+          pending {
+            nextToken
+            startedAt
+          }
+          matches {
+            nextToken
+            startedAt
+          }
+          rejections {
+            nextToken
+            startedAt
+          }
         }
         nextToken
         startedAt
@@ -505,6 +697,30 @@ export const onDeleteProfile = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
+          genres {
+            nextToken
+            startedAt
+          }
+          authors {
+            nextToken
+            startedAt
+          }
+          books {
+            nextToken
+            startedAt
+          }
+          pending {
+            nextToken
+            startedAt
+          }
+          matches {
+            nextToken
+            startedAt
+          }
+          rejections {
+            nextToken
+            startedAt
+          }
         }
         nextToken
         startedAt
