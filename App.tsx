@@ -1,5 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
-import React, {useEffect} from 'react';
+import React, {useEffect, useContext, useReducer, useMemo} from 'react';
+//import { UserContext } from './userContext_state_config'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
@@ -11,6 +12,8 @@ import {createProfile} from './src/graphql/mutations';
 import { Auth } from "@aws-amplify/auth";
 // @ts-ignore
 import { withAuthenticator} from 'aws-amplify-react-native';
+import { AppState, Actions, ActionType, initialAppState } from './types'
+import UserContext from './utils/userContext'
 
 
 // Amplify.configure(config) //this was the original config import 
@@ -23,10 +26,24 @@ Amplify.configure({
   },
 });
 
+function reducer(state: AppState, action: Actions): AppState {
+  switch (action.type) {
+      case ActionType.LoadData:
+          return { ...state, user: action.payload }
+      default:
+          return state
+  }
+}
+
 function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
+  const [state, dispatch] = useReducer(reducer, initialAppState);
   // let user:any = {};
+
+  const contextValue = useMemo(() => {
+    return {state, dispatch}
+}, [state, dispatch]);
 
   useEffect(()=>{
     (async function () {
@@ -52,8 +69,12 @@ function App() {
     return (
       <>
         <SafeAreaProvider>
-          <Navigation colorScheme={colorScheme}/>
-          <StatusBar />
+          <UserContext.Provider
+            value={ contextValue }
+          >
+            <Navigation colorScheme={colorScheme}/>
+            <StatusBar />
+          </UserContext.Provider>
         </SafeAreaProvider>
       </>
     );
