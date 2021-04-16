@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   text: {
-    fontFamily: 'Courier'
+    // fontFamily: 'Courier'
   },
   name: {
     fontSize: 24, marginBottom: 10, color: colors.gray
