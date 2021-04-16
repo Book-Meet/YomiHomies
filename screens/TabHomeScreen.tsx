@@ -12,6 +12,7 @@ import API, { graphqlOperation } from '@aws-amplify/api';
 // import { shouldUseActivityState } from 'react-native-screens';
 // import EditScreenInfo from '../components/EditScreenInfo';
 
+// //dummy data - hard coding
 const data = [
       {
         id: 1,
@@ -74,10 +75,11 @@ const data = [
       },
 ]
 
+
+// define dimensions
 const { width } = Dimensions.get('window');
 
-// const stackSize = 4;
-
+// define colors
 const colors = {
   red: '#ec2379',
   blue: '#0070ff',
@@ -101,11 +103,23 @@ const transition = (
 const swiperRef = React.createRef();
 const transitionRef = React.createRef();
 
+// const a = ['https://i.ibb.co/f8vR1P8/ace.jpg', 'https://i.ibb.co/dWHxXnH/chopper.jpg'];
+
+// const Card = ({ card }) =>
+// {
+//   console.log("image is:", card)
+//   return (
+//     <View style={styles.card}>
+//       <Image source={{ card }} style={styles.cardImage} />
+//     </View>
+//   );
+// };
 const Card = ({ card }) =>
 {
+  console.log("card is:", card)
   return (
     <View style={styles.card}>
-      <Image source={{ uri: card.uri }} style={styles.cardImage} />
+      <Image source={{ uri: card.uri }} style={styles.cardImage} />  
     </View>
   );
 };
@@ -121,20 +135,38 @@ const CardDetails = ({ index }) => (
 export default function TabHomeScreen()
 {
   const [index, setIndex] = React.useState(0);
+  // const [image, setImage] = React.useState([]);
+  // console.log(image)
   const onSwiped = () =>
   {
     transitionRef.current.animateNextTransition();
     setIndex((index + 1) % data.length);
   };
 
+  // useEffect(() => {
+  //   (async function  (){
+  //     const profiles = await API.graphql(graphqlOperation(listProfiles));
+  //     const eachProfile = profiles.data.listProfiles.items
+  //     // console.log(eachProfile);
+  //     // console.log(eachProfile.length)
+  //     // console.log(typeof eachProfile)
+  //     // eachProfile.map((val) =>
+  //     // {
+  //     //   console.log(val._version)
+  //     // })
+  //     setImage(eachProfile)
+  //   })()
+  // }, [])
   useEffect(() => {
     (async function fetchProfiles (){
       const profiles = await API.graphql(graphqlOperation(listProfiles));
       console.log(profiles.data.listProfiles.items);
+
     })()
   }, [])
-  
+ 
 
+// DOM
   return (
     <View style={styles.container}>
       {/* <StatusBar hidden /> */}
@@ -151,7 +183,7 @@ export default function TabHomeScreen()
         cardIndex={index}
         renderCard={(card) => <Card card={card} />}
         onSwiped={onSwiped}
-        stackSize={4}
+        stackSize={3}
         stackScale={10}
         stackSeparation={14}
         disableTopSwipe
@@ -166,7 +198,7 @@ export default function TabHomeScreen()
             style: {
               label: {
                 backgroudColor: colors.red,
-                color: colors.white,
+                color: colors.black,
                 fontSize: 24
               },
               wrapper: {
@@ -183,7 +215,7 @@ export default function TabHomeScreen()
             style: {
               label: {
                 backgroudColor: colors.blue,
-                color: colors.white,
+                color: colors.black,
                 fontSize: 24
               },
               wrapper: {
@@ -227,6 +259,7 @@ export default function TabHomeScreen()
   );
 }
 
+// define styles(CSS)
 const styles = StyleSheet.create({
   container: {
     flex: 1,
