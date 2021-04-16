@@ -48,7 +48,7 @@ export default function TabProfileScreen() {
     })()
   }, [])
 
-  async function updateThisProfile(newInfo:Object){
+  async function updateThisProfile(newInfo:Object){ // send an object with the properties you want to change in the profiles
     newInfo = {id:user.id, ...newInfo};
     console.log(newInfo);
     let mutation:any = await API.graphql({query:updateProfile, variables: {input:newInfo, id:user.id}})
@@ -56,15 +56,14 @@ export default function TabProfileScreen() {
     setUser(mutation.data.updateProfile)
   }
 
-  async function addBook(newBook:Object){
-    let book = {
+  async function addBook(newBook:any){
+    let book:any = {
       title: newBook.title,
-      author: newBook.author
+      author: newBook.author,
+      profileID: user.id
     }
     let create:any = await API.graphql({query:createBook, variables:{input: book}});
     console.log(create.data.createBook);
-    let update:any = await API.graphql({query:updateBook, variables:{input:{id:create.data.createBook.id, profileID:user.id}}})
-    setUser({...user})
   }
 
   return (
