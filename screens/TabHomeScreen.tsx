@@ -7,6 +7,7 @@ import { Transitioning, Transition } from 'react-native-reanimated'
 import {listProfiles, listBooks, getProfile} from '../src/graphql/queries';
 import {Auth} from 'aws-amplify';
 
+
 // import TinderCard from "react-tinder-card";
 // import { shouldUseActivityState } from 'react-native-screens';
 // import EditScreenInfo from '../components/EditScreenInfo';
