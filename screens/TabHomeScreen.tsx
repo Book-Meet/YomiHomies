@@ -1,14 +1,16 @@
 import * as React from 'react';
-// import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { StyleSheet, Image, StatusBar, SafeAreaView, Dimensions } from 'react-native';
 import Swiper from 'react-native-deck-swiper';
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Transitioning, Transition } from 'react-native-reanimated'
+import {listProfiles} from '../src/graphql/queries';
 
 // import TinderCard from "react-tinder-card";
 // import { shouldUseActivityState } from 'react-native-screens';
 // import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
+import API, { graphqlOperation } from '@aws-amplify/api';
 
 const data = [
       {
@@ -124,6 +126,15 @@ export default function TabHomeScreen()
     transitionRef.current.animateNextTransition();
     setIndex((index + 1) % data.length);
   };
+
+  useEffect(() => {
+    (async function fetchProfiles (){
+      const profiles = await API.graphql(graphqlOperation(listProfiles));
+      console.log(profiles.data.listProfiles.items);
+    })()
+  }, [])
+  
+
   return (
     <View style={styles.container}>
       {/* <StatusBar hidden /> */}
@@ -248,7 +259,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   text: {
-    fontFamily: 'Courier'
+    // fontFamily: 'Courier'
   },
   name: {
     fontSize: 24, marginBottom: 10, color: colors.gray
