@@ -5,12 +5,12 @@ import Swiper from 'react-native-deck-swiper';
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Transitioning, Transition } from 'react-native-reanimated'
 import {listProfiles} from '../src/graphql/queries';
+import { Text, View } from '../components/Themed';
+import API, { graphqlOperation } from '@aws-amplify/api';
 
 // import TinderCard from "react-tinder-card";
 // import { shouldUseActivityState } from 'react-native-screens';
 // import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
-import API, { graphqlOperation } from '@aws-amplify/api';
 
 const data = [
       {
@@ -279,51 +279,10 @@ const styles = StyleSheet.create({
   }
 });
 
+
+// //previous code(tinder-card)
 // export default function TabHomeScreen()
 // {
-//   const [people, setPeople] = useState([
-//     {
-//         name: 'ace',
-//         uri : 'https://i.ibb.co/VqscmSr/ace.jpg'
-//     },
-//     {
-//       name : 'chopper',
-//       uri : 'https://i.ibb.co/82GDRYs/chopper.jpg'
-//     },
-//     {
-//       name : 'doflamingo',
-//       uri : 'https://i.ibb.co/NtM1Nt8/doflamingo.jpg'
-//     },
-//     {
-//       name : 'franky',
-//       uri : 'https://i.ibb.co/9nvgyNd/franky.jpg'
-//     },
-//     {
-//       name : 'luffy',
-//       uri : 'https://i.ibb.co/10XxfkX/luffy.jpg'
-//     },
-//     {
-//       name : 'sanji',
-//       uri : 'https://i.ibb.co/mD7kyVz/sanji.jpg'
-//     },
-//     {
-//       name : 'shanks',
-//       uri : 'https://i.ibb.co/J5kSTKJ/shanks.jpg'
-//     },
-//     {
-//       name : 'smoker',
-//       uri : 'https://i.ibb.co/0cCGDrR/smoker.jpg'
-//     },
-//     {
-//       name : 'usopp',
-//       uri : 'https://i.ibb.co/48LBJjn/usopp.jpg'
-//     },
-//     {
-//       name : 'zoro',
-//       uri : 'https://i.ibb.co/j8ZR1m3/zoro.jpg'
-//     },
-    
-// ]);
 //   return (
 //     <View >
 //       <View style={styles.container}>
