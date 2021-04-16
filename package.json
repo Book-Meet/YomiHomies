@@ -46,7 +46,7 @@
     "react-native-modal": "^11.10.0",
     "react-native-paper": "^4.7.2",
     "react-native-vector-icons": "^8.1.0",
-    "react-native-web": "~0.13.12",
+    "react-native-web": "^0.13.18",
     "react-spring": "^9.1.1",
     "react-tinder-card": "^1.4.0"
   },
