@@ -12,6 +12,7 @@ import {Auth} from 'aws-amplify';
 // import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import API, { graphqlOperation } from '@aws-amplify/api';
+import { updateProfile } from '../src/graphql/mutations';
 
 const data = [
       {
@@ -99,10 +100,10 @@ const transition = (
   </Transition.Sequence>
 );
 
-const swiperRef = React.createRef();
-const transitionRef = React.createRef();
+const swiperRef:any = React.createRef();
+const transitionRef:any = React.createRef();
 
-const Card = ({ card }) =>
+const Card = ({ card }:any) =>
 {
   return (
     <View style={styles.card}>
@@ -111,7 +112,7 @@ const Card = ({ card }) =>
   );
 };
 
-const CardDetails = ({ index }) => (
+const CardDetails = ({ index }:any) => (
   <View style={styles.cardDetails} key={data[index].id}>
     <Text style={[styles.text, styles.name]}>{"Name: " + data[index].name}</Text>
     <Text style={[styles.text, styles.book]}>{"Book: " + data[index].book}</Text>
@@ -121,28 +122,37 @@ const CardDetails = ({ index }) => (
 
 export default function TabHomeScreen()
 {
-  const [index, setIndex] = React.useState(0);
-  const onSwiped = () =>
-  {
+  const [index, setIndex] = useState(0);
+  const [user, setUser] = useState({})
+
+  const onSwipedLeft = async () => {
     transitionRef.current.animateNextTransition();
     setIndex((index + 1) % data.length);
-  };
+    // let reject = await API.graphql({query:updateProfile, variables:{input:{id:user.id}}})
+
+  }
+
+  const onSwipedRight = () =>{
+    transitionRef.current.animateNextTransition();
+    setIndex((index + 1) % data.length);
+  }
 
   useEffect(() => {
     (async function fetchProfiles (){
       let userID = await Auth.currentUserInfo()
-      let myBooks = await API.graphql({query:getProfile, variables:{id:userID.id}})
+      let myBooks:any = await API.graphql({query:getProfile, variables:{id:userID.id}})
+      setUser(myBooks);
       myBooks = myBooks.data.getProfile.books.items;
-      let profiles = await API.graphql({query:listProfiles});
+      let profiles:any = await API.graphql({query:listProfiles});
       profiles = profiles.data.listProfiles.items;
-      profiles = profiles.filter(a=>{
+      profiles = profiles.filter((a:any)=>{
         let books = a.books.items;
         for (let book of myBooks){
-          if(books.some(b=>b.title === book.title)) return true;
+          if(books.some((b:any)=>b.title === book.title)) return true;
         }
         return false
       })
-      console.log(profiles);
+      // console.log(profiles);
     })()
   }, [])
   
@@ -162,7 +172,8 @@ export default function TabHomeScreen()
         cards={data}
         cardIndex={index}
         renderCard={(card) => <Card card={card} />}
-        onSwiped={onSwiped}
+        onSwipedLeft={onSwipedLeft}
+        onSwipedRight={onSwipedRight}
         stackSize={4}
         stackScale={10}
         stackSeparation={14}

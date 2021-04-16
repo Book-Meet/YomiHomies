@@ -37,7 +37,9 @@ export default function TabProfileScreen() {
   const [count, setCount] = useState(0);
   const [user, setUser]:any = useState({});
   const [modalVisible, setModalVisible] = useState(false);
-  
+  const [books, setBooks] = useState([]);
+  const [bookInput, setBookInput] = useState('');
+  const [bookAuthorinput, setBookAuthorInput] = useState('')
 
   useEffect(()=>{
     (async () =>{
@@ -45,6 +47,7 @@ export default function TabProfileScreen() {
       let query:any = await API.graphql(graphqlOperation(getProfile, {id:authUser.id}))
       query = query.data.getProfile;
       setUser(query);
+      setBooks(query.books.items)
     })()
   }, [])
 
@@ -56,24 +59,31 @@ export default function TabProfileScreen() {
     setUser(mutation.data.updateProfile)
   }
 
-  async function handleAddBook(newBook:any){
+  async function handleAddBook(){
+    if (bookInput === '' || bookAuthorinput == '') return;
     let book:any = {
-      title: newBook.title,
-      author: newBook.author,
+      title: bookInput,
+      author: bookAuthorinput,
       profileID: user.id
     }
+    setBookAuthorInput('')
+    setBookInput('')
     let create:any = await API.graphql({query:createBook, variables:{input: book}});
-    console.log(create.data.createBook);
+    book.id = create.data.createBook.id
+    let userUpdate = {...user};
+    userUpdate.books.items.push(book);
+    setUser(userUpdate);
   }
 
   async function handleAddAuthor(newAuthor:String){
-    let  addAuthor= await API.graphql({query:createAuthor, variables:{input:{name:newAuthor, profileID:user.id}}})
-    console.log(addAuthor);
+    // let  addAuthor= await API.graphql({query:createAuthor, variables:{input:{name:newAuthor, profileID:user.id}}})
+    // console.log(addAuthor);
   }
 
   async function handleAddGenre(genre:String){
     let addGenre = await API.graphql({query:createGenre, variables:{input:{genre, profileID:user.id}}})
   }
+
 
   return (
     <ScrollView>
@@ -89,16 +99,23 @@ export default function TabProfileScreen() {
       <Text>Nickname: Ari</Text>
       <Text>Gender: Female</Text>
       <Text>Top Books: </Text>
-        <Text>Book1</Text>
-        <Text>Book2</Text>
-        <Text>Book3</Text>
-        <TextInput style={styles.input}/>
+          {books.map(a=>(<Text
+          key={a.id}
+          >{a.title}</Text>))}
+        <TextInput style={styles.input}
+          placeholder="Book Title"
+          onChangeText={(text)=>{setBookInput(text)}}
+        />
+        <TextInput style={styles.input}
+          placeholder="Author"
+          onChangeText={(text)=>{setBookAuthorInput(text)}}
+          />
         <Button
-          onPress={() => setCount(count + 1)}
+          onPress={handleAddBook}
           title="+"
         />
       
-      <Text>Top Genres: </Text>
+      {/* <Text>Top Genres: </Text>
       <View style={styles.centeredView}>
         <Modal
           animationType="slide"
@@ -131,16 +148,9 @@ export default function TabProfileScreen() {
         >
           <Text style={styles.textStyle}>Select Genre</Text>
         </Pressable>
-      </View>
+      </View> */}
 
-        {/* <select>
-          <option value="" selected></option>
-          <option value="Thrillers">Thrillers</option>
-          <option value="Business">Business</option>
-          <option value="Romance">Romance</option>
-        </select> */}
-
-      <Text>Top Authors: </Text>
+      {/* <Text>Top Authors: </Text>
         <Text onPress={()=>{handleAddAuthor("Someone")}}>Author1</Text>
         <Text>Author2</Text>
         <Text>Author3</Text>
@@ -148,11 +158,9 @@ export default function TabProfileScreen() {
         <Button
           onPress={() => setCount(count + 1)}
           title="+"
-        />
+        /> */}
       <Text>About me: </Text>
         <Text>Hello!!</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/TabOneScreen.tsx" />
     </View>
     </ScrollView>
   );
