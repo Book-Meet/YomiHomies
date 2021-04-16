@@ -275,6 +275,30 @@ export const getProfile = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
+          genres {
+            nextToken
+            startedAt
+          }
+          authors {
+            nextToken
+            startedAt
+          }
+          books {
+            nextToken
+            startedAt
+          }
+          pending {
+            nextToken
+            startedAt
+          }
+          matches {
+            nextToken
+            startedAt
+          }
+          rejections {
+            nextToken
+            startedAt
+          }
         }
         nextToken
         startedAt
@@ -296,6 +320,30 @@ export const getProfile = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
+          genres {
+            nextToken
+            startedAt
+          }
+          authors {
+            nextToken
+            startedAt
+          }
+          books {
+            nextToken
+            startedAt
+          }
+          pending {
+            nextToken
+            startedAt
+          }
+          matches {
+            nextToken
+            startedAt
+          }
+          rejections {
+            nextToken
+            startedAt
+          }
         }
         nextToken
         startedAt
@@ -317,6 +365,30 @@ export const getProfile = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
+          genres {
+            nextToken
+            startedAt
+          }
+          authors {
+            nextToken
+            startedAt
+          }
+          books {
+            nextToken
+            startedAt
+          }
+          pending {
+            nextToken
+            startedAt
+          }
+          matches {
+            nextToken
+            startedAt
+          }
+          rejections {
+            nextToken
+            startedAt
+          }
         }
         nextToken
         startedAt
@@ -348,26 +420,108 @@ export const listProfiles = /* GraphQL */ `
         createdAt
         updatedAt
         genres {
+          items {
+            id
+            genre
+            profileID
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
           nextToken
           startedAt
         }
         authors {
+          items {
+            id
+            profileID
+            name
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
           nextToken
           startedAt
         }
         books {
+          items {
+            id
+            profileID
+            title
+            author
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
           nextToken
           startedAt
         }
         pending {
+          items {
+            id
+            username
+            nickname
+            about_me
+            birth_date
+            latitude
+            longitude
+            gender
+            open_to_meet
+            photo_source
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
           nextToken
           startedAt
         }
         matches {
+          items {
+            id
+            username
+            nickname
+            about_me
+            birth_date
+            latitude
+            longitude
+            gender
+            open_to_meet
+            photo_source
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
           nextToken
           startedAt
         }
         rejections {
+          items {
+            id
+            username
+            nickname
+            about_me
+            birth_date
+            latitude
+            longitude
+            gender
+            open_to_meet
+            photo_source
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
           nextToken
           startedAt
         }
@@ -407,26 +561,108 @@ export const syncProfiles = /* GraphQL */ `
         createdAt
         updatedAt
         genres {
+          items {
+            id
+            genre
+            profileID
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
           nextToken
           startedAt
         }
         authors {
+          items {
+            id
+            profileID
+            name
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
           nextToken
           startedAt
         }
         books {
+          items {
+            id
+            profileID
+            title
+            author
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
           nextToken
           startedAt
         }
         pending {
+          items {
+            id
+            username
+            nickname
+            about_me
+            birth_date
+            latitude
+            longitude
+            gender
+            open_to_meet
+            photo_source
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
           nextToken
           startedAt
         }
         matches {
+          items {
+            id
+            username
+            nickname
+            about_me
+            birth_date
+            latitude
+            longitude
+            gender
+            open_to_meet
+            photo_source
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
           nextToken
           startedAt
         }
         rejections {
+          items {
+            id
+            username
+            nickname
+            about_me
+            birth_date
+            latitude
+            longitude
+            gender
+            open_to_meet
+            photo_source
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
           nextToken
           startedAt
         }
