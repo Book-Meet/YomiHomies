@@ -1,14 +1,14 @@
 import {useEffect, useState} from 'react';
 import * as React from 'react';
-import { StyleSheet, Image, Button, TextInput } from 'react-native';
+import { StyleSheet, Image, Button, TextInput, Alert, Modal, Pressable, ScrollView } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
-import { getProfile, listProfiles } from '../src/graphql/queries';
-import Amplify, {API, graphqlOperation} from 'aws-amplify'; 
+import { getProfile } from '../src/graphql/queries';
+import {API, graphqlOperation} from 'aws-amplify'; 
 import { Auth } from "@aws-amplify/auth";
-import AWSAppSyncClient from 'aws-appsync';
-import config from '../src/aws-exports';
+import { updateProfile, createBook, updateBook } from '../src/graphql/mutations';
+
 
 const items = [
   {
@@ -34,30 +34,41 @@ const items = [
 ];
 
 export default function TabProfileScreen() {
-  const [selectedItems, setSelectedItems] = useState([]);
   const [count, setCount] = useState(0);
-  const [user, setUser] = useState({});
+  const [user, setUser]:any = useState({});
+  const [modalVisible, setModalVisible] = useState(false);
   
-  // const client = new AWSAppSyncClient({
-  //   url: config.aws_appsync_graphqlEndpoint,
-  //   region: config.aws_appsync_region,
-  //   auth: {
-  //     type: 'API_KEY',
-  //     apiKey: config.aws_appsync_apiKey
-  //   }
-  // });
 
   useEffect(()=>{
     (async () =>{
-      let authUser = await Auth.currentUserInfo()
-      let temp:any = await API.graphql(graphqlOperation(getProfile,{id:authUser.id}));
-      temp = temp.data.getProfile;
-      setUser (temp);
-      // await client.mutate({query: })
+      let authUser = await Auth.currentUserInfo();
+      let query:any = await API.graphql(graphqlOperation(getProfile, {id:authUser.id}))
+      query = query.data.getProfile;
+      setUser(query);
     })()
   }, [])
-  
+
+  async function updateThisProfile(newInfo:Object){
+    newInfo = {id:user.id, ...newInfo};
+    console.log(newInfo);
+    let mutation:any = await API.graphql({query:updateProfile, variables: {input:newInfo, id:user.id}})
+    console.log(mutation.data.updateProfile);
+    setUser(mutation.data.updateProfile)
+  }
+
+  async function addBook(newBook:Object){
+    let book = {
+      title: newBook.title,
+      author: newBook.author
+    }
+    let create:any = await API.graphql({query:createBook, variables:{input: book}});
+    console.log(create.data.createBook);
+    let update:any = await API.graphql({query:updateBook, variables:{input:{id:create.data.createBook.id, profileID:user.id}}})
+    setUser({...user})
+  }
+
   return (
+    <ScrollView>
     <View style={styles.container}>
       <Text style={styles.title}>Profile</Text>
       <Image style={{
@@ -78,17 +89,49 @@ export default function TabProfileScreen() {
           onPress={() => setCount(count + 1)}
           title="+"
         />
+      
       <Text>Top Genres: </Text>
-        <Text>Genre1</Text>
-        <Text>Genre2</Text>
-        <Text>Genre3</Text>
-        
+      <View style={styles.centeredView}>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Genre1</Text>
+              <Text style={styles.modalText}>Genre2</Text>
+              <Text style={styles.modalText}>Genre3</Text>
+              <Text style={styles.modalText}>Genre4</Text>
+              <Text style={styles.modalText}>Genre5</Text>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text style={styles.textStyle}>Close</Text>
+              </Pressable>
+            </View>
+          </View>
+        </Modal>
+        <Pressable
+          style={[styles.button, styles.buttonOpen]}
+          onPress={() => setModalVisible(true)}
+        >
+          <Text style={styles.textStyle}>Select Genre</Text>
+        </Pressable>
+      </View>
+
         {/* <select>
           <option value="" selected></option>
           <option value="Thrillers">Thrillers</option>
           <option value="Business">Business</option>
           <option value="Romance">Romance</option>
         </select> */}
+
       <Text>Top Authors: </Text>
         <Text>Author1</Text>
         <Text>Author2</Text>
@@ -103,6 +146,7 @@ export default function TabProfileScreen() {
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <EditScreenInfo path="/screens/TabOneScreen.tsx" />
     </View>
+    </ScrollView>
   );
 }
 
@@ -124,16 +168,46 @@ const styles = StyleSheet.create({
     height: 40, 
     borderWidth: 1
   },
-  list: {
-    paddingTop: 30,
-    marginLeft: 10,
-    marginRight: 10,
-    flex: 3,
-  },
-  buttonView: {
-    display: 'flex',
+  centeredView: {
+    flex: 1,
     justifyContent: 'center',
-    flexDirection: 'row',
-    marginTop: 10,
+    alignItems: 'center',
+    marginTop: 22,
+    marginBottom: 22
   },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2
+  },
+  buttonOpen: {
+    backgroundColor: '#F194FF'
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3'
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center'
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center'
+  }
 });
