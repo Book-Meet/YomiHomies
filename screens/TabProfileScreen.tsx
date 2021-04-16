@@ -7,7 +7,7 @@ import { Text, View } from '../components/Themed';
 import { getProfile } from '../src/graphql/queries';
 import {API, graphqlOperation} from 'aws-amplify'; 
 import { Auth } from "@aws-amplify/auth";
-import { updateProfile, createBook, updateBook } from '../src/graphql/mutations';
+import { updateProfile, createBook, createAuthor, createGenre } from '../src/graphql/mutations';
 
 
 const items = [
@@ -48,7 +48,7 @@ export default function TabProfileScreen() {
     })()
   }, [])
 
-  async function updateThisProfile(newInfo:Object){ // send an object with the properties you want to change in the profiles
+  async function handleUpdateProfile(newInfo:Object){ // send an object with the properties you want to change in the profiles
     newInfo = {id:user.id, ...newInfo};
     console.log(newInfo);
     let mutation:any = await API.graphql({query:updateProfile, variables: {input:newInfo, id:user.id}})
@@ -56,7 +56,7 @@ export default function TabProfileScreen() {
     setUser(mutation.data.updateProfile)
   }
 
-  async function addBook(newBook:any){
+  async function handleAddBook(newBook:any){
     let book:any = {
       title: newBook.title,
       author: newBook.author,
@@ -64,6 +64,15 @@ export default function TabProfileScreen() {
     }
     let create:any = await API.graphql({query:createBook, variables:{input: book}});
     console.log(create.data.createBook);
+  }
+
+  async function handleAddAuthor(newAuthor:String){
+    let  addAuthor= await API.graphql({query:createAuthor, variables:{input:{name:newAuthor, profileID:user.id}}})
+    console.log(addAuthor);
+  }
+
+  async function handleAddGenre(genre:String){
+    let addGenre = await API.graphql({query:createGenre, variables:{input:{genre, profileID:user.id}}})
   }
 
   return (
@@ -102,7 +111,7 @@ export default function TabProfileScreen() {
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text style={styles.modalText}>Genre1</Text>
+              <Text style={styles.modalText} onPress={()=>{handleAddGenre("Thriller")}}>Genre1</Text>
               <Text style={styles.modalText}>Genre2</Text>
               <Text style={styles.modalText}>Genre3</Text>
               <Text style={styles.modalText}>Genre4</Text>
@@ -132,7 +141,7 @@ export default function TabProfileScreen() {
         </select> */}
 
       <Text>Top Authors: </Text>
-        <Text>Author1</Text>
+        <Text onPress={()=>{handleAddAuthor("Someone")}}>Author1</Text>
         <Text>Author2</Text>
         <Text>Author3</Text>
         <TextInput style={styles.input}/>
