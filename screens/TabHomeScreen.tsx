@@ -4,9 +4,11 @@ import { StyleSheet, Image, StatusBar, SafeAreaView, Dimensions } from 'react-na
 import Swiper from 'react-native-deck-swiper';
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Transitioning, Transition } from 'react-native-reanimated'
-import {listProfiles} from '../src/graphql/queries';
 import { Text, View } from '../components/Themed';
 import API, { graphqlOperation } from '@aws-amplify/api';
+import {listProfiles, listBooks, getProfile} from '../src/graphql/queries';
+import {Auth} from 'aws-amplify';
+
 
 // import TinderCard from "react-tinder-card";
 // import { shouldUseActivityState } from 'react-native-screens';
@@ -159,9 +161,19 @@ export default function TabHomeScreen()
   // }, [])
   useEffect(() => {
     (async function fetchProfiles (){
-      const profiles = await API.graphql(graphqlOperation(listProfiles));
-      console.log(profiles.data.listProfiles.items);
-
+      let userID = await Auth.currentUserInfo()
+      let myBooks = await API.graphql({query:getProfile, variables:{id:userID.id}})
+      myBooks = myBooks.data.getProfile.books.items;
+      let profiles = await API.graphql({query:listProfiles});
+      profiles = profiles.data.listProfiles.items;
+      profiles = profiles.filter(a=>{
+        let books = a.books.items;
+        for (let book of myBooks){
+          if(books.some(b=>b.title === book.title)) return true;
+        }
+        return false
+      })
+      console.log(profiles);
     })()
   }, [])
  
@@ -197,8 +209,8 @@ export default function TabHomeScreen()
             title: 'NOPE',
             style: {
               label: {
-                backgroudColor: colors.red,
-                color: colors.black,
+                // backgroudColor: colors.red,
+                color: colors.white,
                 fontSize: 24
               },
               wrapper: {
