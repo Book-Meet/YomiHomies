@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useContext} from 'react';
 import * as React from 'react';
 import { StyleSheet, Image, Button, TextInput, Alert, Modal, Pressable, ScrollView } from 'react-native';
 
@@ -7,8 +7,8 @@ import { Text, View } from '../components/Themed';
 import { getProfile } from '../src/graphql/queries';
 import {API, graphqlOperation} from 'aws-amplify'; 
 import { Auth } from "@aws-amplify/auth";
+import UserContext from '../utils/userContext';
 import { updateProfile, createBook, createAuthor, createGenre } from '../src/graphql/mutations';
-
 
 const items = [
   {
@@ -35,6 +35,8 @@ const items = [
 
 export default function TabProfileScreen() {
   const [count, setCount] = useState(0);
+  const { state, dispatch } = useContext(UserContext)
+
   const [user, setUser]:any = useState({});
   const [modalVisible, setModalVisible] = useState(false);
   const [books, setBooks] = useState([]);
@@ -50,7 +52,7 @@ export default function TabProfileScreen() {
       setUser(query);
       setBooks(query.books.items)
     })()
-  }, [])
+  }, []);
 
   async function handleUpdateProfile(newInfo:Object){ // send an object with the properties you want to change in the profiles
     newInfo = {id:user.id, _version:user._version, ...newInfo};
@@ -95,13 +97,17 @@ export default function TabProfileScreen() {
           }} source={require('../assets/images/arina-reading.jpeg')} />
       
       
-      <Text>Username: {user.username}</Text>
-      <Text>Nickname: Ari</Text>
-      <Text>Gender: Female</Text>
+      <Text>Username: {state.user.username}</Text>
+      <Text>Nickname: {state.user.nickname}</Text>
+      <Text>Gender: {state.user.gender}</Text>
       <Text>Top Books: </Text>
-          {books.map(a=>(<Text
-          key={a.id}
-          >{a.title}</Text>))}
+        { state.user.books !== undefined ? state.user.books.items.map(book => {
+          return (
+            <Text key={book.id}>{book.title} - {book.author}</Text>
+          )
+        })
+        : null
+        }
         <TextInput style={styles.input}
           placeholder="Book Title"
           onChangeText={(text)=>{setBookInput(text)}}
@@ -150,17 +156,18 @@ export default function TabProfileScreen() {
         </Pressable>
       </View> */}
 
-      {/* <Text>Top Authors: </Text>
-        <Text onPress={()=>{handleAddAuthor("Someone")}}>Author1</Text>
-        <Text>Author2</Text>
-        <Text>Author3</Text>
-        <TextInput style={styles.input}/>
-        <Button
-          onPress={() => setCount(count + 1)}
-          title="+"
-        /> */}
+      <Text>Top Authors: </Text>
+        { state.user.authors !== undefined ? state.user.authors.items.map(auth => {
+          return (
+            <Text key={auth.id}>{auth.name}</Text>
+          )
+        })
+        : null
+        }
+
       <Text>About me: </Text>
-        <Text>{user.about_me}</Text>
+      <Text>{state.user.about_me}</Text>
+      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
         <Modal
           animationType="slide"
           transparent={true}
