@@ -39,7 +39,11 @@ export interface User {
   pending?: Array<User>;
   rejection?: Array<User>;
   gender?: String;
-  openToMeet?: Boolean
+  open_to_meet?: Boolean;
+  about_me?: String;
+  birth_date?: Date;
+  nickname?: String;
+  photo_source?: String;
 }
 
 export const initialUserState: User = {

@@ -12,7 +12,7 @@ import {createProfile} from './src/graphql/mutations';
 import { Auth } from "@aws-amplify/auth";
 // @ts-ignore
 import { withAuthenticator} from 'aws-amplify-react-native';
-import { AppState, Actions, ActionType, initialAppState } from './types'
+import { AppState, Actions, ActionType, initialAppState, User } from './types'
 import UserContext from './utils/userContext'
 
 
@@ -26,6 +26,7 @@ Amplify.configure({
   },
 });
 
+// set up for reducer methods
 function reducer(state: AppState, action: Actions): AppState {
   switch (action.type) {
       case ActionType.LoadData:
@@ -38,12 +39,13 @@ function reducer(state: AppState, action: Actions): AppState {
 function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
+  // use reducer declaration
   const [state, dispatch] = useReducer(reducer, initialAppState);
-  // let user:any = {};
+  // Grab context
 
   const contextValue = useMemo(() => {
     return {state, dispatch}
-}, [state, dispatch]);
+  }, [state, dispatch]);
 
   useEffect(()=>{
     (async function () {
@@ -56,9 +58,10 @@ function App() {
         };
         console.log('no Profile')
         const newProfile = await API.graphql(graphqlOperation(createProfile, { input }))
-        // user = newProfile.data.createProfile;
+        let user = newProfile.data.createProfile;
       }else {
-        // user = query.data.getProfile;  
+        let user = query.data.getProfile;  
+        dispatch({type: ActionType.LoadData, payload: user})
       }
     })()
   }, [])
