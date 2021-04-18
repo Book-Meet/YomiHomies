@@ -1,10 +1,11 @@
 import * as React from 'react';
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useContext} from 'react';
 import { StyleSheet, FlatList, SafeAreaView } from 'react-native';
 import {Text, View} from '../components/Themed'
 import Colors from '../constants/Colors';
 import { navItem } from '@aws-amplify/ui';
 import API from '@aws-amplify/api';
+import UserContext from '../utils/userContext';
 
 interface matchItem {
   id: Number;
@@ -13,7 +14,7 @@ interface matchItem {
   newMessages: Number;
 }
 
-const DATA: matchItem[] = [
+let DATA: matchItem[] = [
   {
     id: 1,
     nickname: "GuyWithFace",
@@ -85,13 +86,21 @@ const DATA: matchItem[] = [
 
 export default function TabHomiesScreen() {
 
-  const [user, setUser] = useState({})
+  const {state, dispatch} = useContext(UserContext);
+  const [matches, setMatches] = useState([]);
+
+  useEffect(() => {
+    if(state.user.id === '') return
+    setMatches(state.user.matches.items.filter(a=>a.id!=state.user.id));
+  }, [state])
+
 
   const renderItem = ({item}:any) => {
+    if (state.user.id ==='') return null;
     return (
       <View style={styles.item}>
-        <Text style={styles.nickname}>{item.nickname}</Text>
-        <Text style={styles.chatPreview}>{item.chatPreview}</Text>
+        <Text style={styles.nickname}>{item.usernam}</Text>
+        {/* <Text style={styles.chatPreview}>{item.chatPreview}</Text> */}
       </View>
     );
   }
@@ -99,9 +108,9 @@ export default function TabHomiesScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={DATA}
+        data={matches}
         renderItem={renderItem}
-        keyExtractor={item=>item.id.toString()}
+        keyExtractor={item=>item.id}
       />
     </SafeAreaView>
   );
