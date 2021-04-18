@@ -8,8 +8,7 @@ import { getProfile } from '../src/graphql/queries';
 import {API, graphqlOperation} from 'aws-amplify'; 
 import { Auth } from "@aws-amplify/auth";
 import UserContext from '../utils/userContext';
-import { updateProfile, createBook, createAuthor, createGenre, updateBook } from '../src/graphql/mutations';
-
+import { updateProfile, createBook, createAuthor, createGenre } from '../src/graphql/mutations';
 
 const items = [
   {
@@ -157,13 +156,6 @@ export default function TabProfileScreen() {
         </Pressable>
       </View> */}
 
-        {/* <select>
-          <option value="" selected></option>
-          <option value="Thrillers">Thrillers</option>
-          <option value="Business">Business</option>
-          <option value="Romance">Romance</option>
-        </select> */}
-
       <Text>Top Authors: </Text>
         { state.user.authors !== undefined ? state.user.authors.items.map(auth => {
           return (
@@ -172,16 +164,10 @@ export default function TabProfileScreen() {
         })
         : null
         }
-        <Text onPress={()=>{handleAddAuthor("Someone")}}>Author1</Text>
-        <Text>Author2</Text>
-        <Text>Author3</Text>
-        <TextInput style={styles.input}/>
-        <Button
-          onPress={() => setCount(count + 1)}
-          title="+"
-        /> */}
+
       <Text>About me: </Text>
-        <Text>{state.user.about_me}</Text>
+      <Text>{state.user.about_me}</Text>
+      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
         <Modal
           animationType="slide"
           transparent={true}
