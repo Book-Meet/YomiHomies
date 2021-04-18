@@ -152,7 +152,7 @@ export default function TabProfileScreen() {
           title="+"
         />
       <Text>About me: </Text>
-        <Text>Hello!!</Text>
+        <Text>{state.user.about_me}</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <EditScreenInfo path="/screens/TabOneScreen.tsx" />
     </View>
