@@ -1,40 +1,13 @@
 import {useEffect, useState, useContext} from 'react';
 import * as React from 'react';
 import { StyleSheet, Image, Button, TextInput, Alert, Modal, Pressable, ScrollView } from 'react-native';
-
-import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
-import { getProfile } from '../src/graphql/queries';
-import {API, graphqlOperation} from 'aws-amplify'; 
-import { Auth } from "@aws-amplify/auth";
+import {API} from 'aws-amplify'; 
 import UserContext from '../utils/userContext';
 import { updateProfile, createBook, createAuthor, createGenre } from '../src/graphql/mutations';
 
-const items = [
-  {
-    id: 1,
-    name: 'Thrillers'
-  },
-  {
-    id: 2,
-    name: 'Business'
-  },
-  {
-    id: 3,
-    name: 'Romance'
-  },
-  {
-    id: 4,
-    name: 'Technology'
-  },
-  {
-    id: 5,
-    name: 'Comics'
-  }
-];
 
 export default function TabProfileScreen() {
-  const [count, setCount] = useState(0);
   const { state, dispatch } = useContext(UserContext)
 
   const [user, setUser]:any = useState({});
@@ -45,20 +18,17 @@ export default function TabProfileScreen() {
   const [aboutMeText, setAboutMeText] = useState('')
 
   useEffect(()=>{
+    if(state.user.id==='') return
     (async () =>{
-      let authUser = await Auth.currentUserInfo();
-      let query:any = await API.graphql(graphqlOperation(getProfile, {id:authUser.id}))
-      query = query.data.getProfile;
-      setUser(query);
-      setBooks(query.books.items)
+      setUser(state.user); //for now I'm keeping this because the rest of the code in this screen is built around it.
+      setBooks(state.user.books.items)
     })()
-  }, []);
+  }, [state]);
 
   async function handleUpdateProfile(newInfo:Object){ // send an object with the properties you want to change in the profiles
-    newInfo = {id:user.id, _version:user._version, ...newInfo};
+    newInfo = {id:user.id, _version:user._version, ...newInfo}; // should be set to state.user.....
     let mutation:any = await API.graphql({query:updateProfile, variables: {input:newInfo, id:user.id}})
-    // console.log(mutation.data.updateProfile);
-    setUser(mutation.data.updateProfile)
+    setUser(mutation.data.updateProfile)// we need to change the state.user with dispatch?
   }
 
   async function handleAddBook(){
@@ -66,24 +36,23 @@ export default function TabProfileScreen() {
     let book:any = {
       title: bookInput,
       author: bookAuthorinput,
-      profileID: user.id
+      profileID: user.id//state.user.id
     }
     setBookAuthorInput('')
     setBookInput('')
     let create:any = await API.graphql({query:createBook, variables:{input: book}});
     book.id = create.data.createBook.id
-    let userUpdate = {...user};
-    userUpdate.books.items.push(book);
-    setUser(userUpdate);
+    let userUpdate = {...user};//state.user context
+    userUpdate.books.items.push(book);// change user context
+    setUser(userUpdate);//change here too
   }
 
-  async function handleAddAuthor(newAuthor:String){
+  async function handleAddAuthor(newAuthor:String){//this can be ignored for now
     // let  addAuthor= await API.graphql({query:createAuthor, variables:{input:{name:newAuthor, profileID:user.id}}})
-    // console.log(addAuthor);
   }
 
-  async function handleAddGenre(genre:String){
-    let addGenre = await API.graphql({query:createGenre, variables:{input:{genre, profileID:user.id}}})
+  async function handleAddGenre(genre:String){// this too can be ignored for now
+    // let addGenre = await API.graphql({query:createGenre, variables:{input:{genre, profileID:user.id}}})
   }
 
 
@@ -121,41 +90,6 @@ export default function TabProfileScreen() {
           title="+"
         />
       
-      {/* <Text>Top Genres: </Text>
-      <View style={styles.centeredView}>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-            setModalVisible(!modalVisible);
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText} onPress={()=>{handleAddGenre("Thriller")}}>Genre1</Text>
-              <Text style={styles.modalText}>Genre2</Text>
-              <Text style={styles.modalText}>Genre3</Text>
-              <Text style={styles.modalText}>Genre4</Text>
-              <Text style={styles.modalText}>Genre5</Text>
-              <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                <Text style={styles.textStyle}>Close</Text>
-              </Pressable>
-            </View>
-          </View>
-        </Modal>
-        <Pressable
-          style={[styles.button, styles.buttonOpen]}
-          onPress={() => setModalVisible(true)}
-        >
-          <Text style={styles.textStyle}>Select Genre</Text>
-        </Pressable>
-      </View> */}
-
       <Text>Top Authors: </Text>
         { state.user.authors !== undefined ? state.user.authors.items.map(auth => {
           return (
@@ -274,3 +208,38 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   }
 });
+
+      {/* <Text>Top Genres: </Text>
+      <View style={styles.centeredView}>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText} onPress={()=>{handleAddGenre("Thriller")}}>Genre1</Text>
+              <Text style={styles.modalText}>Genre2</Text>
+              <Text style={styles.modalText}>Genre3</Text>
+              <Text style={styles.modalText}>Genre4</Text>
+              <Text style={styles.modalText}>Genre5</Text>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text style={styles.textStyle}>Close</Text>
+              </Pressable>
+            </View>
+          </View>
+        </Modal>
+        <Pressable
+          style={[styles.button, styles.buttonOpen]}
+          onPress={() => setModalVisible(true)}
+        >
+          <Text style={styles.textStyle}>Select Genre</Text>
+        </Pressable>
+      </View> */}

@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { StyleSheet, Image, StatusBar, SafeAreaView, Dimensions } from 'react-native';
 import Swiper from 'react-native-deck-swiper';
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Transitioning, Transition } from 'react-native-reanimated'
 import {listProfiles, listBooks, getProfile} from '../src/graphql/queries';
 import {Auth} from 'aws-amplify';
+import UserContext from '../utils/userContext';
 
 
 // import TinderCard from "react-tinder-card";
@@ -15,71 +16,7 @@ import { Text, View } from '../components/Themed';
 import API, { graphqlOperation } from '@aws-amplify/api';
 import { updateProfile } from '../src/graphql/mutations';
 
-const data = [
-      {
-        id: 1,
-        name: 'Ace',
-        book: 'Harry Potter',
-        uri : 'https://i.ibb.co/f8vR1P8/ace.jpg'
-      },
-      { id: 2,
-        name: 'Chopper',
-        book: 'Adventures of Sherlock Holmes',
-        uri : 'https://i.ibb.co/dWHxXnH/chopper.jpg'
-      },
-      {
-        id: 3,
-        name: 'Doflamingo',
-        book: "Kiki's Delivery Service",
-        uri: 'https://i.ibb.co/71N3h5W/doflamingo.jpg'
-      },
-      {
-        id: 4,
-        name: 'Franky',
-        book: 'Dragon Ball',
-        uri : 'https://i.ibb.co/6ZCYYqD/franky.jpg'
-      },
-      {
-        id: 5,
-        name: 'Luffy',
-        book: 'One Piece',
-        uri : 'https://i.ibb.co/HpR5T5p/luffy.jpg'
-      },
-      {
-        id: 6,
-        name: 'Sanji',
-        book: 'Naruto',
-        uri : 'https://i.ibb.co/m4M41Rq/sanji.jpg'
-      },
-      {
-        id: 7,
-        name: 'Shanks',
-        book: 'Demon Slayer',
-        uri : 'https://i.ibb.co/p25G6p4/shanks.jpg'
-      },
-      {
-        id: 8,
-        name: 'Smoker',
-        book: 'Attack on Titan',
-        uri : 'https://i.ibb.co/w6sqvDN/smoker.jpg'
-      },
-      {
-        id: 9,
-        name: 'Usopp',
-        book: 'Pokemon',
-        uri : 'https://i.ibb.co/xFrRSY0/usopp.jpg'
-      },
-      {
-        id: 10,
-        name: 'Zoro',
-        book: 'Detective Conan',
-        uri : 'https://i.ibb.co/7QsgXy1/zoro.jpg'
-      },
-]
-
 const { width } = Dimensions.get('window');
-
-// const stackSize = 4;
 
 const colors = {
   red: '#ec2379',
@@ -91,71 +28,72 @@ const colors = {
 
 const ANIMATION_DURATION = 200;
 
-const transition = (
-  <Transition.Sequence>
-    <Transition.Out type='slide-bottom' durationMs={ANIMATION_DURATION} interpolation='easeIn'/>
-    <Transition.Together>
-      <Transition.In type='fade' durationMs={ANIMATION_DURATION} delayMs={ANIMATION_DURATION / 2}/>
-      <Transition.In type='slide-bottom' durationMs={ANIMATION_DURATION} delayMs={ANIMATION_DURATION / 2} interpolation='easeOut'/>
-    </Transition.Together>
-  </Transition.Sequence>
-);
-
-const swiperRef:any = React.createRef();
-const transitionRef:any = React.createRef();
-
-const Card = ({ card }:any) =>
-{
-  return (
-    <View style={styles.card}>
-      <Image source={{ uri: card.uri }} style={styles.cardImage} />
-    </View>
-  );
-};
-
-const CardDetails = ({ index }:any) => (
-  <View style={styles.cardDetails} key={data[index].id}>
-    <Text style={[styles.text, styles.name]}>{"Name: " + data[index].name}</Text>
-    <Text style={[styles.text, styles.book]}>{"Book: " + data[index].book}</Text>
-  </View>
-);
-
-
 export default function TabHomeScreen()
 {
   const [index, setIndex] = useState(0);
-  const [user, setUser] = useState({})
+  const { state, dispatch } = useContext(UserContext)
+  const [matches, setMatches] = useState([]);
+  
+  const transition = (
+    <Transition.Sequence>
+      <Transition.Out type='slide-bottom' durationMs={ANIMATION_DURATION} interpolation='easeIn'/>
+      <Transition.Together>
+        <Transition.In type='fade' durationMs={ANIMATION_DURATION} delayMs={ANIMATION_DURATION / 2}/>
+        <Transition.In type='slide-bottom' durationMs={ANIMATION_DURATION} delayMs={ANIMATION_DURATION / 2} interpolation='easeOut'/>
+      </Transition.Together>
+    </Transition.Sequence>
+  );
+  
+  const swiperRef:any = React.createRef();
+  const transitionRef:any = React.createRef();
+  
+  const Card = ({ card }:any) =>
+  {
+    if(matches.length === 0) return null 
+    return (
+      <View style={styles.card}>
+        <Image source="https://i.ibb.co/f8vR1P8/ace.jpg" style={styles.cardImage} />
+      </View>
+    );
+  };
+  
+  const CardDetails = ({ index }:any) => matches.length > 0 ? (
+    <View style={styles.cardDetails} key={matches[index].id}>
+      <Text style={[styles.text, styles.name]}>{"Name: " + matches[index].username}</Text>
+      <Text style={[styles.text, styles.book]}>{"Book: " + matches[index].book}</Text>
+      <Text style={[styles.text, styles.name]}>{"ABout Me: " + matches[index].about_me}</Text>
+    </View>
+  ) : null;
 
   const onSwipedLeft = async () => {
     transitionRef.current.animateNextTransition();
-    setIndex((index + 1) % data.length);
+    setIndex((index + 1) % matches.length);
     // let reject = await API.graphql({query:updateProfile, variables:{input:{id:user.id}}})
-
   }
 
   const onSwipedRight = () =>{
     transitionRef.current.animateNextTransition();
-    setIndex((index + 1) % data.length);
+    setIndex((index + 1) % matches.length);
   }
 
   useEffect(() => {
+    if (state.user.id == '') return;
     (async function fetchProfiles (){
-      let userID = await Auth.currentUserInfo()
-      let myBooks:any = await API.graphql({query:getProfile, variables:{id:userID.id}})
-      setUser(myBooks);
-      myBooks = myBooks.data.getProfile.books.items;
       let profiles:any = await API.graphql({query:listProfiles});
       profiles = profiles.data.listProfiles.items;
       profiles = profiles.filter((a:any)=>{
         let books = a.books.items;
-        for (let book of myBooks){
-          if(books.some((b:any)=>b.title === book.title)) return true;
+        for (let book of state.user.books.items){
+          if(books.some((b:any)=>b.title === book.title)) {
+            a.book = book.title;
+            return a.id !== state.user.id;
+          }
         }
         return false
       })
-      // console.log(profiles);
+      setMatches(profiles);
     })()
-  }, [])
+  }, [state])
   
 
   return (
@@ -170,7 +108,7 @@ export default function TabHomeScreen()
       <View style={styles.swiperContainer}>
         <Swiper
         ref={swiperRef}
-        cards={data}
+        cards={matches}
         cardIndex={index}
         renderCard={(card) => <Card card={card} />}
         onSwipedLeft={onSwipedLeft}

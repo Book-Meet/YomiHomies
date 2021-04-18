@@ -12,7 +12,6 @@ export default function TabSettingsScreen() {
   // context (done in App.tsx) is available here. It's available along with
   // the dispatchers. 
   const { state, dispatch } = React.useContext(UserContext)
-  console.log("state from settings", state);
 
   return (
     <View style={styles.container}>
