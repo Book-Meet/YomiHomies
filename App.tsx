@@ -7,7 +7,7 @@ import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 import Amplify, {API, graphqlOperation} from 'aws-amplify'; 
 import config from './src/aws-exports'
-import { getProfile, listProfiles } from './src/graphql/queries';
+import { getProfile} from './src/graphql/queries';
 import {createProfile} from './src/graphql/mutations';
 import { Auth } from "@aws-amplify/auth";
 // @ts-ignore
@@ -41,7 +41,6 @@ function App() {
   const colorScheme = useColorScheme();
   // use reducer declaration
   const [state, dispatch] = useReducer(reducer, initialAppState);
-  // Grab context
 
   const contextValue = useMemo(() => {
     return {state, dispatch}

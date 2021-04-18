@@ -7,8 +7,8 @@ import { Text, View } from '../components/Themed';
 import { getProfile } from '../src/graphql/queries';
 import {API, graphqlOperation} from 'aws-amplify'; 
 import { Auth } from "@aws-amplify/auth";
-import { updateProfile, createBook, updateBook } from '../src/graphql/mutations';
 import UserContext from '../utils/userContext';
+import { updateProfile, createBook, createAuthor, createGenre, updateBook } from '../src/graphql/mutations';
 
 
 const items = [
@@ -40,7 +40,10 @@ export default function TabProfileScreen() {
 
   const [user, setUser]:any = useState({});
   const [modalVisible, setModalVisible] = useState(false);
-  
+  const [books, setBooks] = useState([]);
+  const [bookInput, setBookInput] = useState('');
+  const [bookAuthorinput, setBookAuthorInput] = useState('')
+  const [aboutMeText, setAboutMeText] = useState('')
 
   useEffect(()=>{
     (async () =>{
@@ -48,26 +51,42 @@ export default function TabProfileScreen() {
       let query:any = await API.graphql(graphqlOperation(getProfile, {id:authUser.id}))
       query = query.data.getProfile;
       setUser(query);
+      setBooks(query.books.items)
     })()
   }, []);
 
-  async function updateThisProfile(newInfo:Object){ // send an object with the properties you want to change in the profiles
-    newInfo = {id:user.id, ...newInfo};
-    console.log(newInfo);
+  async function handleUpdateProfile(newInfo:Object){ // send an object with the properties you want to change in the profiles
+    newInfo = {id:user.id, _version:user._version, ...newInfo};
     let mutation:any = await API.graphql({query:updateProfile, variables: {input:newInfo, id:user.id}})
-    console.log(mutation.data.updateProfile);
+    // console.log(mutation.data.updateProfile);
     setUser(mutation.data.updateProfile)
   }
 
-  async function addBook(newBook:any){
+  async function handleAddBook(){
+    if (bookInput === '' || bookAuthorinput == '') return;
     let book:any = {
-      title: newBook.title,
-      author: newBook.author,
+      title: bookInput,
+      author: bookAuthorinput,
       profileID: user.id
     }
+    setBookAuthorInput('')
+    setBookInput('')
     let create:any = await API.graphql({query:createBook, variables:{input: book}});
-    console.log(create.data.createBook);
+    book.id = create.data.createBook.id
+    let userUpdate = {...user};
+    userUpdate.books.items.push(book);
+    setUser(userUpdate);
   }
+
+  async function handleAddAuthor(newAuthor:String){
+    // let  addAuthor= await API.graphql({query:createAuthor, variables:{input:{name:newAuthor, profileID:user.id}}})
+    // console.log(addAuthor);
+  }
+
+  async function handleAddGenre(genre:String){
+    let addGenre = await API.graphql({query:createGenre, variables:{input:{genre, profileID:user.id}}})
+  }
+
 
   return (
     <ScrollView>
@@ -90,13 +109,20 @@ export default function TabProfileScreen() {
         })
         : null
         }
-        <TextInput style={styles.input}/>
+        <TextInput style={styles.input}
+          placeholder="Book Title"
+          onChangeText={(text)=>{setBookInput(text)}}
+        />
+        <TextInput style={styles.input}
+          placeholder="Author"
+          onChangeText={(text)=>{setBookAuthorInput(text)}}
+          />
         <Button
-          onPress={() => setCount(count + 1)}
+          onPress={handleAddBook}
           title="+"
         />
       
-      <Text>Top Genres: </Text>
+      {/* <Text>Top Genres: </Text>
       <View style={styles.centeredView}>
         <Modal
           animationType="slide"
@@ -109,7 +135,7 @@ export default function TabProfileScreen() {
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text style={styles.modalText}>Genre1</Text>
+              <Text style={styles.modalText} onPress={()=>{handleAddGenre("Thriller")}}>Genre1</Text>
               <Text style={styles.modalText}>Genre2</Text>
               <Text style={styles.modalText}>Genre3</Text>
               <Text style={styles.modalText}>Genre4</Text>
@@ -129,7 +155,7 @@ export default function TabProfileScreen() {
         >
           <Text style={styles.textStyle}>Select Genre</Text>
         </Pressable>
-      </View>
+      </View> */}
 
         {/* <select>
           <option value="" selected></option>
@@ -146,15 +172,56 @@ export default function TabProfileScreen() {
         })
         : null
         }
+        <Text onPress={()=>{handleAddAuthor("Someone")}}>Author1</Text>
+        <Text>Author2</Text>
+        <Text>Author3</Text>
         <TextInput style={styles.input}/>
         <Button
           onPress={() => setCount(count + 1)}
           title="+"
-        />
+        /> */}
       <Text>About me: </Text>
         <Text>{state.user.about_me}</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/TabOneScreen.tsx" />
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <TextInput placeholder="write here"
+                value={aboutMeText}
+                onChangeText={(text)=>{setAboutMeText(text)}}
+              />
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text style={styles.textStyle}>Close</Text>
+              </Pressable>
+              
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => {
+                  handleUpdateProfile({about_me:aboutMeText})
+                  setModalVisible(!modalVisible)}}
+              >
+                <Text style={styles.textStyle}>Submit</Text>
+              </Pressable>
+
+            </View>
+          </View>
+        </Modal>
+        <Pressable
+          style={[styles.button, styles.buttonOpen]}
+          onPress={() => setModalVisible(true)}
+        >
+          <Text style={styles.textStyle}>Change About Me</Text>
+        </Pressable>
     </View>
     </ScrollView>
   );

@@ -1,8 +1,10 @@
 import * as React from 'react';
+import {useState, useEffect} from 'react';
 import { StyleSheet, FlatList, SafeAreaView } from 'react-native';
 import {Text, View} from '../components/Themed'
 import Colors from '../constants/Colors';
 import { navItem } from '@aws-amplify/ui';
+import API from '@aws-amplify/api';
 
 interface matchItem {
   id: Number;
@@ -83,7 +85,9 @@ const DATA: matchItem[] = [
 
 export default function TabHomiesScreen() {
 
-  const renderItem = ({item}) => {
+  const [user, setUser] = useState({})
+
+  const renderItem = ({item}:any) => {
     return (
       <View style={styles.item}>
         <Text style={styles.nickname}>{item.nickname}</Text>
@@ -97,6 +101,7 @@ export default function TabHomiesScreen() {
       <FlatList
         data={DATA}
         renderItem={renderItem}
+        keyExtractor={item=>item.id.toString()}
       />
     </SafeAreaView>
   );
