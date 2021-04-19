@@ -65,12 +65,12 @@ export interface Books {
 }
 
 export enum ActionType {
-  LoadData
+  SetData
 }
 
-export interface LoadData {
-  type: ActionType.LoadData;
+export interface SetData {
+  type: ActionType.SetData;
   payload: User;
 }
 
-export type Actions = LoadData;
+export type Actions = SetData;

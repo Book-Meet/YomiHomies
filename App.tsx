@@ -29,7 +29,7 @@ Amplify.configure({
 // set up for reducer methods
 function reducer(state: AppState, action: Actions): AppState {
   switch (action.type) {
-      case ActionType.LoadData:
+      case ActionType.SetData:
           return { ...state, user: action.payload }
       default:
           return state
@@ -41,7 +41,6 @@ function App() {
   const colorScheme = useColorScheme();
   // use reducer declaration
   const [state, dispatch] = useReducer(reducer, initialAppState);
-  // Grab context
 
   const contextValue = useMemo(() => {
     return {state, dispatch}
@@ -61,7 +60,7 @@ function App() {
         let user = newProfile.data.createProfile;
       }else {
         let user = query.data.getProfile;  
-        dispatch({type: ActionType.LoadData, payload: user})
+        dispatch({type: ActionType.SetData, payload: user})
       }
     })()
   }, [])
