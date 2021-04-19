@@ -6,6 +6,7 @@ import Colors from '../constants/Colors';
 import { navItem } from '@aws-amplify/ui';
 import API from '@aws-amplify/api';
 import UserContext from '../utils/userContext';
+import {listMatchs} from'../src/graphql/queries'
 
 interface matchItem {
   id: Number;
@@ -91,7 +92,15 @@ export default function TabHomiesScreen() {
 
   useEffect(() => {
     if(state.user.id === '') return
-    setMatches(state.user.matches.items.filter(a=>a.id!=state.user.id));
+    // (async function(){
+    //   let myMatches = await API.graphql({query:listMatchs, variables:{matcheeID:state.user.id}});
+    //   console.log(myMatches);
+    // })()
+    // let myPending = state.user.matchReq.items.filter(a => a.status == 'pending');
+    let myAccepted = state.user.matchRes.items.filter(a => a.status === 'accepted')
+    myAccepted = myAccepted.map(a=>a.matcheeProfile)
+    console.log(myAccepted);
+    setMatches(myAccepted);
   }, [state])
 
 
@@ -99,7 +108,7 @@ export default function TabHomiesScreen() {
     if (state.user.id ==='') return null;
     return (
       <View style={styles.item}>
-        <Text style={styles.nickname}>{item.usernam}</Text>
+        <Text style={styles.nickname}>{item.username}</Text>
         {/* <Text style={styles.chatPreview}>{item.chatPreview}</Text> */}
       </View>
     );

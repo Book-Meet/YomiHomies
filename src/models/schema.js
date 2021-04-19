@@ -292,6 +292,34 @@ export const schema = {
                         "associatedWith": "profileID"
                     }
                 },
+                "matchReq": {
+                    "name": "matchReq",
+                    "isArray": true,
+                    "type": {
+                        "model": "Match"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "matcheeProfile"
+                    }
+                },
+                "matchRes": {
+                    "name": "matchRes",
+                    "isArray": true,
+                    "type": {
+                        "model": "Match"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "matcherProfile"
+                    }
+                },
                 "photo_source": {
                     "name": "photo_source",
                     "isArray": false,
@@ -310,9 +338,97 @@ export const schema = {
                 {
                     "type": "key",
                     "properties": {
-                        "name": "byMatch",
                         "fields": [
                             "id"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "Match": {
+            "name": "Match",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "status": {
+                    "name": "status",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "matcherProfile": {
+                    "name": "matcherProfile",
+                    "isArray": false,
+                    "type": {
+                        "model": "Profile"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "matcheeID"
+                    }
+                },
+                "matcheeProfile": {
+                    "name": "matcheeProfile",
+                    "isArray": false,
+                    "type": {
+                        "model": "Profile"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "matcherID"
+                    }
+                }
+            },
+            "syncable": true,
+            "pluralName": "Matches",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byMatchReq",
+                        "fields": [
+                            "matcherID",
+                            "matcheeID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byMatchRes",
+                        "fields": [
+                            "matcheeID",
+                            "matcherID"
                         ]
                     }
                 },
@@ -337,5 +453,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "efda840f2144c343174b0c5938570156"
+    "version": "702432c0131bccea035f2786e45b8924"
 };

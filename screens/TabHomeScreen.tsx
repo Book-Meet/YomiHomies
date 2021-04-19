@@ -4,7 +4,8 @@ import { StyleSheet, Image, StatusBar, SafeAreaView, Dimensions } from 'react-na
 import Swiper from 'react-native-deck-swiper';
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Transitioning, Transition } from 'react-native-reanimated'
-import {listProfiles, listBooks, getProfile} from '../src/graphql/queries';
+import {listProfiles, listBooks, getProfile, listMatchs} from '../src/graphql/queries';
+import {createMatch, updateMatch} from '../src/graphql/mutations';
 import {Auth} from 'aws-amplify';
 import UserContext from '../utils/userContext';
 
@@ -33,7 +34,8 @@ export default function TabHomeScreen()
   const [index, setIndex] = useState(0);
   const { state, dispatch } = useContext(UserContext)
   const [matches, setMatches] = useState([]);
-  
+  const [allMatches, setAllMatches] = useState([]);
+
   const transition = (
     <Transition.Sequence>
       <Transition.Out type='slide-bottom' durationMs={ANIMATION_DURATION} interpolation='easeIn'/>
@@ -67,22 +69,36 @@ export default function TabHomeScreen()
 
   const onSwipedLeft = async () => {
     transitionRef.current.animateNextTransition();
+    let reject = await API.graphql({query:createMatch, variables:{input:{matcherID:state.user.id, matcheeID:matches[index].id, status:"rejected"}}})
+    let temp = [...matches];
+    temp.splice(index, 1);
+    setMatches(temp);
     setIndex((index + 1) % matches.length);
-    // let reject = await API.graphql({query:updateProfile, variables:{input:{id:user.id}}})
   }
-
-  const onSwipedRight = () =>{
+  
+  const onSwipedRight = async () =>{
     transitionRef.current.animateNextTransition();
+    let status = '';
+    matches[0].matchReq.items.status === 'pending' ? status = 'accepted': "pending";
+    let addMatch = await API.graphql({query:createMatch, variables:{input: {matcherID:state.user.id, matcheeID:matches[index].id, status}} })
+    let temp = [...matches];
+    temp.splice(index, 1);
+    setMatches(temp);
     setIndex((index + 1) % matches.length);
   }
 
   useEffect(() => {
     if (state.user.id == '') return;
     (async function fetchProfiles (){
+      let myMatches = await API.graphql({query:listMatchs, variables:{matcherID:state.user.id}});
+      setAllMatches(myMatches.data.listMatchs.items);
       let profiles:any = await API.graphql({query:listProfiles});
       profiles = profiles.data.listProfiles.items;
       profiles = profiles.filter((a:any)=>{
         let books = a.books.items;
+        for (let match of a.matchRes.items){
+          if (match.matcherID == state.user.id) return false;
+        }
         for (let book of state.user.books.items){
           if(books.some((b:any)=>b.title === book.title)) {
             a.book = book.title;
