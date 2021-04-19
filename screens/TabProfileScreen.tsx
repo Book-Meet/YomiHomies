@@ -61,7 +61,7 @@ export default function TabProfileScreen() {
       { viewMode === "view" ?
       <ViewProfile setViewMode={setViewMode} styles={styles}/>
       :
-      <EditProfile /> }
+      <EditProfile setViewMode={setViewMode} styles={styles} /> }
     </View>
   );
 }
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   separator: {
-    marginVertical: 30,
+    marginVertical: 10,
     height: 1,
     width: '80%',
   },

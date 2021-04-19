@@ -1,9 +1,9 @@
 import React, {useContext} from 'react'
-import { StyleSheet, Image, Button, TextInput, Alert, Modal, Pressable, ScrollView } from 'react-native';
+import { StyleSheet, Image, Pressable, ScrollView } from 'react-native';
 import { Text, View } from '../components/Themed';
 import UserContext from '../utils/userContext';
 
-export default function viewProfile({ setViewMode, styles }) {
+export default function ViewProfile({ setViewMode, styles }) {
   const { state } = useContext(UserContext);
 
   return (
