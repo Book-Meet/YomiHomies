@@ -1,34 +1,34 @@
-import {useEffect, useState, useContext} from 'react';
-import * as React from 'react';
-import { StyleSheet, Image, Button, TextInput, Alert, Modal, Pressable, ScrollView } from 'react-native';
-import { Text, View } from '../components/Themed';
+import React, {useState, useContext} from 'react';
+import { StyleSheet } from 'react-native';
+import { View } from '../components/Themed';
+import ViewProfile from '../components/ViewProfile';
+
+// These imports may not be needed here. They'll probably get moved to the EditProfile component
 import {API} from 'aws-amplify'; 
-import UserContext from '../utils/userContext';
 import { updateProfile, createBook, createAuthor, createGenre } from '../src/graphql/mutations';
+import { ActionType } from '../types';
+import UserContext from '../utils/userContext';
+import EditProfile from '../components/EditProfile';
+
 
 
 export default function TabProfileScreen() {
-  const { state, dispatch } = useContext(UserContext)
-
-  const [user, setUser]:any = useState({});
-  const [modalVisible, setModalVisible] = useState(false);
+  const [viewMode, setViewMode] = useState("view");
+  
+  // Probably everything below from here until the return value can be moved to the editProfile component.
+  const {dispatch} = useContext(UserContext)
+  const [user, setUser]:any = useState({}); // delete
+  const [modalVisible, setModalVisible] = useState(false); // move to viewProfile?
   const [books, setBooks] = useState([]);
   const [bookInput, setBookInput] = useState('');
   const [bookAuthorinput, setBookAuthorInput] = useState('')
   const [aboutMeText, setAboutMeText] = useState('')
 
-  useEffect(()=>{
-    if(state.user.id==='') return
-    (async () =>{
-      setUser(state.user); //for now I'm keeping this because the rest of the code in this screen is built around it.
-      setBooks(state.user.books.items)
-    })()
-  }, [state]);
-
   async function handleUpdateProfile(newInfo:Object){ // send an object with the properties you want to change in the profiles
     newInfo = {id:user.id, _version:user._version, ...newInfo}; // should be set to state.user.....
     let mutation:any = await API.graphql({query:updateProfile, variables: {input:newInfo, id:user.id}})
-    setUser(mutation.data.updateProfile)// we need to change the state.user with dispatch?
+    dispatch({type: ActionType.SetData, payload: mutation.data.updateProfile});
+    //setUser(mutation.data.updateProfile)// we need to change the state.user with dispatch?
   }
 
   async function handleAddBook(){
@@ -57,93 +57,12 @@ export default function TabProfileScreen() {
 
 
   return (
-    <ScrollView>
     <View style={styles.container}>
-      <Text style={styles.title}>Profile</Text>
-      <Image style={{
-            width: 100,
-            height: 100
-          }} source={require('../assets/images/arina-reading.jpeg')} />
-      
-      
-      <Text>Username: {state.user.username}</Text>
-      <Text>Nickname: {state.user.nickname}</Text>
-      <Text>Gender: {state.user.gender}</Text>
-      <Text>Top Books: </Text>
-        { state.user.books !== undefined ? state.user.books.items.map(book => {
-          return (
-            <Text key={book.id}>{book.title} - {book.author}</Text>
-          )
-        })
-        : null
-        }
-        <TextInput style={styles.input}
-          placeholder="Book Title"
-          onChangeText={(text)=>{setBookInput(text)}}
-        />
-        <TextInput style={styles.input}
-          placeholder="Author"
-          onChangeText={(text)=>{setBookAuthorInput(text)}}
-          />
-        <Button
-          onPress={handleAddBook}
-          title="+"
-        />
-      
-      <Text>Top Authors: </Text>
-        { state.user.authors !== undefined ? state.user.authors.items.map(auth => {
-          return (
-            <Text key={auth.id}>{auth.name}</Text>
-          )
-        })
-        : null
-        }
-
-      <Text>About me: </Text>
-      <Text>{state.user.about_me}</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-            setModalVisible(!modalVisible);
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <TextInput placeholder="write here"
-                value={aboutMeText}
-                onChangeText={(text)=>{setAboutMeText(text)}}
-              />
-              <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                <Text style={styles.textStyle}>Close</Text>
-              </Pressable>
-              
-              <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => {
-                  handleUpdateProfile({about_me:aboutMeText})
-                  setModalVisible(!modalVisible)}}
-              >
-                <Text style={styles.textStyle}>Submit</Text>
-              </Pressable>
-
-            </View>
-          </View>
-        </Modal>
-        <Pressable
-          style={[styles.button, styles.buttonOpen]}
-          onPress={() => setModalVisible(true)}
-        >
-          <Text style={styles.textStyle}>Change About Me</Text>
-        </Pressable>
+      { viewMode === "view" ?
+      <ViewProfile setViewMode={setViewMode} styles={styles}/>
+      :
+      <EditProfile /> }
     </View>
-    </ScrollView>
   );
 }
 
@@ -151,10 +70,16 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
+    height: "100%"
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
+  },
+  profilePic: {
+    width: 100,
+    height: 100,
+    borderRadius: 10,
   },
   separator: {
     marginVertical: 30,
