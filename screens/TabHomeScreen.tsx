@@ -52,7 +52,7 @@ export default function TabHomeScreen()
     if(matches.length === 0) return null 
     return (
       <View style={styles.card}>
-        <Image source="https://i.ibb.co/f8vR1P8/ace.jpg" style={styles.cardImage} />
+        <Image source={{uri:"https://i.ibb.co/f8vR1P8/ace.jpg"}} style={styles.cardImage} />
       </View>
     );
   };
@@ -144,7 +144,7 @@ export default function TabHomeScreen()
             title: 'LIKE',
             style: {
               label: {
-                backgroudColor: colors.blue,
+                // backgroudColor: colors.blue,
                 color: colors.white,
                 fontSize: 24
               },

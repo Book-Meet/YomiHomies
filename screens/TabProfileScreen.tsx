@@ -8,6 +8,7 @@ import {API} from 'aws-amplify';
 import { updateProfile, createBook, createAuthor, createGenre } from '../src/graphql/mutations';
 import { ActionType } from '../types';
 import UserContext from '../utils/userContext';
+import EditProfile from '../components/EditProfile';
 
 
 
@@ -60,7 +61,7 @@ export default function TabProfileScreen() {
       { viewMode === "view" ?
       <ViewProfile setViewMode={setViewMode} styles={styles}/>
       :
-      null }
+      <EditProfile /> }
     </View>
   );
 }
