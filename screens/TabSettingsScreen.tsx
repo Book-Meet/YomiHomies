@@ -1,6 +1,6 @@
 import Auth from '@aws-amplify/auth';
 import * as React from 'react';
-import { StyleSheet, Button } from 'react-native';
+import { StyleSheet, Button,  } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
@@ -15,7 +15,15 @@ export default function TabSettingsScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Settings</Text>
+      <Text style={styles.title}>Preferences</Text>
+      <Text>Search Radius:</Text>
+      <Text>Matching Genders:</Text>
+      <Text>Male</Text>
+      <Text>Female</Text>
+      <Text>Others</Text>
+      <Text>Any</Text>
+      <Text>Open to Meet Face to Face?</Text>
+      <Text>Yes</Text><Text>No</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <EditScreenInfo path="/screens/TabOneScreen.tsx" />
       <Button title="Log out" accessibilityLabel="Log out" onPress={()=>Auth.signOut()}></Button>

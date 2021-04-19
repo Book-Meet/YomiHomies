@@ -95,7 +95,7 @@ export default function TabHomiesScreen() {
     console.log(state.user);
     let myAccepted = state.user.matchReq.items.filter(a => a.status === 'accepted')
     let theirAccepted = state.user.matchRes.items.filter(a => a.status === 'accepted');
-    myAccepted = myAccepted.map(a=>a.matcheeProfile)
+    myAccepted = myAccepted.map(a=>a.matcherProfile)
     console.log(myAccepted);
     console.log(theirAccepted);
     setMatches(myAccepted);
