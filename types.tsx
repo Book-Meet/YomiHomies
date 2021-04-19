@@ -62,6 +62,7 @@ export const initialAppState: AppState = {
 export interface Books {
   title: String; 
   author: String;
+  profileID?: String
 }
 
 export enum ActionType {
@@ -73,4 +74,4 @@ export interface SetData {
   payload: User;
 }
 
-export type Actions = SetData;
+export type Actions = SetData; 

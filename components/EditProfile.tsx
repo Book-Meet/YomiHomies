@@ -3,8 +3,8 @@ import { StyleSheet, TextInput, Button, SafeAreaView, ScrollView, Pressable } fr
 import { Text, View } from './Themed';
 import UserContext from '../utils/userContext'
 import { API } from 'aws-amplify'; 
-import { updateProfile, createBook,} from '../src/graphql/mutations';
-import { ActionType, Book } from '../types';
+import { updateProfile, createBook, deleteBook,} from '../src/graphql/mutations';
+import { ActionType, Books } from '../types';
 
 export default function EditProfile({ setViewMode, styles }) {
     const { state, dispatch } = useContext(UserContext);
@@ -39,18 +39,22 @@ export default function EditProfile({ setViewMode, styles }) {
             alert("Book and author fields must have a value");
             return;
         }
-        const newBook:Book = {
+        const newBook:Books = {
             author: authorVal.current.value,
             title: bookVal.current.value,
             profileID: state.user.id
         }
         let addedBook = await API.graphql({query:createBook, variables:{input:newBook}});
-        newBook.id = addedBook.data.createBook.id
-        let updatedUser = {...state.user}
-        updatedUser.books.items.push(newBook);
-        dispatch({type: ActionType.SetData, payload: updatedUser})
+        newBook.id = addedBook.data.createBook.id;
+        let updatedUser = {... state.user}
+        updatedUser.books.items.push(newBook)
+        dispatch({type: ActionType.SetData, payload: updatedUser});
         authorVal.current.value = "";
         bookVal.current.value = "";
+    }
+
+    async function handleDeleteBook(id) {
+        alert(id);
     }
 
     return (
@@ -117,7 +121,8 @@ export default function EditProfile({ setViewMode, styles }) {
                         state.user.books !== undefined ? state.user.books.items.map(book => {
                             return (<>
                                 <Pressable
-                                    onPress={() => alert("delete book")}
+                                    key={book.id}
+                                    onPress={() => handleDeleteBook(book)}
                                     style={[styles.xButton, styles.listItem]}>
                                     <Text>X</Text>
                                 </Pressable>
