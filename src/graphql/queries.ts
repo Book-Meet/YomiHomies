@@ -197,6 +197,116 @@ export const syncBooks = /* GraphQL */ `
     }
   }
 `;
+export const listProfiles = /* GraphQL */ `
+  query ListProfiles(
+    $id: ID
+    $filter: ModelProfileFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listProfiles(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        id
+        username
+        nickname
+        about_me
+        birth_date
+        latitude
+        longitude
+        gender
+        open_to_meet
+        photo_source
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        genres {
+          items {
+            id
+            genre
+            profileID
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        authors {
+          items {
+            id
+            profileID
+            name
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        books {
+          items {
+            id
+            profileID
+            title
+            author
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        matchReq {
+          items {
+            id
+            matcherID
+            matcheeID
+            status
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        matchRes {
+          items {
+            id
+            matcherID
+            matcheeID
+            status
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
 export const getProfile = /* GraphQL */ `
   query GetProfile($id: ID!) {
     getProfile(id: $id) {
@@ -258,212 +368,18 @@ export const getProfile = /* GraphQL */ `
         nextToken
         startedAt
       }
-      pending {
+      matchReq {
         items {
           id
-          username
-          nickname
-          about_me
-          birth_date
-          latitude
-          longitude
-          gender
-          open_to_meet
-          photo_source
+          matcherID
+          matcheeID
+          status
           _version
           _deleted
           _lastChangedAt
           createdAt
           updatedAt
-          genres {
-            nextToken
-            startedAt
-          }
-          authors {
-            nextToken
-            startedAt
-          }
-          books {
-            nextToken
-            startedAt
-          }
-          pending {
-            nextToken
-            startedAt
-          }
-          matches {
-            nextToken
-            startedAt
-          }
-          rejections {
-            nextToken
-            startedAt
-          }
-        }
-        nextToken
-        startedAt
-      }
-      matches {
-        items {
-          id
-          username
-          nickname
-          about_me
-          birth_date
-          latitude
-          longitude
-          gender
-          open_to_meet
-          photo_source
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-          genres {
-            nextToken
-            startedAt
-          }
-          authors {
-            nextToken
-            startedAt
-          }
-          books {
-            nextToken
-            startedAt
-          }
-          pending {
-            nextToken
-            startedAt
-          }
-          matches {
-            nextToken
-            startedAt
-          }
-          rejections {
-            nextToken
-            startedAt
-          }
-        }
-        nextToken
-        startedAt
-      }
-      rejections {
-        items {
-          id
-          username
-          nickname
-          about_me
-          birth_date
-          latitude
-          longitude
-          gender
-          open_to_meet
-          photo_source
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-          genres {
-            nextToken
-            startedAt
-          }
-          authors {
-            nextToken
-            startedAt
-          }
-          books {
-            nextToken
-            startedAt
-          }
-          pending {
-            nextToken
-            startedAt
-          }
-          matches {
-            nextToken
-            startedAt
-          }
-          rejections {
-            nextToken
-            startedAt
-          }
-        }
-        nextToken
-        startedAt
-      }
-    }
-  }
-`;
-export const listProfiles = /* GraphQL */ `
-  query ListProfiles(
-    $filter: ModelProfileFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listProfiles(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        username
-        nickname
-        about_me
-        birth_date
-        latitude
-        longitude
-        gender
-        open_to_meet
-        photo_source
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        genres {
-          items {
-            id
-            genre
-            profileID
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-          startedAt
-        }
-        authors {
-          items {
-            id
-            profileID
-            name
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-          startedAt
-        }
-        books {
-          items {
-            id
-            profileID
-            title
-            author
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-          startedAt
-        }
-        pending {
-          items {
+          matcherProfile {
             id
             username
             nickname
@@ -480,11 +396,7 @@ export const listProfiles = /* GraphQL */ `
             createdAt
             updatedAt
           }
-          nextToken
-          startedAt
-        }
-        matches {
-          items {
+          matcheeProfile {
             id
             username
             nickname
@@ -501,33 +413,59 @@ export const listProfiles = /* GraphQL */ `
             createdAt
             updatedAt
           }
-          nextToken
-          startedAt
         }
-        rejections {
-          items {
-            id
-            username
-            nickname
-            about_me
-            birth_date
-            latitude
-            longitude
-            gender
-            open_to_meet
-            photo_source
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-          startedAt
-        }
+        nextToken
+        startedAt
       }
-      nextToken
-      startedAt
+      matchRes {
+        items {
+          id
+          matcherID
+          matcheeID
+          status
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+          matcherProfile {
+            id
+            username
+            nickname
+            about_me
+            birth_date
+            latitude
+            longitude
+            gender
+            open_to_meet
+            photo_source
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          matcheeProfile {
+            id
+            username
+            nickname
+            about_me
+            birth_date
+            latitude
+            longitude
+            gender
+            open_to_meet
+            photo_source
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+        startedAt
+      }
     }
   }
 `;
@@ -603,18 +541,12 @@ export const syncProfiles = /* GraphQL */ `
           nextToken
           startedAt
         }
-        pending {
+        matchReq {
           items {
             id
-            username
-            nickname
-            about_me
-            birth_date
-            latitude
-            longitude
-            gender
-            open_to_meet
-            photo_source
+            matcherID
+            matcheeID
+            status
             _version
             _deleted
             _lastChangedAt
@@ -624,18 +556,12 @@ export const syncProfiles = /* GraphQL */ `
           nextToken
           startedAt
         }
-        matches {
+        matchRes {
           items {
             id
-            username
-            nickname
-            about_me
-            birth_date
-            latitude
-            longitude
-            gender
-            open_to_meet
-            photo_source
+            matcherID
+            matcheeID
+            status
             _version
             _deleted
             _lastChangedAt
@@ -645,18 +571,45 @@ export const syncProfiles = /* GraphQL */ `
           nextToken
           startedAt
         }
-        rejections {
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const getMatch = /* GraphQL */ `
+  query GetMatch($id: ID!) {
+    getMatch(id: $id) {
+      id
+      matcherID
+      matcheeID
+      status
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      matcherProfile {
+        id
+        username
+        nickname
+        about_me
+        birth_date
+        latitude
+        longitude
+        gender
+        open_to_meet
+        photo_source
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        genres {
           items {
             id
-            username
-            nickname
-            about_me
-            birth_date
-            latitude
-            longitude
-            gender
-            open_to_meet
-            photo_source
+            genre
+            profileID
             _version
             _deleted
             _lastChangedAt
@@ -665,6 +618,353 @@ export const syncProfiles = /* GraphQL */ `
           }
           nextToken
           startedAt
+        }
+        authors {
+          items {
+            id
+            profileID
+            name
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        books {
+          items {
+            id
+            profileID
+            title
+            author
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        matchReq {
+          items {
+            id
+            matcherID
+            matcheeID
+            status
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        matchRes {
+          items {
+            id
+            matcherID
+            matcheeID
+            status
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+      }
+      matcheeProfile {
+        id
+        username
+        nickname
+        about_me
+        birth_date
+        latitude
+        longitude
+        gender
+        open_to_meet
+        photo_source
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        genres {
+          items {
+            id
+            genre
+            profileID
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        authors {
+          items {
+            id
+            profileID
+            name
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        books {
+          items {
+            id
+            profileID
+            title
+            author
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        matchReq {
+          items {
+            id
+            matcherID
+            matcheeID
+            status
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        matchRes {
+          items {
+            id
+            matcherID
+            matcheeID
+            status
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+      }
+    }
+  }
+`;
+export const listMatchs = /* GraphQL */ `
+  query ListMatchs(
+    $filter: ModelMatchFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listMatchs(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        matcherID
+        matcheeID
+        status
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        matcherProfile {
+          id
+          username
+          nickname
+          about_me
+          birth_date
+          latitude
+          longitude
+          gender
+          open_to_meet
+          photo_source
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+          genres {
+            nextToken
+            startedAt
+          }
+          authors {
+            nextToken
+            startedAt
+          }
+          books {
+            nextToken
+            startedAt
+          }
+          matchReq {
+            nextToken
+            startedAt
+          }
+          matchRes {
+            nextToken
+            startedAt
+          }
+        }
+        matcheeProfile {
+          id
+          username
+          nickname
+          about_me
+          birth_date
+          latitude
+          longitude
+          gender
+          open_to_meet
+          photo_source
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+          genres {
+            nextToken
+            startedAt
+          }
+          authors {
+            nextToken
+            startedAt
+          }
+          books {
+            nextToken
+            startedAt
+          }
+          matchReq {
+            nextToken
+            startedAt
+          }
+          matchRes {
+            nextToken
+            startedAt
+          }
+        }
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncMatches = /* GraphQL */ `
+  query SyncMatches(
+    $filter: ModelMatchFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncMatches(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        matcherID
+        matcheeID
+        status
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        matcherProfile {
+          id
+          username
+          nickname
+          about_me
+          birth_date
+          latitude
+          longitude
+          gender
+          open_to_meet
+          photo_source
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+          genres {
+            nextToken
+            startedAt
+          }
+          authors {
+            nextToken
+            startedAt
+          }
+          books {
+            nextToken
+            startedAt
+          }
+          matchReq {
+            nextToken
+            startedAt
+          }
+          matchRes {
+            nextToken
+            startedAt
+          }
+        }
+        matcheeProfile {
+          id
+          username
+          nickname
+          about_me
+          birth_date
+          latitude
+          longitude
+          gender
+          open_to_meet
+          photo_source
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+          genres {
+            nextToken
+            startedAt
+          }
+          authors {
+            nextToken
+            startedAt
+          }
+          books {
+            nextToken
+            startedAt
+          }
+          matchReq {
+            nextToken
+            startedAt
+          }
+          matchRes {
+            nextToken
+            startedAt
+          }
         }
       }
       nextToken
