@@ -92,14 +92,12 @@ export default function TabHomiesScreen() {
 
   useEffect(() => {
     if(state.user.id === '') return
-    // (async function(){
-    //   let myMatches = await API.graphql({query:listMatchs, variables:{matcheeID:state.user.id}});
-    //   console.log(myMatches);
-    // })()
-    // let myPending = state.user.matchReq.items.filter(a => a.status == 'pending');
-    let myAccepted = state.user.matchRes.items.filter(a => a.status === 'accepted')
+    console.log(state.user);
+    let myAccepted = state.user.matchReq.items.filter(a => a.status === 'accepted')
+    let theirAccepted = state.user.matchRes.items.filter(a => a.status === 'accepted');
     myAccepted = myAccepted.map(a=>a.matcheeProfile)
     console.log(myAccepted);
+    console.log(theirAccepted);
     setMatches(myAccepted);
   }, [state])
 
