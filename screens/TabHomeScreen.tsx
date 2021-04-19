@@ -31,10 +31,8 @@ const ANIMATION_DURATION = 200;
 
 export default function TabHomeScreen()
 {
-  const [index, setIndex] = useState(0);
   const { state, dispatch } = useContext(UserContext)
   const [matches, setMatches] = useState([]);
-  const [allMatches, setAllMatches] = useState([]);
 
   const transition = (
     <Transition.Sequence>
@@ -60,38 +58,36 @@ export default function TabHomeScreen()
   };
   
   const CardDetails = ({ index }:any) => matches.length > 0 ? (
-    <View style={styles.cardDetails} key={matches[index].id}>
-      <Text style={[styles.text, styles.name]}>{"Name: " + matches[index].username}</Text>
-      <Text style={[styles.text, styles.book]}>{"Book: " + matches[index].book}</Text>
-      <Text style={[styles.text, styles.name]}>{"ABout Me: " + matches[index].about_me}</Text>
+    <View style={styles.cardDetails} key={matches[0].id}>
+      <Text style={[styles.text, styles.name]}>{"Name: " + matches[0].username}</Text>
+      <Text style={[styles.text, styles.book]}>{"Book: " + matches[0].book}</Text>
+      <Text style={[styles.text, styles.name]}>{"ABout Me: " + matches[0].about_me}</Text>
     </View>
   ) : null;
 
   const onSwipedLeft = async () => {
     transitionRef.current.animateNextTransition();
-    let reject = await API.graphql({query:createMatch, variables:{input:{matcherID:state.user.id, matcheeID:matches[index].id, status:"rejected"}}})
+    let reject = await API.graphql({query:createMatch, variables:{input:{matcherID:state.user.id, matcheeID:matches[0].id, status:"rejected"}}})
+    console.log('reject ', reject);
     let temp = [...matches];
-    temp.splice(index, 1);
+    temp.splice(0, 1);
     setMatches(temp);
-    setIndex((index + 1) % matches.length);
   }
   
   const onSwipedRight = async () =>{
     transitionRef.current.animateNextTransition();
     let status = '';
-    matches[0].matchReq.items.status === 'pending' ? status = 'accepted': "pending";
-    let addMatch = await API.graphql({query:createMatch, variables:{input: {matcherID:state.user.id, matcheeID:matches[index].id, status}} })
+    matches[0].matchReq.items.some(a=>a.matcheeID === state.user.id && a.status != 'rejected') ? status = 'accepted': status = 'pending'
+    let addMatch = await API.graphql({query:createMatch, variables:{input: {matcherID:state.user.id, matcheeID:matches[0].id, status}} })
     let temp = [...matches];
-    temp.splice(index, 1);
+    temp.splice(0, 1);
     setMatches(temp);
-    setIndex((index + 1) % matches.length);
   }
 
   useEffect(() => {
     if (state.user.id == '') return;
     (async function fetchProfiles (){
       let myMatches = await API.graphql({query:listMatchs, variables:{matcherID:state.user.id}});
-      setAllMatches(myMatches.data.listMatchs.items);
       let profiles:any = await API.graphql({query:listProfiles});
       profiles = profiles.data.listProfiles.items;
       profiles = profiles.filter((a:any)=>{
@@ -125,7 +121,7 @@ export default function TabHomeScreen()
         <Swiper
         ref={swiperRef}
         cards={matches}
-        cardIndex={index}
+        cardIndex={0}
         renderCard={(card) => <Card card={card} />}
         onSwipedLeft={onSwipedLeft}
         onSwipedRight={onSwipedRight}
@@ -178,7 +174,7 @@ export default function TabHomeScreen()
         </View>
       <View style={styles.bottomContainer}>
         <Transitioning.View ref={transitionRef} transition={transition}>
-          <CardDetails index={index} />
+          <CardDetails index={0} />
         </Transitioning.View>
         <View style={styles.bottomButtonsContainer}>
           <MaterialCommunityIcons.Button
