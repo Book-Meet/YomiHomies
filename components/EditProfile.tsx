@@ -54,11 +54,28 @@ export default function EditProfile() {
                 />
             </View>
             <Text>Top Genres:</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder='new genres...'
+                    onChangeText={changeHandler}
+                />
 
             <Text>Top Authors:</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder='new Authors...'
+                    onChangeText={changeHandler}
+                />
 
             <Text>About me:</Text>
-
+                <TextInput
+                    multiline
+                    style={styles.input}
+                    placeholder='About me...'
+                    onChangeText={changeHandler}
+                />
+            
+            <Button title='Update Profile'/>
         </View>
     );
 };

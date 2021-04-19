@@ -5,6 +5,7 @@ import { Text, View } from '../components/Themed';
 import {API} from 'aws-amplify'; 
 import UserContext from '../utils/userContext';
 import { updateProfile, createBook, createAuthor, createGenre } from '../src/graphql/mutations';
+import EditProfile from '../components/EditProfile';
 
 
 export default function TabProfileScreen() {
@@ -142,6 +143,7 @@ export default function TabProfileScreen() {
         >
           <Text style={styles.textStyle}>Change About Me</Text>
         </Pressable>
+        <EditProfile />
     </View>
     </ScrollView>
   );
