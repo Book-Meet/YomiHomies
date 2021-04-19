@@ -76,6 +76,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
+    marginTop: 20,
   },
   profilePic: {
     width: 100,
@@ -117,7 +118,8 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: 20,
     padding: 10,
-    elevation: 2
+    elevation: 2,
+    margin: 10,
   },
   buttonOpen: {
     backgroundColor: '#F194FF'
@@ -137,7 +139,9 @@ const styles = StyleSheet.create({
   text: {
     lineHeight: 20,
     fontSize: 14,
-    margin: 5,
+    marginTop: 10,
+    marginBottom: 10,
+    fontWeight: 'bold',
   }
 
 });
