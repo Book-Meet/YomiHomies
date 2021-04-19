@@ -2,14 +2,13 @@ import React, {useState, useContext} from 'react';
 import { StyleSheet } from 'react-native';
 import { View } from '../components/Themed';
 import ViewProfile from '../components/ViewProfile';
+import EditProfile from '../components/EditProfile';
 
 // These imports may not be needed here. They'll probably get moved to the EditProfile component
 import {API} from 'aws-amplify'; 
 import { updateProfile, createBook, createAuthor, createGenre } from '../src/graphql/mutations';
 import { ActionType } from '../types';
 import UserContext from '../utils/userContext';
-import EditProfile from '../components/EditProfile';
-
 
 
 export default function TabProfileScreen() {
