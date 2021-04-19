@@ -1,9 +1,9 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { StyleSheet, TextInput, Button, SafeAreaView, ScrollView, Pressable } from 'react-native';
 import { Text, View } from './Themed';
 import UserContext from '../utils/userContext'
 import { API } from 'aws-amplify'; 
-import { updateProfile, createBook, deleteBook,} from '../src/graphql/mutations';
+import { updateProfile, createBook, deleteBook} from '../src/graphql/mutations';
 import { ActionType, Books } from '../types';
 
 export default function EditProfile({ setViewMode, styles }) {
@@ -11,8 +11,8 @@ export default function EditProfile({ setViewMode, styles }) {
     const nicknameVal = useRef(null);
     const genderVal = useRef(null);
     const aboutMeVal = useRef(null);
-    const bookVal = useRef(null);
-    const authorVal = useRef(null);
+    const [book, setBook] = useState("");
+    const [author, setAuthor] = useState("");
     
 
     async function handleSave() {
@@ -35,26 +35,30 @@ export default function EditProfile({ setViewMode, styles }) {
     }
 
     async function handleAddBook() {
-        if (authorVal.current.value === "" || bookVal.current.value === "") {
+        if (author === "" || book === "") {
             alert("Book and author fields must have a value");
             return;
         }
         const newBook:Books = {
-            author: authorVal.current.value,
-            title: bookVal.current.value,
+            author: author,
+            title: book,
             profileID: state.user.id
         }
         let addedBook = await API.graphql({query:createBook, variables:{input:newBook}});
         newBook.id = addedBook.data.createBook.id;
-        let updatedUser = {... state.user}
+        let updatedUser = {...state.user}
         updatedUser.books.items.push(newBook)
         dispatch({type: ActionType.SetData, payload: updatedUser});
-        authorVal.current.value = "";
-        bookVal.current.value = "";
+        setAuthor("");
+        setBook("");
     }
 
-    async function handleDeleteBook(book: Books) {
-        alert(book);
+    async function handleDeleteBook(book:Books, index:Number) {
+        let deleted = await API.graphql({query:deleteBook, variables:{ input:{ id:book.id, _version:book._version}}})
+        let updatedUser = {...state.user};
+        updatedUser.books.items.splice(index, 1);
+        dispatch({type: ActionType.SetData, payload: updatedUser});
+        console.log(deleted);
     }
 
     return (
@@ -118,18 +122,18 @@ export default function EditProfile({ setViewMode, styles }) {
                 <View style={styles.content}>
                     <View style={styles.listBooks}>
                     { 
-                        state.user.books !== undefined ? state.user.books.items.map(book => {
-                            return (<>
+                        state.user.books !== undefined ? state.user.books.items.map((book, ind) => {
+                            return (
+                            <View key={book.id}>
                                 <Pressable
-                                    key={book.id}
-                                    onPress={() => handleDeleteBook(book)}
+                                    onPress={() => handleDeleteBook(book, ind)}
                                     style={[styles.xButton, styles.listItem]}>
                                     <Text>X</Text>
                                 </Pressable>
-                                <Text key={book.id} style={styles.listItem}>
+                                <Text style={styles.listItem}>
                                     {book.title} - {book.author}
                                 </Text>
-                            </>
+                            </View>
                             )
                         })
                     : null
@@ -139,12 +143,12 @@ export default function EditProfile({ setViewMode, styles }) {
                         state.user.books === undefined || state.user.books.items.length < 5 ?
                         (<>
                             <TextInput
-                                ref={bookVal}
+                                onChangeText={(value) => setBook(value)} //setBook(e.target.value)}
                                 style={styles.input}
                                 placeholder='book title...'
                             />
                             <TextInput
-                                ref={authorVal}
+                                onChangeText={(value) => setAuthor(value)}//setAuthor(e.target.value)}
                                 style={styles.input}
                                 placeholder='author name...'
                             />
