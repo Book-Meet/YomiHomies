@@ -91,7 +91,8 @@ export default function TabHomiesScreen() {
 
   useEffect(() => {
     if(state.user.id === '') return
-    setMatches(state.user.matches.items.filter(a=>a.id!=state.user.id));
+    // console.log(state.user.matchReq.items)
+    setMatches(state.user.matchReq.items.filter(a=>a.id!=state.user.id));
   }, [state])
 
 
@@ -99,7 +100,7 @@ export default function TabHomiesScreen() {
     if (state.user.id ==='') return null;
     return (
       <View style={styles.item}>
-        <Text style={styles.nickname}>{item.usernam}</Text>
+        <Text style={styles.nickname}>{item.username}</Text>
         {/* <Text style={styles.chatPreview}>{item.chatPreview}</Text> */}
       </View>
     );

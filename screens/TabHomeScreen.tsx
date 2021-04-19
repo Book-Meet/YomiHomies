@@ -5,6 +5,7 @@ import Swiper from 'react-native-deck-swiper';
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Transitioning, Transition } from 'react-native-reanimated'
 import {listProfiles, listBooks, getProfile} from '../src/graphql/queries';
+import {createMatch} from '../src/graphql/mutations';
 import {Auth} from 'aws-amplify';
 import UserContext from '../utils/userContext';
 
@@ -74,12 +75,17 @@ export default function TabHomeScreen()
   const onSwipedRight = () =>{
     transitionRef.current.animateNextTransition();
     setIndex((index + 1) % matches.length);
+    console.log(matches[index]);
+    // let addMatch = API.graphql({query:createMatch, variables:{input: {}} })
+    // console.log(addMatch);
   }
 
   useEffect(() => {
     if (state.user.id == '') return;
+    console.log(state.user);
     (async function fetchProfiles (){
       let profiles:any = await API.graphql({query:listProfiles});
+      console.log(profiles);
       profiles = profiles.data.listProfiles.items;
       profiles = profiles.filter((a:any)=>{
         let books = a.books.items;
