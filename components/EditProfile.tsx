@@ -53,8 +53,8 @@ export default function EditProfile({ setViewMode, styles }) {
         bookVal.current.value = "";
     }
 
-    async function handleDeleteBook(id) {
-        alert(id);
+    async function handleDeleteBook(book: Books) {
+        alert(book);
     }
 
     return (
