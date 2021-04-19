@@ -68,6 +68,7 @@ export default function TabProfileScreen() {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     height: "100%"
@@ -80,6 +81,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 10,
+    margin: 10,
   },
   separator: {
     marginVertical: 30,
@@ -131,7 +133,13 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: 'center'
+  },
+  text: {
+    lineHeight: 20,
+    fontSize: 14,
+    margin: 5,
   }
+
 });
 
       {/* <Text>Top Genres: </Text>
