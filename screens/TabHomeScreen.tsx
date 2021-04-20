@@ -1,17 +1,12 @@
 import * as React from 'react';
 import { useEffect, useState, useContext } from "react";
-import { StyleSheet, Image, StatusBar, SafeAreaView, Dimensions } from 'react-native';
+import { StyleSheet, Image, StatusBar, SafeAreaView, Dimensions, Alert, Modal, Pressable } from 'react-native';
 import Swiper from 'react-native-deck-swiper';
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Transitioning, Transition } from 'react-native-reanimated'
 import {listProfiles} from '../src/graphql/queries';
 import {createMatch} from '../src/graphql/mutations';
 import UserContext from '../utils/userContext';
-
-
-// import TinderCard from "react-tinder-card";
-// import { shouldUseActivityState } from 'react-native-screens';
-// import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import API from '@aws-amplify/api';
 
@@ -31,6 +26,7 @@ export default function TabHomeScreen()
 {
   const { state, dispatch } = useContext(UserContext)
   const [matches, setMatches] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const transition = (
     <Transition.Sequence>
@@ -76,9 +72,9 @@ export default function TabHomeScreen()
     transitionRef.current.animateNextTransition();
     let status = '';
     // console.log(matches[0])
-    matches[0].match.items.some(a=>a.matcheeID === state.user.id && a.status != 'rejected') ? status = 'accepted': status = 'pending'
-    let addMatch = await API.graphql({query:createMatch, variables:{input: {matcherID:state.user.id, matcheeID:matches[0].id, status}} })
-    // console.log(addMatch)
+    // matches[0].match.items.some(a=>a.matcheeID === state.user.id && a.status != 'rejected') ? status = 'accepted': status = 'pending'
+    let addMatch = await API.graphql({query:createMatch, variables:{input: {matcherID:state.user.id, matcheeID:matches[0].id, status:"accepted"}} })
+    console.log(addMatch)
     let temp = [...matches];
     temp.splice(0, 1);
     setMatches(temp);
@@ -87,7 +83,6 @@ export default function TabHomeScreen()
   useEffect(() => {
     if (state.user.id == '') return;
     (async function fetchMatches (){
-      // console.log('this users id ', state.user.id)
       let profiles:any = await API.graphql({query:listProfiles});
       profiles = profiles.data.listProfiles.items;
       profiles = profiles.map(a=>({id:a.id, books:a.books.items, about_me:a.about_me, username:a.username, match:a.match}))
@@ -106,7 +101,6 @@ export default function TabHomeScreen()
           return false;
         })
       })
-      // console.log(profiles)
       setMatches(profiles);
     })()
   }, [state])
@@ -114,6 +108,29 @@ export default function TabHomeScreen()
 
   return (
     <View style={styles.container}>
+      { modalVisible ? (
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>You got a match!</Text>
+            <Pressable
+              style={[styles.button,]}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Text>Hide Modal</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+      ) 
+      : (<> 
       {/* <StatusBar hidden /> */}
       <MaterialCommunityIcons
         name='crop-square'
@@ -201,7 +218,8 @@ export default function TabHomeScreen()
           />
         </View>
       </View>
-      </View>
+      </>)}
+    </View>
   );
 }
 
@@ -209,6 +227,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.white,
+    height: "100%",
+    width: "100%",
   },
   card: {
     flex: 0.45,
@@ -254,6 +274,38 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 30,
     left: -20
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
+    marginTop: 75
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 100,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    backgroundColor: "#333",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
   }
 });
 
