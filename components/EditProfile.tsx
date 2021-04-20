@@ -14,8 +14,8 @@ export default function EditProfile({ setViewMode, styles }) {
     const [book, setBook] = useState("");
     const [author, setAuthor] = useState("");
     
-
     async function handleSave() {
+        // validation checks
         if (nicknameVal.current.value === "" || genderVal.current.value === ""
         || aboutMeVal.current.value === "") {
             alert("No blank fields allowed!");
@@ -31,10 +31,10 @@ export default function EditProfile({ setViewMode, styles }) {
         let updated:any = await API.graphql({query:updateProfile, variables: {input:newVals, id:state.user.id}})
         dispatch({type: ActionType.SetData, payload: updated.data.updateProfile});
         setViewMode("view");
-        console.log(state.user);
     }
 
     async function handleAddBook() {
+        // validation checks
         if (author === "" || book === "") {
             alert("Book and author fields must have a value");
             return;
@@ -45,20 +45,19 @@ export default function EditProfile({ setViewMode, styles }) {
             profileID: state.user.id
         }
         let addedBook = await API.graphql({query:createBook, variables:{input:newBook}});
-        newBook.id = addedBook.data.createBook.id;
         let updatedUser = {...state.user}
-        updatedUser.books.items.push(newBook)
+        updatedUser.books.items.push(addedBook.data.createBook);
         dispatch({type: ActionType.SetData, payload: updatedUser});
         setAuthor("");
         setBook("");
     }
 
-    async function handleDeleteBook(book:Books, index:Number) {
+    async function handleDeleteBook(book:Books) {
         let deleted = await API.graphql({query:deleteBook, variables:{ input:{ id:book.id, _version:book._version}}})
         let updatedUser = {...state.user};
-        updatedUser.books.items.splice(index, 1);
+        let ind = updatedUser.books.items.findIndex((book:any) => book.id === deleted.data.deleteBook.id)
+        updatedUser.books.items.splice(ind, 1);
         dispatch({type: ActionType.SetData, payload: updatedUser});
-        console.log(deleted);
     }
 
     return (
@@ -103,16 +102,16 @@ export default function EditProfile({ setViewMode, styles }) {
                         defaultValue={state.user.about_me}
                     />
                 
-                <View style={styles.buttons}>
+                <View style={editStyles.buttons}>
                     <Pressable
                         onPress={() => setViewMode("view")}
-                        style={[styles.button, styles.buttonOpen]}
+                        style={[styles.button, editStyles.cancelButton]}
                     >
                         <Text>Cancel</Text>
                     </Pressable>
                     <Pressable
                         onPress={() => handleSave()}
-                        style={[styles.button, styles.buttonOpen]}
+                        style={[styles.button, editStyles.saveButton]}
                     >
                         <Text>Save</Text>
                     </Pressable>
@@ -122,13 +121,16 @@ export default function EditProfile({ setViewMode, styles }) {
                 <View style={styles.content}>
                     <View style={styles.listBooks}>
                     { 
-                        state.user.books !== undefined ? state.user.books.items.map((book, ind) => {
+                        state.user.books !== undefined ? state.user.books.items.filter(book => book._deleted !== true)
+                        .map((book) => {
                             return (
-                            <View key={book.id}>
+                            <View key={book.id}
+                                style={[editStyles.flexContainer]}>
                                 <Pressable
-                                    onPress={() => handleDeleteBook(book, ind)}
-                                    style={[styles.xButton, styles.listItem]}>
-                                    <Text>X</Text>
+                                    onPress={() => handleDeleteBook(book)}
+                                    style={[editStyles.xContainer]}
+                                >
+                                    <Text style={editStyles.xButton}>X</Text>
                                 </Pressable>
                                 <Text style={styles.listItem}>
                                     {book.title} - {book.author}
@@ -140,21 +142,23 @@ export default function EditProfile({ setViewMode, styles }) {
                     }
                     </View>
                     {
-                        state.user.books === undefined || state.user.books.items.length < 5 ?
+                        state.user.books === undefined || state.user.books.items.filter(book => book._deleted !== true).length < 5 ?
                         (<>
                             <TextInput
-                                onChangeText={(value) => setBook(value)} //setBook(e.target.value)}
+                                onChangeText={setBook} 
+                                value={book}
                                 style={styles.input}
                                 placeholder='book title...'
                             />
                             <TextInput
-                                onChangeText={(value) => setAuthor(value)}//setAuthor(e.target.value)}
+                                onChangeText={setAuthor}
+                                value={author}
                                 style={styles.input}
                                 placeholder='author name...'
                             />
                             <Pressable
                                 onPress={() => handleAddBook()}
-                                style={[styles.button, styles.buttonOpen]}
+                                style={[styles.button, editStyles.saveButton]}
                             >
                                 <Text>Add Book</Text>
                             </Pressable>
@@ -167,45 +171,53 @@ export default function EditProfile({ setViewMode, styles }) {
     );
 };
 
-const styles = StyleSheet.create({
-    // container: {
-    //     flex: 1,
-    //     backgroundColor: '#fff',
-    //     alignItems: 'center',
-    //     justifyContent: 'center',
-    // },
+const editStyles = StyleSheet.create({
+    flexContainer: {
+        flexDirection: "row", 
+        display: "flex", 
+        alignContent:"flex-start",
+        alignItems: "center"
+    },
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     buttons: {
         display: "flex",
         flexDirection: "row",
-        flexWrap: "nowrap"
+        flexWrap: "nowrap",
+        textAlign: "center",
     },
     xButton: {
-        backgroundColor: "red",
-        flex: 1
+        color: "#000",
+    },
+    xContainer: {
+        borderColor: "#000",
+        borderRadius: 5,
+        borderWidth: 1,
+        backgroundColor: "#F00",
+        width: 20,
+        textAlign: "center",
+        marginRight: 5,
+        marginTop: 2
     },
     listBooks: {
         display: "flex",
         flexDirection: "row",
-        flexWrap: "nowrap"
+        flexWrap: "nowrap",
+        alignContent: "space-around"
     },
     listItem: {
         flex: 6
+    },
+    saveButton: {
+        backgroundColor: "#5CC166",
+        width: 100,
+    },
+    cancelButton: {
+        backgroundColor: "#FF925C",
+        width: 100
     }
-    // content: {
-    //     padding: 40,
-    // },
-    // list: {
-    //     marginTop: 0,
-    // },
-    // header: {
-    //     height: 80,
-    //     marginTop: 35,
-    // },
-    // input: {
-    //     borderWidth: 1,
-    //     borderColor: '#777',
-    //     padding: 8,
-    //     margin: 10,
-    //     width: 200,
-    // }
 });

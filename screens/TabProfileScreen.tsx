@@ -86,6 +86,7 @@ const styles = StyleSheet.create({
     padding: 10,
     elevation: 2,
     margin: 10,
+    textAlign: "center"
   },
   buttonOpen: {
     backgroundColor: '#F194FF'

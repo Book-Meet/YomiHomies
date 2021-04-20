@@ -8,10 +8,6 @@ import UserContext from '../utils/userContext';
 
 
 export default function TabSettingsScreen() {
-  // these two lines are just for testing purposes to see if the loaded 
-  // context (done in App.tsx) is available here. It's available along with
-  // the dispatchers. 
-  const { state, dispatch } = React.useContext(UserContext);
 
   const [gender, setGender] = useState([
     {name: 'male', id: '1'},
