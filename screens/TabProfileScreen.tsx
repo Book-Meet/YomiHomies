@@ -2,50 +2,17 @@ import React, {useState, useContext} from 'react';
 import { StyleSheet } from 'react-native';
 import { View } from '../components/Themed';
 import ViewProfile from '../components/ViewProfile';
+import EditProfile from '../components/EditProfile';
 
 // These imports may not be needed here. They'll probably get moved to the EditProfile component
 import {API} from 'aws-amplify'; 
 import { updateProfile, createBook, createAuthor, createGenre } from '../src/graphql/mutations';
 import { ActionType } from '../types';
 import UserContext from '../utils/userContext';
-import EditProfile from '../components/EditProfile';
-
 
 
 export default function TabProfileScreen() {
   const [viewMode, setViewMode] = useState("view");
-  
-  // Probably everything below from here until the return value can be moved to the editProfile component.
-  const {dispatch} = useContext(UserContext)
-  const [user, setUser]:any = useState({}); // delete
-  const [modalVisible, setModalVisible] = useState(false); // move to viewProfile?
-  const [books, setBooks] = useState([]);
-  const [bookInput, setBookInput] = useState('');
-  const [bookAuthorinput, setBookAuthorInput] = useState('')
-  const [aboutMeText, setAboutMeText] = useState('')
-
-  async function handleUpdateProfile(newInfo:Object){ // send an object with the properties you want to change in the profiles
-    newInfo = {id:user.id, _version:user._version, ...newInfo}; // should be set to state.user.....
-    let mutation:any = await API.graphql({query:updateProfile, variables: {input:newInfo, id:user.id}})
-    dispatch({type: ActionType.SetData, payload: mutation.data.updateProfile});
-    //setUser(mutation.data.updateProfile)// we need to change the state.user with dispatch?
-  }
-
-  async function handleAddBook(){
-    if (bookInput === '' || bookAuthorinput == '') return;
-    let book:any = {
-      title: bookInput,
-      author: bookAuthorinput,
-      profileID: user.id//state.user.id
-    }
-    setBookAuthorInput('')
-    setBookInput('')
-    let create:any = await API.graphql({query:createBook, variables:{input: book}});
-    book.id = create.data.createBook.id
-    let userUpdate = {...user};//state.user context
-    userUpdate.books.items.push(book);// change user context
-    setUser(userUpdate);//change here too
-  }
 
   async function handleAddAuthor(newAuthor:String){//this can be ignored for now
     // let  addAuthor= await API.graphql({query:createAuthor, variables:{input:{name:newAuthor, profileID:user.id}}})
@@ -55,13 +22,12 @@ export default function TabProfileScreen() {
     // let addGenre = await API.graphql({query:createGenre, variables:{input:{genre, profileID:user.id}}})
   }
 
-
   return (
     <View style={styles.container}>
       { viewMode === "view" ?
       <ViewProfile setViewMode={setViewMode} styles={styles}/>
       :
-      <EditProfile /> }
+      <EditProfile setViewMode={setViewMode} styles={styles} /> }
     </View>
   );
 }
@@ -85,7 +51,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   separator: {
-    marginVertical: 30,
+    marginVertical: 10,
     height: 1,
     width: '80%',
   },
