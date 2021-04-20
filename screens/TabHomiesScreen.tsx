@@ -111,9 +111,15 @@ export default function TabHomiesScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      { DATA.length !== 0 ?
-        <Text>Homies</Text>
-        :
+      { DATA.length !== 0 ? (
+        <>
+          
+          <Text>Nickname: GuyWithFace</Text>
+          <Text>Gender: Male</Text>
+          <Text>Book: Matched Book</Text>
+          <Text>About me: Hello!!</Text>
+        </>
+      ) :
         <Text>No Matches, yet...</Text>
       }
       <FlatList
