@@ -76,9 +76,9 @@ export default function TabHomeScreen()
     transitionRef.current.animateNextTransition();
     let status = '';
     // console.log(matches[0])
-    matches[0].match.items.some(a=>a.matcheeID === state.user.id && a.status != 'rejected') ? status = 'accepted': status = 'pending'
-    let addMatch = await API.graphql({query:createMatch, variables:{input: {matcherID:state.user.id, matcheeID:matches[0].id, status}} })
-    // console.log(addMatch)
+    // matches[0].match.items.some(a=>a.matcheeID === state.user.id && a.status != 'rejected') ? status = 'accepted': status = 'pending'
+    let addMatch = await API.graphql({query:createMatch, variables:{input: {matcherID:state.user.id, matcheeID:matches[0].id, status:"accepted"}} })
+    console.log(addMatch)
     let temp = [...matches];
     temp.splice(0, 1);
     setMatches(temp);
@@ -87,7 +87,6 @@ export default function TabHomeScreen()
   useEffect(() => {
     if (state.user.id == '') return;
     (async function fetchMatches (){
-      // console.log('this users id ', state.user.id)
       let profiles:any = await API.graphql({query:listProfiles});
       profiles = profiles.data.listProfiles.items;
       profiles = profiles.map(a=>({id:a.id, books:a.books.items, about_me:a.about_me, username:a.username, match:a.match}))
@@ -106,7 +105,6 @@ export default function TabHomeScreen()
           return false;
         })
       })
-      // console.log(profiles)
       setMatches(profiles);
     })()
   }, [state])
