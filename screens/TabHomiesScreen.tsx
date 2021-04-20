@@ -6,7 +6,7 @@ import Colors from '../constants/Colors';
 import { navItem } from '@aws-amplify/ui';
 import API from '@aws-amplify/api';
 import UserContext from '../utils/userContext';
-import {listMatchs} from'../src/graphql/queries'
+import {listBooks, listMatchs} from'../src/graphql/queries'
 
 interface matchItem {
   id: Number;
@@ -92,10 +92,22 @@ export default function TabHomiesScreen() {
 
   useEffect(() => {
     if(state.user.id === '') return
-    console.log(state.user.match)
-    let myAccepted = state.user.match.items.filter(a => a.status === 'accepted')
-    console.log(myAccepted.map(a=>a.matcherProfile));
-    setMatches(myAccepted.map(a=>a.matcherProfile));
+    (async function() {
+      let allMatches = await API.graphql({query:listMatchs})
+      allMatches=allMatches.data.listMatchs.items;
+      allMatches=allMatches.filter(a=>a.matcherID === state.user.id || a.matcheeID === state.user.id);
+      allMatches = allMatches.map(a=>{
+        if(a.status === 'accepted'){
+          if (a.matcherProfile.id === state.user.id){
+            return a.matcheeProfile
+          }else{
+            return a.matcherProfile
+          }
+        }
+        return null;
+      }).filter(a=>a)
+      setMatches(allMatches)
+    })()
   }, [state])
 
 

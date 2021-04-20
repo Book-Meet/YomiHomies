@@ -303,7 +303,7 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "matcherID"
+                        "associatedWith": "matcheeProfile"
                     }
                 },
                 "photo_source": {
@@ -357,13 +357,6 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "matcherID": {
-                    "name": "matcherID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "status": {
                     "name": "status",
                     "isArray": false,
@@ -382,6 +375,19 @@ export const schema = {
                     "association": {
                         "connectionType": "BELONGS_TO",
                         "targetName": "matcheeID"
+                    }
+                },
+                "matcheeProfile": {
+                    "name": "matcheeProfile",
+                    "isArray": false,
+                    "type": {
+                        "model": "Profile"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "matcherID"
                     }
                 }
             },
@@ -423,5 +429,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "cd02e691bc4d429b0c2a492b83604087"
+    "version": "07936d9d503a7d1a540491349002e18f"
 };
