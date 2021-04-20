@@ -92,16 +92,10 @@ export default function TabHomiesScreen() {
 
   useEffect(() => {
     if(state.user.id === '') return
-    for (let item of state.user.matchRes.items){
-      console.log(item.status);
-      item.status === 'accepted' ? console.log(item) : console.log('not accepted')
-    }
-    let myAccepted = state.user.matchReq.items.filter(a => a.status === 'accepted')
-    let theirAccepted = state.user.matchRes.items.filter(a => a.status === 'accepted');
-    myAccepted = myAccepted.map(a=>a.matcherProfile)
-    theirAccepted = theirAccepted.map(a=>a.matcherProfile);
-    myAccepted = myAccepted.concat(theirAccepted);
-    setMatches(myAccepted);
+    console.log(state.user.match)
+    let myAccepted = state.user.match.items.filter(a => a.status === 'accepted')
+    console.log(myAccepted.map(a=>a.matcherProfile));
+    setMatches(myAccepted.map(a=>a.matcherProfile));
   }, [state])
 
 

@@ -222,7 +222,7 @@ export const createProfile = /* GraphQL */ `
         nextToken
         startedAt
       }
-      matchReq {
+      match {
         items {
           id
           matcherID
@@ -234,72 +234,6 @@ export const createProfile = /* GraphQL */ `
           createdAt
           updatedAt
           matcherProfile {
-            id
-            username
-            nickname
-            about_me
-            birth_date
-            latitude
-            longitude
-            gender
-            open_to_meet
-            photo_source
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-          matcheeProfile {
-            id
-            username
-            nickname
-            about_me
-            birth_date
-            latitude
-            longitude
-            gender
-            open_to_meet
-            photo_source
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-        }
-        nextToken
-        startedAt
-      }
-      matchRes {
-        items {
-          id
-          matcherID
-          matcheeID
-          status
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-          matcherProfile {
-            id
-            username
-            nickname
-            about_me
-            birth_date
-            latitude
-            longitude
-            gender
-            open_to_meet
-            photo_source
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-          matcheeProfile {
             id
             username
             nickname
@@ -387,7 +321,7 @@ export const updateProfile = /* GraphQL */ `
         nextToken
         startedAt
       }
-      matchReq {
+      match {
         items {
           id
           matcherID
@@ -399,72 +333,6 @@ export const updateProfile = /* GraphQL */ `
           createdAt
           updatedAt
           matcherProfile {
-            id
-            username
-            nickname
-            about_me
-            birth_date
-            latitude
-            longitude
-            gender
-            open_to_meet
-            photo_source
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-          matcheeProfile {
-            id
-            username
-            nickname
-            about_me
-            birth_date
-            latitude
-            longitude
-            gender
-            open_to_meet
-            photo_source
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-        }
-        nextToken
-        startedAt
-      }
-      matchRes {
-        items {
-          id
-          matcherID
-          matcheeID
-          status
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-          matcherProfile {
-            id
-            username
-            nickname
-            about_me
-            birth_date
-            latitude
-            longitude
-            gender
-            open_to_meet
-            photo_source
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-          matcheeProfile {
             id
             username
             nickname
@@ -552,7 +420,7 @@ export const deleteProfile = /* GraphQL */ `
         nextToken
         startedAt
       }
-      matchReq {
+      match {
         items {
           id
           matcherID
@@ -564,72 +432,6 @@ export const deleteProfile = /* GraphQL */ `
           createdAt
           updatedAt
           matcherProfile {
-            id
-            username
-            nickname
-            about_me
-            birth_date
-            latitude
-            longitude
-            gender
-            open_to_meet
-            photo_source
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-          matcheeProfile {
-            id
-            username
-            nickname
-            about_me
-            birth_date
-            latitude
-            longitude
-            gender
-            open_to_meet
-            photo_source
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-        }
-        nextToken
-        startedAt
-      }
-      matchRes {
-        items {
-          id
-          matcherID
-          matcheeID
-          status
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-          matcherProfile {
-            id
-            username
-            nickname
-            about_me
-            birth_date
-            latitude
-            longitude
-            gender
-            open_to_meet
-            photo_source
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-          matcheeProfile {
             id
             username
             nickname
@@ -727,112 +529,7 @@ export const createMatch = /* GraphQL */ `
           nextToken
           startedAt
         }
-        matchReq {
-          items {
-            id
-            matcherID
-            matcheeID
-            status
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-          startedAt
-        }
-        matchRes {
-          items {
-            id
-            matcherID
-            matcheeID
-            status
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-          startedAt
-        }
-      }
-      matcheeProfile {
-        id
-        username
-        nickname
-        about_me
-        birth_date
-        latitude
-        longitude
-        gender
-        open_to_meet
-        photo_source
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        genres {
-          items {
-            id
-            genre
-            profileID
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-          startedAt
-        }
-        authors {
-          items {
-            id
-            profileID
-            name
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-          startedAt
-        }
-        books {
-          items {
-            id
-            profileID
-            title
-            author
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-          startedAt
-        }
-        matchReq {
-          items {
-            id
-            matcherID
-            matcheeID
-            status
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-          startedAt
-        }
-        matchRes {
+        match {
           items {
             id
             matcherID
@@ -925,112 +622,7 @@ export const updateMatch = /* GraphQL */ `
           nextToken
           startedAt
         }
-        matchReq {
-          items {
-            id
-            matcherID
-            matcheeID
-            status
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-          startedAt
-        }
-        matchRes {
-          items {
-            id
-            matcherID
-            matcheeID
-            status
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-          startedAt
-        }
-      }
-      matcheeProfile {
-        id
-        username
-        nickname
-        about_me
-        birth_date
-        latitude
-        longitude
-        gender
-        open_to_meet
-        photo_source
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        genres {
-          items {
-            id
-            genre
-            profileID
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-          startedAt
-        }
-        authors {
-          items {
-            id
-            profileID
-            name
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-          startedAt
-        }
-        books {
-          items {
-            id
-            profileID
-            title
-            author
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-          startedAt
-        }
-        matchReq {
-          items {
-            id
-            matcherID
-            matcheeID
-            status
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-          startedAt
-        }
-        matchRes {
+        match {
           items {
             id
             matcherID
@@ -1123,112 +715,7 @@ export const deleteMatch = /* GraphQL */ `
           nextToken
           startedAt
         }
-        matchReq {
-          items {
-            id
-            matcherID
-            matcheeID
-            status
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-          startedAt
-        }
-        matchRes {
-          items {
-            id
-            matcherID
-            matcheeID
-            status
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-          startedAt
-        }
-      }
-      matcheeProfile {
-        id
-        username
-        nickname
-        about_me
-        birth_date
-        latitude
-        longitude
-        gender
-        open_to_meet
-        photo_source
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        genres {
-          items {
-            id
-            genre
-            profileID
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-          startedAt
-        }
-        authors {
-          items {
-            id
-            profileID
-            name
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-          startedAt
-        }
-        books {
-          items {
-            id
-            profileID
-            title
-            author
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-          startedAt
-        }
-        matchReq {
-          items {
-            id
-            matcherID
-            matcheeID
-            status
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-          startedAt
-        }
-        matchRes {
+        match {
           items {
             id
             matcherID
