@@ -113,7 +113,7 @@ export default function TabHomiesScreen() {
 
   const renderItem = ({item}:any) => {
     if (state.user.id ==='') return null;
-    console.log(item);
+    // console.log(item);
     return (
       <View style={styles.item}>
         <Image style={styles.icons} source={{uri:"https://i.ibb.co/f8vR1P8/ace.jpg"}} />
