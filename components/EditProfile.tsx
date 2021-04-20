@@ -18,13 +18,13 @@ export default function EditProfile({ setViewMode, styles }) {
     const [keyword, setKeyword] = useState("");
 
     async function bookSearch(keyword) {
-        console.log(keyword);
+        // console.log(keyword);
         setKeyword(keyword);
         await fetch(`https://www.googleapis.com/books/v1/volumes?q=${keyword}&key=AIzaSyAwyO1wyyKB3ymXXdLNxI8a-sHnHjAku88`)
         .then(res => res.json())
         .then(result => {
-            console.log("result: ", result);
-            console.log("result.items: ", result.items);
+            // console.log("result: ", result);
+            // console.log("result.items: ", result.items);
             setSearchResult(result.items);
         })
     }
