@@ -113,9 +113,14 @@ export default function TabHomiesScreen() {
 
   const renderItem = ({item}:any) => {
     if (state.user.id ==='') return null;
+    console.log(item);
     return (
       <View style={styles.item}>
-        <Text style={styles.nickname}>{item.username}</Text>
+        <Image style={styles.icons} source={{uri:"https://i.ibb.co/f8vR1P8/ace.jpg"}} />
+        <Text style={styles.nickname}>{"Name: " + item.username}</Text>
+        <Text>{"Gender: " + item.gender}</Text>
+        {/* <Text>{"Books: " + item.books}</Text> */}
+        <Text>{"About Me: " + item.about_me}</Text>
         {/* <Text style={styles.chatPreview}>{item.chatPreview}</Text> */}
       </View>
     );
