@@ -30,21 +30,18 @@ type Profile @model @key(fields: ["id"]) @auth(rules: [{allow: public}]) {
   books: [Book] @connection(keyName: "byProfile", fields: ["id"])
   authors: [Author] @connection(keyName: "byProfile", fields: ["id"])
   genres: [Genre] @connection(keyName: "byProfile", fields: ["id"])
-  matchReq: [Match] @connection(keyName: "byMatchReq", fields: ["id"])
-  matchRes: [Match] @connection(keyName: "byMatchRes", fields: ["id"])
+  match: [Match] @connection(keyName: "byMatch", fields: ["id"])
   photo_source: String
 }
 
 type Match @model 
-  @key (name: "byMatchReq", fields: ["matcherID", "matcheeID"]) 
-  @key (name: "byMatchRes", fields: ["matcheeID", "matcherID"]) 
+  @key (name: "byMatch", fields: ["matcherID", "matcheeID"])
   @auth(rules: [{allow: public}]) {
   id: ID!
   matcherID: ID!
   matcheeID: ID!
   status: String!
   matcherProfile: Profile! @connection(fields: ["matcheeID"])
-  matcheeProfile: Profile! @connection(fields: ["matcherID"])
 }
 
  
