@@ -135,11 +135,6 @@ export default function TabHomiesScreen() {
             renderItem={renderItem}
             keyExtractor={item=>item.id}
           />
-          <Image style={styles.icons} source={{uri:"https://i.ibb.co/f8vR1P8/ace.jpg"}} />
-          <Text>Nickname: GuyWithFace</Text>
-          <Text>Gender: Male</Text>
-          <Text>Book: Matched Book</Text>
-          <Text>About me: Hello!!</Text>
         </>
       ) :
         <Text>No Matches, yet...</Text>
