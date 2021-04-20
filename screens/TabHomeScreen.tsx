@@ -107,7 +107,7 @@ export default function TabHomeScreen()
       profiles = profiles.data.listProfiles.items;
       profiles = profiles.filter((a: any) =>
       {
-        // console.log("a is:", a)
+        console.log("a is:", a)
         let books = a.books.items;
         console.log("books are:", books)
         for (let match of a.match.items){

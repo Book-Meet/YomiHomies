@@ -32,7 +32,7 @@ export interface User {
   username: String;
   latitude?: Number;
   longitude?: Number; 
-  books?: Array<Books>;
+  books?: Object;
   authors?: Array<String>;
   genres?: Array<String>;
   matches?: Array<User>;
@@ -44,6 +44,9 @@ export interface User {
   birth_date?: Date;
   nickname?: String;
   photo_source?: String;
+  _version?: Number;
+  _deleted?: Boolean;
+  _lastChangedAt?: any;
 }
 
 export const initialUserState: User = {

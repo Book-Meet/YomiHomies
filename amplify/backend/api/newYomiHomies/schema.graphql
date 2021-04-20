@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 type Genre @model @key(name: "byProfile", fields: ["profileID"]) @auth(rules: [{allow: public}]) {
   id: ID!
   genre: String
@@ -44,4 +45,53 @@ type Match @model
   matcherProfile: Profile! @connection(fields: ["matcheeID"])
 }
 
+=======
+type Genre @model @key(name: "byProfile", fields: ["profileID"]) @auth(rules: [{allow: public}]) {
+  id: ID!
+  genre: String
+  profileID: ID
+}
+
+type Author @model @key(name: "byProfile", fields: ["profileID"]) @auth(rules: [{allow: public}]) {
+  id: ID!
+  profileID: ID
+  name: String
+}
+
+type Book @model @key(name: "byProfile", fields: ["profileID"]) @auth(rules: [{allow: public}]) {
+  id: ID!
+  profileID: ID
+  title: String
+  author: String
+}
+
+type Profile @model @key(fields: ["id"]) @auth(rules: [{allow: public}]) {
+  id: ID!
+  username: String
+  nickname: String
+  about_me: String
+  birth_date: AWSDate
+  latitude: Float
+  longitude: Float
+  gender: String
+  open_to_meet: Boolean
+  books: [Book] @connection(keyName: "byProfile", fields: ["id"])
+  authors: [Author] @connection(keyName: "byProfile", fields: ["id"])
+  genres: [Genre] @connection(keyName: "byProfile", fields: ["id"])
+  match: [Match] @connection(keyName: "byMatch", fields: ["id"])
+  photo_source: String
+}
+
+type Match @model 
+  @key (name: "byMatch", fields: ["matcherID", "matcheeID"])
+  @auth(rules: [{allow: public}]) {
+  id: ID!
+  matcherID: ID!
+  matcheeID: ID!
+  status: String!
+  matcherProfile: Profile! @connection(fields: ["matcheeID"])
+  matcheeProfile: Profile! @connection(fields: ["matcherID"])
+}
+
+>>>>>>> 5627b35f2b22bac96e2007a6f6229634caa1affa
  
