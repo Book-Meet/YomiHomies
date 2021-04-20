@@ -1,5 +1,5 @@
 import Auth from '@aws-amplify/auth';
-import * as React from 'react';
+import React, {useState} from 'react';
 import { StyleSheet, Button,  } from 'react-native';
 import Slider from '@react-native-community/slider';
 import EditScreenInfo from '../components/EditScreenInfo';
