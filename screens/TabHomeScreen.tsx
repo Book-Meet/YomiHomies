@@ -67,7 +67,7 @@ export default function TabHomeScreen()
   const onSwipedLeft = async () => {
     transitionRef.current.animateNextTransition();
     let reject = await API.graphql({query:createMatch, variables:{input:{matcherID:state.user.id, matcheeID:matches[0].id, status:"rejected"}}})
-    console.log('reject ', reject);
+    // console.log(reject);
     let temp = [...matches];
     temp.splice(0, 1);
     setMatches(temp);
@@ -76,8 +76,10 @@ export default function TabHomeScreen()
   const onSwipedRight = async () =>{
     transitionRef.current.animateNextTransition();
     let status = '';
+    // console.log(matches[0])
     matches[0].match.items.some(a=>a.matcheeID === state.user.id && a.status != 'rejected') ? status = 'accepted': status = 'pending'
     let addMatch = await API.graphql({query:createMatch, variables:{input: {matcherID:state.user.id, matcheeID:matches[0].id, status}} })
+    // console.log(addMatch)
     let temp = [...matches];
     temp.splice(0, 1);
     setMatches(temp);
@@ -101,26 +103,27 @@ export default function TabHomeScreen()
   {
     console.log("state is:",state)
     if (state.user.id == '') return;
-    (async function fetchProfiles (){
-      let profiles: any = await API.graphql({ query: listProfiles });
-      console.log("profiles are:", profiles)
+    (async function fetchMatches (){
+      // console.log('this users id ', state.user.id)
+      let profiles:any = await API.graphql({query:listProfiles});
       profiles = profiles.data.listProfiles.items;
-      profiles = profiles.filter((a: any) =>
-      {
-        console.log("a is:", a)
-        let books = a.books.items;
-        console.log("books are:", books)
-        for (let match of a.match.items){
-          if (match.matcherID == state.user.id) return false;
+      profiles = profiles.map(a=>({id:a.id, books:a.books.items, about_me:a.about_me, username:a.username, match:a.match}))
+      profiles = profiles.filter(profile =>{
+        if (profile.id === state.user.id) return false;
+        for (let match of state.user.match.items){
+          if(match.matcheeID === profile.id) return false;
         }
-        for (let book of state.user.books.items){
-          if(books.some((b:any)=>b.title === book.title)) {
-            a.book = book.title;
-            return a.id !== state.user.id;
+        return state.user.books.items.some(a=>{
+          for (let books of profile.books){
+            if(books.title === a.title) {
+              profile.book = books.title;
+              return true
+            };
           }
-        }
-        return false
+          return false;
+        })
       })
+      // console.log(profiles)
       setMatches(profiles);
     })()
   }, [state])
