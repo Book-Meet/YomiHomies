@@ -25,7 +25,7 @@
     "android": {
       "package": "com.cc18.yomihomies",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/YomiHomiesLogo.png",
         "backgroundColor": "#FFFFFF"
       }
     },
