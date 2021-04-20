@@ -42,7 +42,17 @@ export declare class Profile {
   readonly books?: (Book | null)[];
   readonly authors?: (Author | null)[];
   readonly genres?: (Genre | null)[];
+  readonly match?: (Match | null)[];
   readonly photo_source?: string;
   constructor(init: ModelInit<Profile>);
   static copyOf(source: Profile, mutator: (draft: MutableModel<Profile>) => MutableModel<Profile> | void): Profile;
+}
+
+export declare class Match {
+  readonly id: string;
+  readonly matcherID: string;
+  readonly status: string;
+  readonly matcherProfile: Profile;
+  constructor(init: ModelInit<Match>);
+  static copyOf(source: Match, mutator: (draft: MutableModel<Match>) => MutableModel<Match> | void): Match;
 }

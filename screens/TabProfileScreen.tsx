@@ -1,165 +1,57 @@
-import {useEffect, useState} from 'react';
-import * as React from 'react';
-import { StyleSheet, Image, Button, TextInput, Alert, Modal, Pressable, ScrollView } from 'react-native';
+import React, {useState, useContext} from 'react';
+import { StyleSheet } from 'react-native';
+import { View } from '../components/Themed';
+import ViewProfile from '../components/ViewProfile';
+import EditProfile from '../components/EditProfile';
 
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
-import { getProfile } from '../src/graphql/queries';
-import {API, graphqlOperation} from 'aws-amplify'; 
-import { Auth } from "@aws-amplify/auth";
-import { updateProfile, createBook, updateBook } from '../src/graphql/mutations';
+// These imports may not be needed here. They'll probably get moved to the EditProfile component
+import {API} from 'aws-amplify'; 
+import { updateProfile, createBook, createAuthor, createGenre } from '../src/graphql/mutations';
+import { ActionType } from '../types';
+import UserContext from '../utils/userContext';
 
-
-const items = [
-  {
-    id: 1,
-    name: 'Thrillers'
-  },
-  {
-    id: 2,
-    name: 'Business'
-  },
-  {
-    id: 3,
-    name: 'Romance'
-  },
-  {
-    id: 4,
-    name: 'Technology'
-  },
-  {
-    id: 5,
-    name: 'Comics'
-  }
-];
 
 export default function TabProfileScreen() {
-  const [count, setCount] = useState(0);
-  const [user, setUser]:any = useState({});
-  const [modalVisible, setModalVisible] = useState(false);
-  
+  const [viewMode, setViewMode] = useState("view");
 
-  useEffect(()=>{
-    (async () =>{
-      let authUser = await Auth.currentUserInfo();
-      let query:any = await API.graphql(graphqlOperation(getProfile, {id:authUser.id}))
-      query = query.data.getProfile;
-      setUser(query);
-    })()
-  }, [])
-
-  async function updateThisProfile(newInfo:Object){ // send an object with the properties you want to change in the profiles
-    newInfo = {id:user.id, ...newInfo};
-    console.log(newInfo);
-    let mutation:any = await API.graphql({query:updateProfile, variables: {input:newInfo, id:user.id}})
-    console.log(mutation.data.updateProfile);
-    setUser(mutation.data.updateProfile)
+  async function handleAddAuthor(newAuthor:String){//this can be ignored for now
+    // let  addAuthor= await API.graphql({query:createAuthor, variables:{input:{name:newAuthor, profileID:user.id}}})
   }
 
-  async function addBook(newBook:any){
-    let book:any = {
-      title: newBook.title,
-      author: newBook.author,
-      profileID: user.id
-    }
-    let create:any = await API.graphql({query:createBook, variables:{input: book}});
-    console.log(create.data.createBook);
+  async function handleAddGenre(genre:String){// this too can be ignored for now
+    // let addGenre = await API.graphql({query:createGenre, variables:{input:{genre, profileID:user.id}}})
   }
 
   return (
-    <ScrollView>
     <View style={styles.container}>
-      <Text style={styles.title}>Profile</Text>
-      <Image style={{
-            width: 100,
-            height: 100
-          }} source={require('../assets/images/arina-reading.jpeg')} />
-      
-      
-      <Text>Username: {user.username}</Text>
-      <Text>Nickname: Ari</Text>
-      <Text>Gender: Female</Text>
-      <Text>Top Books: </Text>
-        <Text>Book1</Text>
-        <Text>Book2</Text>
-        <Text>Book3</Text>
-        <TextInput style={styles.input}/>
-        <Button
-          onPress={() => setCount(count + 1)}
-          title="+"
-        />
-      
-      <Text>Top Genres: </Text>
-      <View style={styles.centeredView}>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-            setModalVisible(!modalVisible);
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>Genre1</Text>
-              <Text style={styles.modalText}>Genre2</Text>
-              <Text style={styles.modalText}>Genre3</Text>
-              <Text style={styles.modalText}>Genre4</Text>
-              <Text style={styles.modalText}>Genre5</Text>
-              <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                <Text style={styles.textStyle}>Close</Text>
-              </Pressable>
-            </View>
-          </View>
-        </Modal>
-        <Pressable
-          style={[styles.button, styles.buttonOpen]}
-          onPress={() => setModalVisible(true)}
-        >
-          <Text style={styles.textStyle}>Select Genre</Text>
-        </Pressable>
-      </View>
-
-        {/* <select>
-          <option value="" selected></option>
-          <option value="Thrillers">Thrillers</option>
-          <option value="Business">Business</option>
-          <option value="Romance">Romance</option>
-        </select> */}
-
-      <Text>Top Authors: </Text>
-        <Text>Author1</Text>
-        <Text>Author2</Text>
-        <Text>Author3</Text>
-        <TextInput style={styles.input}/>
-        <Button
-          onPress={() => setCount(count + 1)}
-          title="+"
-        />
-      <Text>About me: </Text>
-        <Text>Hello!!</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/TabOneScreen.tsx" />
+      { viewMode === "view" ?
+      <ViewProfile setViewMode={setViewMode} styles={styles}/>
+      :
+      <EditProfile setViewMode={setViewMode} styles={styles} /> }
     </View>
-    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    height: "100%"
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
+    marginTop: 20,
+  },
+  profilePic: {
+    width: 100,
+    height: 100,
+    borderRadius: 10,
+    margin: 10,
   },
   separator: {
-    marginVertical: 30,
+    marginVertical: 10,
     height: 1,
     width: '80%',
   },
@@ -192,7 +84,8 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: 20,
     padding: 10,
-    elevation: 2
+    elevation: 2,
+    margin: 10,
   },
   buttonOpen: {
     backgroundColor: '#F194FF'
@@ -208,5 +101,48 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: 'center'
+  },
+  text: {
+    lineHeight: 20,
+    fontSize: 14,
+    marginTop: 10,
+    marginBottom: 10,
+    fontWeight: 'bold',
   }
+
 });
+
+      {/* <Text>Top Genres: </Text>
+      <View style={styles.centeredView}>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText} onPress={()=>{handleAddGenre("Thriller")}}>Genre1</Text>
+              <Text style={styles.modalText}>Genre2</Text>
+              <Text style={styles.modalText}>Genre3</Text>
+              <Text style={styles.modalText}>Genre4</Text>
+              <Text style={styles.modalText}>Genre5</Text>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text style={styles.textStyle}>Close</Text>
+              </Pressable>
+            </View>
+          </View>
+        </Modal>
+        <Pressable
+          style={[styles.button, styles.buttonOpen]}
+          onPress={() => setModalVisible(true)}
+        >
+          <Text style={styles.textStyle}>Select Genre</Text>
+        </Pressable>
+      </View> */}

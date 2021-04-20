@@ -17,7 +17,7 @@ type Book @model @key(name: "byProfile", fields: ["profileID"]) @auth(rules: [{a
   author: String
 }
 
-type Profile @model @key(name: "byMatch", fields: ["id"]) @auth(rules: [{allow: public}]) {
+type Profile @model @key(fields: ["id"]) @auth(rules: [{allow: public}]) {
   id: ID!
   username: String
   nickname: String
@@ -30,9 +30,18 @@ type Profile @model @key(name: "byMatch", fields: ["id"]) @auth(rules: [{allow: 
   books: [Book] @connection(keyName: "byProfile", fields: ["id"])
   authors: [Author] @connection(keyName: "byProfile", fields: ["id"])
   genres: [Genre] @connection(keyName: "byProfile", fields: ["id"])
-  pending: [Profile] @connection(keyName: "byMatch", fields: ["id"])
-  matches: [Profile] @connection(keyName: "byMatch", fields: ["id"])
-  rejections: [Profile] @connection(keyName: "byMatch", fields: ["id"])
+  match: [Match] @connection(keyName: "byMatch", fields: ["id"])
   photo_source: String
 }
+
+type Match @model 
+  @key (name: "byMatch", fields: ["matcherID", "matcheeID"])
+  @auth(rules: [{allow: public}]) {
+  id: ID!
+  matcherID: ID!
+  matcheeID: ID!
+  status: String!
+  matcherProfile: Profile! @connection(fields: ["matcheeID"])
+}
+
  

@@ -4,11 +4,12 @@ import { schema } from './schema';
 
 
 
-const { Genre, Author, Book, Profile } = initSchema(schema);
+const { Genre, Author, Book, Profile, Match } = initSchema(schema);
 
 export {
   Genre,
   Author,
   Book,
-  Profile
+  Profile,
+  Match
 };

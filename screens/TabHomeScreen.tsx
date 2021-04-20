@@ -1,87 +1,21 @@
 import * as React from 'react';
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { StyleSheet, Image, StatusBar, SafeAreaView, Dimensions } from 'react-native';
 import Swiper from 'react-native-deck-swiper';
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Transitioning, Transition } from 'react-native-reanimated'
-import { Text, View } from '../components/Themed';
-import API, { graphqlOperation } from '@aws-amplify/api';
-import {listProfiles, listBooks, getProfile} from '../src/graphql/queries';
-import {Auth} from 'aws-amplify';
+import {listProfiles} from '../src/graphql/queries';
+import {createMatch} from '../src/graphql/mutations';
+import UserContext from '../utils/userContext';
 
 
 // import TinderCard from "react-tinder-card";
 // import { shouldUseActivityState } from 'react-native-screens';
 // import EditScreenInfo from '../components/EditScreenInfo';
-
-// //dummy data - hard coding
-const data = [
-      {
-        id: 1,
-        name: 'Ace',
-        book: 'Harry Potter',
-        uri : 'https://i.ibb.co/f8vR1P8/ace.jpg'
-      },
-      { id: 2,
-        name: 'Chopper',
-        book: 'Adventures of Sherlock Holmes',
-        uri : 'https://i.ibb.co/dWHxXnH/chopper.jpg'
-      },
-      {
-        id: 3,
-        name: 'Doflamingo',
-        book: "Kiki's Delivery Service",
-        uri: 'https://i.ibb.co/71N3h5W/doflamingo.jpg'
-      },
-      {
-        id: 4,
-        name: 'Franky',
-        book: 'Dragon Ball',
-        uri : 'https://i.ibb.co/6ZCYYqD/franky.jpg'
-      },
-      {
-        id: 5,
-        name: 'Luffy',
-        book: 'One Piece',
-        uri : 'https://i.ibb.co/HpR5T5p/luffy.jpg'
-      },
-      {
-        id: 6,
-        name: 'Sanji',
-        book: 'Naruto',
-        uri : 'https://i.ibb.co/m4M41Rq/sanji.jpg'
-      },
-      {
-        id: 7,
-        name: 'Shanks',
-        book: 'Demon Slayer',
-        uri : 'https://i.ibb.co/p25G6p4/shanks.jpg'
-      },
-      {
-        id: 8,
-        name: 'Smoker',
-        book: 'Attack on Titan',
-        uri : 'https://i.ibb.co/w6sqvDN/smoker.jpg'
-      },
-      {
-        id: 9,
-        name: 'Usopp',
-        book: 'Pokemon',
-        uri : 'https://i.ibb.co/xFrRSY0/usopp.jpg'
-      },
-      {
-        id: 10,
-        name: 'Zoro',
-        book: 'Detective Conan',
-        uri : 'https://i.ibb.co/7QsgXy1/zoro.jpg'
-      },
-]
+import { Text, View } from '../components/Themed';
+import API from '@aws-amplify/api';
 
 
-// define dimensions
-const { width } = Dimensions.get('window');
-
-// define colors
 const colors = {
   red: '#ec2379',
   blue: '#0070ff',
@@ -90,60 +24,64 @@ const colors = {
   white: '#ffffff'
 };
 
+const { width } = Dimensions.get('window');
 const ANIMATION_DURATION = 200;
-
-const transition = (
-  <Transition.Sequence>
-    <Transition.Out type='slide-bottom' durationMs={ANIMATION_DURATION} interpolation='easeIn'/>
-    <Transition.Together>
-      <Transition.In type='fade' durationMs={ANIMATION_DURATION} delayMs={ANIMATION_DURATION / 2}/>
-      <Transition.In type='slide-bottom' durationMs={ANIMATION_DURATION} delayMs={ANIMATION_DURATION / 2} interpolation='easeOut'/>
-    </Transition.Together>
-  </Transition.Sequence>
-);
-
-const swiperRef = React.createRef();
-const transitionRef = React.createRef();
-
-// const a = ['https://i.ibb.co/f8vR1P8/ace.jpg', 'https://i.ibb.co/dWHxXnH/chopper.jpg'];
-
-// const Card = ({ card }) =>
-// {
-//   console.log("image is:", card)
-//   return (
-//     <View style={styles.card}>
-//       <Image source={{ card }} style={styles.cardImage} />
-//     </View>
-//   );
-// };
-const Card = ({ card }) =>
-{
-  console.log("card is:", card)
-  return (
-    <View style={styles.card}>
-      <Image source={{ uri: card.uri }} style={styles.cardImage} />  
-    </View>
-  );
-};
-
-const CardDetails = ({ index }) => (
-  <View style={styles.cardDetails} key={data[index].id}>
-    <Text style={[styles.text, styles.name]}>{"Name: " + data[index].name}</Text>
-    <Text style={[styles.text, styles.book]}>{"Book: " + data[index].book}</Text>
-  </View>
-);
-
 
 export default function TabHomeScreen()
 {
-  const [index, setIndex] = React.useState(0);
-  // const [image, setImage] = React.useState([]);
-  // console.log(image)
-  const onSwiped = () =>
+  const { state, dispatch } = useContext(UserContext)
+  const [matches, setMatches] = useState([]);
+  // console.log(state)
+
+  const transition = (
+    <Transition.Sequence>
+      <Transition.Out type='slide-bottom' durationMs={ANIMATION_DURATION} interpolation='easeIn'/>
+      <Transition.Together>
+        <Transition.In type='fade' durationMs={ANIMATION_DURATION} delayMs={ANIMATION_DURATION / 2}/>
+        <Transition.In type='slide-bottom' durationMs={ANIMATION_DURATION} delayMs={ANIMATION_DURATION / 2} interpolation='easeOut'/>
+      </Transition.Together>
+    </Transition.Sequence>
+  );
+  
+  const swiperRef:any = React.createRef();
+  const transitionRef:any = React.createRef();
+  
+  const Card = ({ card }:any) =>
   {
-    transitionRef.current.animateNextTransition();
-    setIndex((index + 1) % data.length);
+    if(matches.length === 0) return null 
+    return (
+      <View style={styles.card}>
+        <Image source={{uri:"https://i.ibb.co/f8vR1P8/ace.jpg"}} style={styles.cardImage} />
+      </View>
+    );
   };
+  
+  const CardDetails = ({ index }:any) => matches.length > 0 ? (
+    <View style={styles.cardDetails} key={matches[0].id}>
+      <Text style={[styles.text, styles.name]}>{"Name: " + matches[0].username}</Text>
+      <Text style={[styles.text, styles.book]}>{"Book: " + matches[0].book}</Text>
+      <Text style={[styles.text, styles.name]}>{"ABout Me: " + matches[0].about_me}</Text>
+    </View>
+  ) : null;
+
+  const onSwipedLeft = async () => {
+    transitionRef.current.animateNextTransition();
+    let reject = await API.graphql({query:createMatch, variables:{input:{matcherID:state.user.id, matcheeID:matches[0].id, status:"rejected"}}})
+    console.log('reject ', reject);
+    let temp = [...matches];
+    temp.splice(0, 1);
+    setMatches(temp);
+  }
+  
+  const onSwipedRight = async () =>{
+    transitionRef.current.animateNextTransition();
+    let status = '';
+    matches[0].match.items.some(a=>a.matcheeID === state.user.id && a.status != 'rejected') ? status = 'accepted': status = 'pending'
+    let addMatch = await API.graphql({query:createMatch, variables:{input: {matcherID:state.user.id, matcheeID:matches[0].id, status}} })
+    let temp = [...matches];
+    temp.splice(0, 1);
+    setMatches(temp);
+  }
 
   // useEffect(() => {
   //   (async function  (){
@@ -159,24 +97,34 @@ export default function TabHomeScreen()
   //     setImage(eachProfile)
   //   })()
   // }, [])
-  useEffect(() => {
+  useEffect(() =>
+  {
+    console.log("state is:",state)
+    if (state.user.id == '') return;
     (async function fetchProfiles (){
-      let userID = await Auth.currentUserInfo()
-      let myBooks = await API.graphql({query:getProfile, variables:{id:userID.id}})
-      myBooks = myBooks.data.getProfile.books.items;
-      let profiles = await API.graphql({query:listProfiles});
+      let profiles: any = await API.graphql({ query: listProfiles });
+      console.log("profiles are:", profiles)
       profiles = profiles.data.listProfiles.items;
-      profiles = profiles.filter(a=>{
+      profiles = profiles.filter((a: any) =>
+      {
+        // console.log("a is:", a)
         let books = a.books.items;
-        for (let book of myBooks){
-          if(books.some(b=>b.title === book.title)) return true;
+        console.log("books are:", books)
+        for (let match of a.match.items){
+          if (match.matcherID == state.user.id) return false;
+        }
+        for (let book of state.user.books.items){
+          if(books.some((b:any)=>b.title === book.title)) {
+            a.book = book.title;
+            return a.id !== state.user.id;
+          }
         }
         return false
       })
-      console.log(profiles);
+      setMatches(profiles);
     })()
-  }, [])
- 
+  }, [state])
+  
 
 // DOM
   return (
@@ -191,11 +139,12 @@ export default function TabHomeScreen()
       <View style={styles.swiperContainer}>
         <Swiper
         ref={swiperRef}
-        cards={data}
-        cardIndex={index}
+        cards={matches}
+        cardIndex={0}
         renderCard={(card) => <Card card={card} />}
-        onSwiped={onSwiped}
-        stackSize={3}
+        onSwipedLeft={onSwipedLeft}
+        onSwipedRight={onSwipedRight}
+        stackSize={4}
         stackScale={10}
         stackSeparation={14}
         disableTopSwipe
@@ -226,8 +175,8 @@ export default function TabHomeScreen()
             title: 'LIKE',
             style: {
               label: {
-                backgroudColor: colors.blue,
-                color: colors.black,
+                // backgroudColor: colors.blue,
+                color: colors.white,
                 fontSize: 24
               },
               wrapper: {
@@ -244,7 +193,7 @@ export default function TabHomeScreen()
         </View>
       <View style={styles.bottomContainer}>
         <Transitioning.View ref={transitionRef} transition={transition}>
-          <CardDetails index={index} />
+          <CardDetails index={0} />
         </Transitioning.View>
         <View style={styles.bottomButtonsContainer}>
           <MaterialCommunityIcons.Button
