@@ -303,7 +303,7 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "matcheeProfile"
+                        "associatedWith": "matcherProfile"
                     }
                 },
                 "photo_source": {
@@ -374,7 +374,7 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "matcheeID"
+                        "targetName": "matcherID"
                     }
                 },
                 "matcheeProfile": {
@@ -387,7 +387,7 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "matcherID"
+                        "targetName": "matcheeID"
                     }
                 }
             },
@@ -429,5 +429,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "07936d9d503a7d1a540491349002e18f"
+    "version": "324280629c6a7dcc23a3cbc1ab0ce459"
 };

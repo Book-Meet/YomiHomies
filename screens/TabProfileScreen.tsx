@@ -109,8 +109,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     fontWeight: 'bold',
+  },
+  headingText: {
+    fontSize: 20,
   }
-
 });
 
       {/* <Text>Top Genres: </Text>

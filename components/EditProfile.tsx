@@ -1,10 +1,11 @@
 import React, { useContext, useRef, useState } from 'react';
-import { StyleSheet, TextInput, Button, SafeAreaView, ScrollView, Pressable } from 'react-native';
+import { StyleSheet, TextInput, Button, SafeAreaView, ScrollView, Pressable, FlatList, SearchBar } from 'react-native';
 import { Text, View } from './Themed';
 import UserContext from '../utils/userContext'
 import { API } from 'aws-amplify'; 
 import { updateProfile, createBook, deleteBook} from '../src/graphql/mutations';
 import { ActionType, Books } from '../types';
+import { Octicons } from '@expo/vector-icons';
 
 export default function EditProfile({ setViewMode, styles }) {
     const { state, dispatch } = useContext(UserContext);
@@ -13,6 +14,30 @@ export default function EditProfile({ setViewMode, styles }) {
     const aboutMeVal = useRef(null);
     const [book, setBook] = useState("");
     const [author, setAuthor] = useState("");
+    const [searchResult, setSearchResult] = useState([]);
+    const [keyword, setKeyword] = useState("");
+
+    async function bookSearch(keyword) {
+        // console.log(keyword);
+        setKeyword(keyword);
+        await fetch(`https://www.googleapis.com/books/v1/volumes?q=${keyword}&key=AIzaSyAwyO1wyyKB3ymXXdLNxI8a-sHnHjAku88`)
+        .then(res => res.json())
+        .then(result => {
+            // console.log("result: ", result);
+            // console.log("result.items: ", result.items);
+            setSearchResult(result.items);
+        })
+    }
+
+    const renderItem = ({item}) => {
+        if(searchResult.length === 0) return null;
+
+        return (
+            <View>
+                <Text>{item.volumeInfo.title}</Text>
+            </View>
+        )
+    }
     
     async function handleSave() {
         // validation checks
@@ -64,19 +89,24 @@ export default function EditProfile({ setViewMode, styles }) {
         <SafeAreaView style={styles.container}>
             <ScrollView>
                 <View style={styles.header}>
-                    <Text>Edit Profile</Text>
+                    <Text style={[editStyles.bold, styles.headingText]}>Edit Profile</Text>
                 </View>
-                <Text>Nickname:</Text>
+
+                <View  style={styles.separator} ></View>
+
+                <Text style={editStyles.bold}>Nickname:</Text>
                 <TextInput
                     ref={nicknameVal}
-                    style={styles.input}
+                    style={[styles.input, editStyles.inputPadding]}
+                    selectTextOnFocus={true}
                     defaultValue={state.user.nickname}
                 />
 
-                <Text>Gender:</Text>
+                <Text style={editStyles.bold} >Gender:</Text>
                 <TextInput
                     ref={genderVal}
-                    style={styles.input}
+                    style={[styles.input, editStyles.inputPadding]}
+                    selectTextOnFocus={true}
                     defaultValue={state.user.gender}
                 />
 
@@ -94,15 +124,16 @@ export default function EditProfile({ setViewMode, styles }) {
                         onChangeText={(val)=> alert(val)}
                     /> */}
 
-                <Text>About me:</Text>
+                <Text style={editStyles.bold} >About me:</Text>
                     <TextInput
                         multiline
                         ref={aboutMeVal}
-                        style={styles.input}
+                        style={[styles.input, editStyles.inputPadding]}
+                        selectTextOnFocus={true}
                         defaultValue={state.user.about_me}
                     />
                 
-                <View style={editStyles.buttons}>
+                <View style={[editStyles.buttons,]}>
                     <Pressable
                         onPress={() => setViewMode("view")}
                         style={[styles.button, editStyles.cancelButton]}
@@ -117,7 +148,9 @@ export default function EditProfile({ setViewMode, styles }) {
                     </Pressable>
                 </View>
 
-                <Text>Top Books (up to 5):</Text>
+                <View  style={styles.separator} ></View>
+
+                <Text style={[editStyles.bold,]} >Top Books (up to 5):</Text>
                 <View style={styles.content}>
                     <View style={styles.listBooks}>
                     { 
@@ -130,7 +163,7 @@ export default function EditProfile({ setViewMode, styles }) {
                                     onPress={() => handleDeleteBook(book)}
                                     style={[editStyles.xContainer]}
                                 >
-                                    <Text style={editStyles.xButton}>X</Text>
+                                    <Octicons name="trashcan" size={20} color="#F00" style={editStyles.xButton} />
                                 </Pressable>
                                 <Text style={styles.listItem}>
                                     {book.title} - {book.author}
@@ -141,19 +174,34 @@ export default function EditProfile({ setViewMode, styles }) {
                     : null
                     }
                     </View>
+                    {/* google books autocomplete */}
+                    <>
+                        <TextInput
+                            onChangeText={bookSearch}
+                            value={keyword}
+                            style={styles.input}
+                            placeholder='book title?'
+                        />
+                        <FlatList
+                            // keyboardShouldPersistTaps='handled'
+                            renderItem={renderItem}
+                            data={searchResult !== undefined ? searchResult : []}
+                            keyExtractor={(item, index) => index.toString()}
+                        />
+                    </>
                     {
                         state.user.books === undefined || state.user.books.items.filter(book => book._deleted !== true).length < 5 ?
                         (<>
                             <TextInput
                                 onChangeText={setBook} 
                                 value={book}
-                                style={styles.input}
+                                style={[styles.input, editStyles.inputPadding]}
                                 placeholder='book title...'
                             />
                             <TextInput
                                 onChangeText={setAuthor}
                                 value={author}
-                                style={styles.input}
+                                style={[styles.input, editStyles.inputPadding]}
                                 placeholder='author name...'
                             />
                             <Pressable
@@ -194,14 +242,15 @@ const editStyles = StyleSheet.create({
         color: "#000",
     },
     xContainer: {
-        borderColor: "#000",
-        borderRadius: 5,
-        borderWidth: 1,
-        backgroundColor: "#F00",
+        // borderColor: "#000",
+        // borderRadius: 5,
+        // borderWidth: 1,
+        // backgroundColor: "#F00",
         width: 20,
         textAlign: "center",
         marginRight: 5,
-        marginTop: 2
+        marginTop: 4,
+        marginBottom: 3,
     },
     listBooks: {
         display: "flex",
@@ -219,5 +268,11 @@ const editStyles = StyleSheet.create({
     cancelButton: {
         backgroundColor: "#FF925C",
         width: 100
-    }
+    },
+    bold: {
+        fontWeight: "bold",
+    },
+    inputPadding: {
+        padding: 5,
+    },
 });
