@@ -19,9 +19,11 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.cc18.yomihomies",
       "supportsTablet": true
     },
     "android": {
+      "package": "com.cc18.yomihomies",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"

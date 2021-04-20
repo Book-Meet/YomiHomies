@@ -1,107 +1,223 @@
-import * as React from 'react';
-import {useState, useContext} from 'react';
-import { StyleSheet, TextInput, Button, FlatList } from 'react-native';
-import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
+import React, { useContext, useRef, useState } from 'react';
+import { StyleSheet, TextInput, Button, SafeAreaView, ScrollView, Pressable } from 'react-native';
 import { Text, View } from './Themed';
+import UserContext from '../utils/userContext'
+import { API } from 'aws-amplify'; 
+import { updateProfile, createBook, deleteBook} from '../src/graphql/mutations';
+import { ActionType, Books } from '../types';
 
-export default function EditProfile() {
-    const [nickName, setNickName] = useState('Ari');
-    const [gender, setGender] = useState('female');
-    const [books, setBooks] = useState([
-        { book: 'The Devil Wears Prada', key: '1'},
-        { book: 'Factfullness', key: '2'},
-        { book: 'Lord of the Rings', key: '3'},
-    ]);
-    const [text, setText] = useState('');
+export default function EditProfile({ setViewMode, styles }) {
+    const { state, dispatch } = useContext(UserContext);
+    const nicknameVal = useRef(null);
+    const genderVal = useRef(null);
+    const aboutMeVal = useRef(null);
+    const [book, setBook] = useState("");
+    const [author, setAuthor] = useState("");
+    
+    async function handleSave() {
+        // validation checks
+        if (nicknameVal.current.value === "" || genderVal.current.value === ""
+        || aboutMeVal.current.value === "") {
+            alert("No blank fields allowed!");
+            return;
+        }
+        const newVals = {
+            id: state.user.id,
+            _version: state.user._version,
+            nickname: nicknameVal.current.value,
+            gender: genderVal.current.value,
+            about_me: aboutMeVal.current.value
+        }
+        let updated:any = await API.graphql({query:updateProfile, variables: {input:newVals, id:state.user.id}})
+        dispatch({type: ActionType.SetData, payload: updated.data.updateProfile});
+        setViewMode("view");
+    }
 
-    const changeHandler = (val) => {
-        setText(val);
+    async function handleAddBook() {
+        // validation checks
+        if (author === "" || book === "") {
+            alert("Book and author fields must have a value");
+            return;
+        }
+        const newBook:Books = {
+            author: author,
+            title: book,
+            profileID: state.user.id
+        }
+        let addedBook = await API.graphql({query:createBook, variables:{input:newBook}});
+        let updatedUser = {...state.user}
+        updatedUser.books.items.push(addedBook.data.createBook);
+        dispatch({type: ActionType.SetData, payload: updatedUser});
+        setAuthor("");
+        setBook("");
+    }
+
+    async function handleDeleteBook(book:Books) {
+        let deleted = await API.graphql({query:deleteBook, variables:{ input:{ id:book.id, _version:book._version}}})
+        let updatedUser = {...state.user};
+        let ind = updatedUser.books.items.findIndex((book:any) => book.id === deleted.data.deleteBook.id)
+        updatedUser.books.items.splice(ind, 1);
+        dispatch({type: ActionType.SetData, payload: updatedUser});
     }
 
     return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <Text>Edit Profile</Text>
-            </View>
-            <Text>Nickname:</Text>
-            <TextInput
-                style={styles.input}
-                placeholder={nickName}
-                onChangeText={(val) => setNickName(val)}
-            />
-
-            <Text>Gender:</Text>
-            <TextInput
-                style={styles.input}
-                placeholder={gender}
-                onChangeText={(val) => setGender(val)}
-            />
-
-            <Text>Top Books:</Text>
-            <View style={styles.content}>
-                <View style={styles.list}>
-                    <FlatList
-                        data={books}
-                        renderItem={({item}) => (
-                            <Text>{item.book}</Text>
-                        )}
-                    />
+        <SafeAreaView style={styles.container}>
+            <ScrollView>
+                <View style={styles.header}>
+                    <Text>Edit Profile</Text>
                 </View>
+                <Text>Nickname:</Text>
                 <TextInput
+                    ref={nicknameVal}
                     style={styles.input}
-                    placeholder='new books...'
-                    onChangeText={changeHandler}
-                />
-            </View>
-            <Text>Top Genres:</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder='new genres...'
-                    onChangeText={changeHandler}
+                    defaultValue={state.user.nickname}
                 />
 
-            <Text>Top Authors:</Text>
+                <Text>Gender:</Text>
                 <TextInput
+                    ref={genderVal}
                     style={styles.input}
-                    placeholder='new Authors...'
-                    onChangeText={changeHandler}
+                    defaultValue={state.user.gender}
                 />
 
-            <Text>About me:</Text>
-                <TextInput
-                    multiline
-                    style={styles.input}
-                    placeholder='About me...'
-                    onChangeText={changeHandler}
-                />
-            
-            <Button title='Update Profile'/>
-        </View>
+                {/* <Text>Top Genres:</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder='new genres...'
+                        onChangeText={(val)=> alert(val)}
+                    />
+
+                <Text>Top Authors:</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder='new Authors...'
+                        onChangeText={(val)=> alert(val)}
+                    /> */}
+
+                <Text>About me:</Text>
+                    <TextInput
+                        multiline
+                        ref={aboutMeVal}
+                        style={styles.input}
+                        defaultValue={state.user.about_me}
+                    />
+                
+                <View style={editStyles.buttons}>
+                    <Pressable
+                        onPress={() => setViewMode("view")}
+                        style={[styles.button, editStyles.cancelButton]}
+                    >
+                        <Text>Cancel</Text>
+                    </Pressable>
+                    <Pressable
+                        onPress={() => handleSave()}
+                        style={[styles.button, editStyles.saveButton]}
+                    >
+                        <Text>Save</Text>
+                    </Pressable>
+                </View>
+
+                <Text>Top Books (up to 5):</Text>
+                <View style={styles.content}>
+                    <View style={styles.listBooks}>
+                    { 
+                        state.user.books !== undefined ? state.user.books.items.filter(book => book._deleted !== true)
+                        .map((book) => {
+                            return (
+                            <View key={book.id}
+                                style={[editStyles.flexContainer]}>
+                                <Pressable
+                                    onPress={() => handleDeleteBook(book)}
+                                    style={[editStyles.xContainer]}
+                                >
+                                    <Text style={editStyles.xButton}>X</Text>
+                                </Pressable>
+                                <Text style={styles.listItem}>
+                                    {book.title} - {book.author}
+                                </Text>
+                            </View>
+                            )
+                        })
+                    : null
+                    }
+                    </View>
+                    {
+                        state.user.books === undefined || state.user.books.items.filter(book => book._deleted !== true).length < 5 ?
+                        (<>
+                            <TextInput
+                                onChangeText={setBook} 
+                                value={book}
+                                style={styles.input}
+                                placeholder='book title...'
+                            />
+                            <TextInput
+                                onChangeText={setAuthor}
+                                value={author}
+                                style={styles.input}
+                                placeholder='author name...'
+                            />
+                            <Pressable
+                                onPress={() => handleAddBook()}
+                                style={[styles.button, editStyles.saveButton]}
+                            >
+                                <Text>Add Book</Text>
+                            </Pressable>
+                        </>)
+                        : null
+                    }
+                </View>
+            </ScrollView>
+        </SafeAreaView>
     );
 };
 
-const styles = StyleSheet.create({
+const editStyles = StyleSheet.create({
+    flexContainer: {
+        flexDirection: "row", 
+        display: "flex", 
+        alignContent:"flex-start",
+        alignItems: "center"
+    },
     container: {
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
     },
-    content: {
-        padding: 40,
+    buttons: {
+        display: "flex",
+        flexDirection: "row",
+        flexWrap: "nowrap",
+        textAlign: "center",
     },
-    list: {
-        marginTop: 20,
+    xButton: {
+        color: "#000",
     },
-    header: {
-        height: 80,
-        marginTop: 35,
-    },
-    input: {
+    xContainer: {
+        borderColor: "#000",
+        borderRadius: 5,
         borderWidth: 1,
-        borderColor: '#777',
-        padding: 8,
-        margin: 10,
-        width: 200,
+        backgroundColor: "#F00",
+        width: 20,
+        textAlign: "center",
+        marginRight: 5,
+        marginTop: 2
+    },
+    listBooks: {
+        display: "flex",
+        flexDirection: "row",
+        flexWrap: "nowrap",
+        alignContent: "space-around"
+    },
+    listItem: {
+        flex: 6
+    },
+    saveButton: {
+        backgroundColor: "#5CC166",
+        width: 100,
+    },
+    cancelButton: {
+        backgroundColor: "#FF925C",
+        width: 100
     }
 });

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {useState, useEffect, useContext} from 'react';
-import { StyleSheet, FlatList, SafeAreaView } from 'react-native';
+import { StyleSheet, FlatList, SafeAreaView, Image } from 'react-native';
 import {Text, View} from '../components/Themed'
 import Colors from '../constants/Colors';
 import { navItem } from '@aws-amplify/ui';
@@ -113,9 +113,14 @@ export default function TabHomiesScreen() {
 
   const renderItem = ({item}:any) => {
     if (state.user.id ==='') return null;
+    console.log(item);
     return (
       <View style={styles.item}>
-        <Text style={styles.nickname}>{item.username}</Text>
+        <Image style={styles.icons} source={{uri:"https://i.ibb.co/f8vR1P8/ace.jpg"}} />
+        <Text style={styles.nickname}>{"Name: " + item.username}</Text>
+        <Text>{"Gender: " + item.gender}</Text>
+        {/* <Text>{"Books: " + item.books}</Text> */}
+        <Text>{"About Me: " + item.about_me}</Text>
         {/* <Text style={styles.chatPreview}>{item.chatPreview}</Text> */}
       </View>
     );
@@ -123,11 +128,17 @@ export default function TabHomiesScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList
-        data={matches}
-        renderItem={renderItem}
-        keyExtractor={item=>item.id}
-      />
+      { matches.length !== 0 ? (
+        <>
+          <FlatList
+            data={matches}
+            renderItem={renderItem}
+            keyExtractor={item=>item.id}
+          />
+        </>
+      ) :
+        <Text>No Matches, yet...</Text>
+      }
     </SafeAreaView>
   );
 }
@@ -156,5 +167,11 @@ const styles = StyleSheet.create({
   chatPreview: {
     fontSize: 10,
     overflow: 'visible',
+  },
+  icons: {
+    width: 100,
+    height: 100,
+    borderRadius: 10,
+    margin: 10,
   }
 });

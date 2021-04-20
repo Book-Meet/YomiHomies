@@ -32,7 +32,7 @@ export interface User {
   username: String;
   latitude?: Number;
   longitude?: Number; 
-  books?: Array<Books>;
+  books?: Object;
   authors?: Array<String>;
   genres?: Array<String>;
   matches?: Array<User>;
@@ -44,6 +44,9 @@ export interface User {
   birth_date?: Date;
   nickname?: String;
   photo_source?: String;
+  _version?: Number;
+  _deleted?: Boolean;
+  _lastChangedAt?: any;
 }
 
 export const initialUserState: User = {
@@ -62,6 +65,9 @@ export const initialAppState: AppState = {
 export interface Books {
   title: String; 
   author: String;
+  profileID?: String;
+  id?: String;
+  _version: Number;
 }
 
 export enum ActionType {
@@ -73,4 +79,4 @@ export interface SetData {
   payload: User;
 }
 
-export type Actions = SetData;
+export type Actions = SetData; 

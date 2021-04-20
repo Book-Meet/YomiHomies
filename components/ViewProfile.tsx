@@ -1,9 +1,9 @@
 import React, {useContext} from 'react'
-import { StyleSheet, Image, Button, TextInput, Alert, Modal, Pressable, ScrollView } from 'react-native';
+import { StyleSheet, Image, Pressable, ScrollView } from 'react-native';
 import { Text, View } from '../components/Themed';
 import UserContext from '../utils/userContext';
 
-export default function viewProfile({ setViewMode, styles }) {
+export default function ViewProfile({ setViewMode, styles }) {
   const { state } = useContext(UserContext);
 
   return (
@@ -19,7 +19,8 @@ export default function viewProfile({ setViewMode, styles }) {
         </View>
         <View style={styles.content}>
           <Text style={styles.text}>Top Books: </Text>
-            { state.user.books !== undefined ? state.user.books.items.map(book => {
+            { state.user.books !== undefined ? state.user.books.items.filter(book => book._deleted !== true)
+              .map(book => {
             return (
               <Text key={book.id}>{book.title} - {book.author}</Text>
             )
