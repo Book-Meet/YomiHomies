@@ -250,6 +250,23 @@ export const createProfile = /* GraphQL */ `
             createdAt
             updatedAt
           }
+          matcheeProfile {
+            id
+            username
+            nickname
+            about_me
+            birth_date
+            latitude
+            longitude
+            gender
+            open_to_meet
+            photo_source
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
         }
         nextToken
         startedAt
@@ -333,6 +350,23 @@ export const updateProfile = /* GraphQL */ `
           createdAt
           updatedAt
           matcherProfile {
+            id
+            username
+            nickname
+            about_me
+            birth_date
+            latitude
+            longitude
+            gender
+            open_to_meet
+            photo_source
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          matcheeProfile {
             id
             username
             nickname
@@ -448,6 +482,23 @@ export const deleteProfile = /* GraphQL */ `
             createdAt
             updatedAt
           }
+          matcheeProfile {
+            id
+            username
+            nickname
+            about_me
+            birth_date
+            latitude
+            longitude
+            gender
+            open_to_meet
+            photo_source
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
         }
         nextToken
         startedAt
@@ -471,6 +522,81 @@ export const createMatch = /* GraphQL */ `
       createdAt
       updatedAt
       matcherProfile {
+        id
+        username
+        nickname
+        about_me
+        birth_date
+        latitude
+        longitude
+        gender
+        open_to_meet
+        photo_source
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        genres {
+          items {
+            id
+            genre
+            profileID
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        authors {
+          items {
+            id
+            profileID
+            name
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        books {
+          items {
+            id
+            profileID
+            title
+            author
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        match {
+          items {
+            id
+            matcherID
+            matcheeID
+            status
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+      }
+      matcheeProfile {
         id
         username
         nickname
@@ -638,6 +764,81 @@ export const updateMatch = /* GraphQL */ `
           startedAt
         }
       }
+      matcheeProfile {
+        id
+        username
+        nickname
+        about_me
+        birth_date
+        latitude
+        longitude
+        gender
+        open_to_meet
+        photo_source
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        genres {
+          items {
+            id
+            genre
+            profileID
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        authors {
+          items {
+            id
+            profileID
+            name
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        books {
+          items {
+            id
+            profileID
+            title
+            author
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        match {
+          items {
+            id
+            matcherID
+            matcheeID
+            status
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+      }
     }
   }
 `;
@@ -657,6 +858,81 @@ export const deleteMatch = /* GraphQL */ `
       createdAt
       updatedAt
       matcherProfile {
+        id
+        username
+        nickname
+        about_me
+        birth_date
+        latitude
+        longitude
+        gender
+        open_to_meet
+        photo_source
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        genres {
+          items {
+            id
+            genre
+            profileID
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        authors {
+          items {
+            id
+            profileID
+            name
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        books {
+          items {
+            id
+            profileID
+            title
+            author
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        match {
+          items {
+            id
+            matcherID
+            matcheeID
+            status
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+      }
+      matcheeProfile {
         id
         username
         nickname
