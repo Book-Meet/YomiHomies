@@ -117,6 +117,11 @@ export default function TabHomiesScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
+      { DATA.length !== 0 ?
+        <Text>Homies</Text>
+        :
+        <Text>No Matches, yet...</Text>
+      }
       <FlatList
         data={matches}
         renderItem={renderItem}
