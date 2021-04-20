@@ -66,7 +66,6 @@ export default function TabHomeScreen()
   const onSwipedLeft = async () => {
     transitionRef.current.animateNextTransition();
     let reject = await API.graphql({query:createMatch, variables:{input:{matcherID:state.user.id, matcheeID:matches[0].id, status:"rejected"}}})
-    console.log('reject ', reject);
     let temp = [...matches];
     temp.splice(0, 1);
     setMatches(temp);
@@ -84,13 +83,13 @@ export default function TabHomeScreen()
 
   useEffect(() => {
     if (state.user.id == '') return;
-    (async function fetchProfiles (){
+    (async function fetchMatches (){
       let profiles:any = await API.graphql({query:listProfiles});
       profiles = profiles.data.listProfiles.items;
       profiles = profiles.filter((a:any)=>{
         let books = a.books.items;
         for (let match of a.match.items){
-          if (match.matcherID == state.user.id) return false;
+          if (match.matcherID == state.user.id || match.matcheeID == state.user.id) return false;
         }
         for (let book of state.user.books.items){
           if(books.some((b:any)=>b.title === book.title)) {

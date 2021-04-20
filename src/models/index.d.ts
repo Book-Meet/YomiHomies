@@ -50,9 +50,9 @@ export declare class Profile {
 
 export declare class Match {
   readonly id: string;
-  readonly matcherID: string;
   readonly status: string;
   readonly matcherProfile: Profile;
+  readonly matcheeProfile: Profile;
   constructor(init: ModelInit<Match>);
   static copyOf(source: Match, mutator: (draft: MutableModel<Match>) => MutableModel<Match> | void): Match;
 }
