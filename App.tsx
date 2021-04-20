@@ -30,9 +30,9 @@ Amplify.configure({
 function reducer(state: AppState, action: Actions): AppState {
   switch (action.type) {
       case ActionType.SetData:
-          return { ...state, user: action.payload }
+        return { ...state, user: action.payload }
       default:
-          return state
+        return state
   }
 }
 
