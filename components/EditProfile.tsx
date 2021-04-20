@@ -14,8 +14,8 @@ export default function EditProfile({ setViewMode, styles }) {
     const [book, setBook] = useState("");
     const [author, setAuthor] = useState("");
     
-
     async function handleSave() {
+        // validation checks
         if (nicknameVal.current.value === "" || genderVal.current.value === ""
         || aboutMeVal.current.value === "") {
             alert("No blank fields allowed!");
@@ -31,10 +31,10 @@ export default function EditProfile({ setViewMode, styles }) {
         let updated:any = await API.graphql({query:updateProfile, variables: {input:newVals, id:state.user.id}})
         dispatch({type: ActionType.SetData, payload: updated.data.updateProfile});
         setViewMode("view");
-        console.log(state.user);
     }
 
     async function handleAddBook() {
+        // validation checks
         if (author === "" || book === "") {
             alert("Book and author fields must have a value");
             return;
@@ -45,20 +45,19 @@ export default function EditProfile({ setViewMode, styles }) {
             profileID: state.user.id
         }
         let addedBook = await API.graphql({query:createBook, variables:{input:newBook}});
-        newBook.id = addedBook.data.createBook.id;
         let updatedUser = {...state.user}
-        updatedUser.books.items.push(newBook)
+        updatedUser.books.items.push(addedBook.data.createBook);
         dispatch({type: ActionType.SetData, payload: updatedUser});
         setAuthor("");
         setBook("");
     }
 
-    async function handleDeleteBook(book:Books, index:Number) {
+    async function handleDeleteBook(book:Books) {
         let deleted = await API.graphql({query:deleteBook, variables:{ input:{ id:book.id, _version:book._version}}})
         let updatedUser = {...state.user};
-        updatedUser.books.items.splice(index, 1);
+        let ind = updatedUser.books.items.findIndex((book:any) => book.id === deleted.data.deleteBook.id)
+        updatedUser.books.items.splice(ind, 1);
         dispatch({type: ActionType.SetData, payload: updatedUser});
-        console.log(deleted);
     }
 
     return (
@@ -122,11 +121,12 @@ export default function EditProfile({ setViewMode, styles }) {
                 <View style={styles.content}>
                     <View style={styles.listBooks}>
                     { 
-                        state.user.books !== undefined ? state.user.books.items.map((book, ind) => {
+                        state.user.books !== undefined ? state.user.books.items.filter(book => book._deleted !== true)
+                        .map((book) => {
                             return (
                             <View key={book.id}>
                                 <Pressable
-                                    onPress={() => handleDeleteBook(book, ind)}
+                                    onPress={() => handleDeleteBook(book)}
                                     style={[styles.xButton, styles.listItem]}>
                                     <Text>X</Text>
                                 </Pressable>
@@ -140,15 +140,17 @@ export default function EditProfile({ setViewMode, styles }) {
                     }
                     </View>
                     {
-                        state.user.books === undefined || state.user.books.items.length < 5 ?
+                        state.user.books === undefined || state.user.books.items.filter(book => book._deleted !== true).length < 5 ?
                         (<>
                             <TextInput
-                                onChangeText={(value) => setBook(value)} //setBook(e.target.value)}
+                                onChangeText={setBook} 
+                                value={book}
                                 style={styles.input}
                                 placeholder='book title...'
                             />
                             <TextInput
-                                onChangeText={(value) => setAuthor(value)}//setAuthor(e.target.value)}
+                                onChangeText={setAuthor}
+                                value={author}
                                 style={styles.input}
                                 placeholder='author name...'
                             />
