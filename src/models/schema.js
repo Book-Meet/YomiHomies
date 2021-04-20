@@ -292,8 +292,8 @@ export const schema = {
                         "associatedWith": "profileID"
                     }
                 },
-                "matchReq": {
-                    "name": "matchReq",
+                "match": {
+                    "name": "match",
                     "isArray": true,
                     "type": {
                         "model": "Match"
@@ -303,21 +303,7 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "matcheeProfile"
-                    }
-                },
-                "matchRes": {
-                    "name": "matchRes",
-                    "isArray": true,
-                    "type": {
-                        "model": "Match"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "matcherProfile"
+                        "associatedWith": "matcherID"
                     }
                 },
                 "photo_source": {
@@ -371,6 +357,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "matcherID": {
+                    "name": "matcherID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "status": {
                     "name": "status",
                     "isArray": false,
@@ -390,19 +383,6 @@ export const schema = {
                         "connectionType": "BELONGS_TO",
                         "targetName": "matcheeID"
                     }
-                },
-                "matcheeProfile": {
-                    "name": "matcheeProfile",
-                    "isArray": false,
-                    "type": {
-                        "model": "Profile"
-                    },
-                    "isRequired": true,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetName": "matcherID"
-                    }
                 }
             },
             "syncable": true,
@@ -415,20 +395,10 @@ export const schema = {
                 {
                     "type": "key",
                     "properties": {
-                        "name": "byMatchReq",
+                        "name": "byMatch",
                         "fields": [
                             "matcherID",
                             "matcheeID"
-                        ]
-                    }
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byMatchRes",
-                        "fields": [
-                            "matcheeID",
-                            "matcherID"
                         ]
                     }
                 },
@@ -453,5 +423,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "702432c0131bccea035f2786e45b8924"
+    "version": "cd02e691bc4d429b0c2a492b83604087"
 };

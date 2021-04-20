@@ -4,9 +4,8 @@ import { StyleSheet, Image, StatusBar, SafeAreaView, Dimensions } from 'react-na
 import Swiper from 'react-native-deck-swiper';
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Transitioning, Transition } from 'react-native-reanimated'
-import {listProfiles, listBooks, getProfile, listMatchs} from '../src/graphql/queries';
-import {createMatch, updateMatch} from '../src/graphql/mutations';
-import {Auth} from 'aws-amplify';
+import {listProfiles} from '../src/graphql/queries';
+import {createMatch} from '../src/graphql/mutations';
 import UserContext from '../utils/userContext';
 
 
@@ -14,8 +13,7 @@ import UserContext from '../utils/userContext';
 // import { shouldUseActivityState } from 'react-native-screens';
 // import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
-import API, { graphqlOperation } from '@aws-amplify/api';
-import { updateProfile } from '../src/graphql/mutations';
+import API from '@aws-amplify/api';
 
 const { width } = Dimensions.get('window');
 
@@ -77,7 +75,7 @@ export default function TabHomeScreen()
   const onSwipedRight = async () =>{
     transitionRef.current.animateNextTransition();
     let status = '';
-    matches[0].matchReq.items.some(a=>a.matcheeID === state.user.id && a.status != 'rejected') ? status = 'accepted': status = 'pending'
+    matches[0].match.items.some(a=>a.matcheeID === state.user.id && a.status != 'rejected') ? status = 'accepted': status = 'pending'
     let addMatch = await API.graphql({query:createMatch, variables:{input: {matcherID:state.user.id, matcheeID:matches[0].id, status}} })
     let temp = [...matches];
     temp.splice(0, 1);
@@ -87,12 +85,11 @@ export default function TabHomeScreen()
   useEffect(() => {
     if (state.user.id == '') return;
     (async function fetchProfiles (){
-      let myMatches = await API.graphql({query:listMatchs, variables:{matcherID:state.user.id}});
       let profiles:any = await API.graphql({query:listProfiles});
       profiles = profiles.data.listProfiles.items;
       profiles = profiles.filter((a:any)=>{
         let books = a.books.items;
-        for (let match of a.matchRes.items){
+        for (let match of a.match.items){
           if (match.matcherID == state.user.id) return false;
         }
         for (let book of state.user.books.items){
