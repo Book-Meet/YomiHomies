@@ -26,7 +26,7 @@ export default function TabHomeScreen()
 {
   const { state, dispatch } = useContext(UserContext)
   const [matches, setMatches] = useState([]);
-  const [modalVisible, setModalVisible] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const transition = (
     <Transition.Sequence>
