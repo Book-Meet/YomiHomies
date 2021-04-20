@@ -102,16 +102,16 @@ export default function EditProfile({ setViewMode, styles }) {
                         defaultValue={state.user.about_me}
                     />
                 
-                <View style={styles.buttons}>
+                <View style={editStyles.buttons}>
                     <Pressable
                         onPress={() => setViewMode("view")}
-                        style={[styles.button, styles.buttonOpen]}
+                        style={[styles.button, editStyles.cancelButton]}
                     >
                         <Text>Cancel</Text>
                     </Pressable>
                     <Pressable
                         onPress={() => handleSave()}
-                        style={[styles.button, styles.buttonOpen]}
+                        style={[styles.button, editStyles.saveButton]}
                     >
                         <Text>Save</Text>
                     </Pressable>
@@ -124,11 +124,13 @@ export default function EditProfile({ setViewMode, styles }) {
                         state.user.books !== undefined ? state.user.books.items.filter(book => book._deleted !== true)
                         .map((book) => {
                             return (
-                            <View key={book.id}>
+                            <View key={book.id}
+                                style={[editStyles.flexContainer]}>
                                 <Pressable
                                     onPress={() => handleDeleteBook(book)}
-                                    style={[styles.xButton, styles.listItem]}>
-                                    <Text>X</Text>
+                                    style={[editStyles.xContainer]}
+                                >
+                                    <Text style={editStyles.xButton}>X</Text>
                                 </Pressable>
                                 <Text style={styles.listItem}>
                                     {book.title} - {book.author}
@@ -156,7 +158,7 @@ export default function EditProfile({ setViewMode, styles }) {
                             />
                             <Pressable
                                 onPress={() => handleAddBook()}
-                                style={[styles.button, styles.buttonOpen]}
+                                style={[styles.button, editStyles.saveButton]}
                             >
                                 <Text>Add Book</Text>
                             </Pressable>
@@ -169,45 +171,53 @@ export default function EditProfile({ setViewMode, styles }) {
     );
 };
 
-const styles = StyleSheet.create({
-    // container: {
-    //     flex: 1,
-    //     backgroundColor: '#fff',
-    //     alignItems: 'center',
-    //     justifyContent: 'center',
-    // },
+const editStyles = StyleSheet.create({
+    flexContainer: {
+        flexDirection: "row", 
+        display: "flex", 
+        alignContent:"flex-start",
+        alignItems: "center"
+    },
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     buttons: {
         display: "flex",
         flexDirection: "row",
-        flexWrap: "nowrap"
+        flexWrap: "nowrap",
+        textAlign: "center",
     },
     xButton: {
-        backgroundColor: "red",
-        flex: 1
+        color: "#000",
+    },
+    xContainer: {
+        borderColor: "#000",
+        borderRadius: 5,
+        borderWidth: 1,
+        backgroundColor: "#F00",
+        width: 20,
+        textAlign: "center",
+        marginRight: 5,
+        marginTop: 2
     },
     listBooks: {
         display: "flex",
         flexDirection: "row",
-        flexWrap: "nowrap"
+        flexWrap: "nowrap",
+        alignContent: "space-around"
     },
     listItem: {
         flex: 6
+    },
+    saveButton: {
+        backgroundColor: "#5CC166",
+        width: 100,
+    },
+    cancelButton: {
+        backgroundColor: "#FF925C",
+        width: 100
     }
-    // content: {
-    //     padding: 40,
-    // },
-    // list: {
-    //     marginTop: 0,
-    // },
-    // header: {
-    //     height: 80,
-    //     marginTop: 35,
-    // },
-    // input: {
-    //     borderWidth: 1,
-    //     borderColor: '#777',
-    //     padding: 8,
-    //     margin: 10,
-    //     width: 200,
-    // }
 });
