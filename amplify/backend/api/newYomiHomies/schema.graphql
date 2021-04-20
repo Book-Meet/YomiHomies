@@ -41,8 +41,8 @@ type Match @model
   matcherID: ID!
   matcheeID: ID!
   status: String!
-  matcherProfile: Profile! @connection(fields: ["matcheeID"])
-  matcheeProfile: Profile! @connection(fields: ["matcherID"])
+  matcherProfile: Profile! @connection(fields: ["matcherID"])
+  matcheeProfile: Profile! @connection(fields: ["matcheeID"])
 }
 
  
