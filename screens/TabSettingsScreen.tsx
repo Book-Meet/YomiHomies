@@ -1,7 +1,7 @@
 import Auth from '@aws-amplify/auth';
-import * as React from 'react';
-import { StyleSheet, Button } from 'react-native';
-
+import React, {useState} from 'react';
+import { StyleSheet, Button,  } from 'react-native';
+import Slider from '@react-native-community/slider';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import UserContext from '../utils/userContext';
@@ -11,11 +11,35 @@ export default function TabSettingsScreen() {
   // these two lines are just for testing purposes to see if the loaded 
   // context (done in App.tsx) is available here. It's available along with
   // the dispatchers. 
-  const { state, dispatch } = React.useContext(UserContext)
+  const { state, dispatch } = React.useContext(UserContext);
+
+  const [gender, setGender] = useState([
+    {name: 'male', id: '1'},
+    {name: 'female', id: '2'},
+    {name: 'Others', id: '3'},
+    {name: 'Any', id: '4'},
+  ]);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Settings</Text>
+      <Text style={styles.title}>Preferences</Text>
+      <Text>Search Radius:</Text>
+      <Slider
+        style={{width: 200, height: 30}}
+        minimumValue={0}
+        maximumValue={1}
+        minimumTrackTintColor="black"
+        maximumTrackTintColor="blue"
+      />
+      
+      
+      <Text>Matching Genders:</Text>
+      <Text>Male</Text>
+      <Text>Female</Text>
+      <Text>Others</Text>
+      <Text>Any</Text>
+      <Text>Open to Meet Face to Face?</Text>
+      <Text>Yes</Text><Text>No</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <EditScreenInfo path="/screens/TabOneScreen.tsx" />
       <Button title="Log out" accessibilityLabel="Log out" onPress={()=>Auth.signOut()}></Button>
