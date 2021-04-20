@@ -1,10 +1,11 @@
 import React, { useContext, useRef, useState } from 'react';
-import { StyleSheet, TextInput, Button, SafeAreaView, ScrollView, Pressable } from 'react-native';
+import { StyleSheet, TextInput, Button, SafeAreaView, ScrollView, Pressable, FlatList, SearchBar } from 'react-native';
 import { Text, View } from './Themed';
 import UserContext from '../utils/userContext'
 import { API } from 'aws-amplify'; 
 import { updateProfile, createBook, deleteBook} from '../src/graphql/mutations';
 import { ActionType, Books } from '../types';
+// import { GoogleBookSearch } from 'react-native-google-books';
 
 export default function EditProfile({ setViewMode, styles }) {
     const { state, dispatch } = useContext(UserContext);
@@ -13,6 +14,34 @@ export default function EditProfile({ setViewMode, styles }) {
     const aboutMeVal = useRef(null);
     const [book, setBook] = useState("");
     const [author, setAuthor] = useState("");
+    const [searchResult, setSearchResult] = useState([]);
+    const [keyword, setKeyword] = useState("");
+
+    // const getDataFromSearchBar = (result) => {
+    //     setSearchResult(result);
+    // }
+
+    async function bookSearch(keyword) {
+        console.log(keyword);
+        setKeyword(keyword);
+        await fetch(`https://www.googleapis.com/books/v1/volumes?q=${keyword}&key=AIzaSyAwyO1wyyKB3ymXXdLNxI8a-sHnHjAku88`)
+        .then(res => res.json())
+        .then(result => {
+            console.log("result: ", result);
+            console.log("result.items: ", result.items);
+            setSearchResult(result.items);
+        })
+    }
+
+    const renderItem = ({item}) => {
+        if(searchResult.length === 0) return null;
+
+        return (
+            <View>
+                <Text>{item.volumeInfo.title}</Text>
+            </View>
+        )
+    }
     
     async function handleSave() {
         // validation checks
@@ -141,6 +170,21 @@ export default function EditProfile({ setViewMode, styles }) {
                     : null
                     }
                     </View>
+                    {/* google books autocomplete */}
+                    <>
+                        <TextInput
+                            onChangeText={bookSearch}
+                            value={keyword}
+                            style={styles.input}
+                            placeholder='book title?'
+                        />
+                        <FlatList
+                            // keyboardShouldPersistTaps='handled'
+                            renderItem={renderItem}
+                            data={searchResult !== undefined ? searchResult : []}
+                            keyExtractor={(item, index) => index.toString()}
+                        />
+                    </>
                     {
                         state.user.books === undefined || state.user.books.items.filter(book => book._deleted !== true).length < 5 ?
                         (<>
