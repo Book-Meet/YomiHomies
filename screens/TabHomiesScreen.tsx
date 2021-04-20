@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {useState, useEffect, useContext} from 'react';
-import { StyleSheet, FlatList, SafeAreaView } from 'react-native';
+import { StyleSheet, FlatList, SafeAreaView, Image } from 'react-native';
 import {Text, View} from '../components/Themed'
 import Colors from '../constants/Colors';
 import { navItem } from '@aws-amplify/ui';
@@ -111,9 +111,14 @@ export default function TabHomiesScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      { DATA.length !== 0 ? (
+      { matches.length !== 0 ? (
         <>
-          
+          <FlatList
+            data={matches}
+            renderItem={renderItem}
+            keyExtractor={item=>item.id}
+          />
+          <Image style={styles.icons} source={{uri:"https://i.ibb.co/f8vR1P8/ace.jpg"}} />
           <Text>Nickname: GuyWithFace</Text>
           <Text>Gender: Male</Text>
           <Text>Book: Matched Book</Text>
@@ -122,11 +127,6 @@ export default function TabHomiesScreen() {
       ) :
         <Text>No Matches, yet...</Text>
       }
-      <FlatList
-        data={matches}
-        renderItem={renderItem}
-        keyExtractor={item=>item.id}
-      />
     </SafeAreaView>
   );
 }
@@ -155,5 +155,11 @@ const styles = StyleSheet.create({
   chatPreview: {
     fontSize: 10,
     overflow: 'visible',
+  },
+  icons: {
+    width: 100,
+    height: 100,
+    borderRadius: 10,
+    margin: 10,
   }
 });
