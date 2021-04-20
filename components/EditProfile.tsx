@@ -74,6 +74,7 @@ export default function EditProfile({ setViewMode, styles }) {
                 <TextInput
                     ref={nicknameVal}
                     style={[styles.input, editStyles.inputPadding]}
+                    selectTextOnFocus={true}
                     defaultValue={state.user.nickname}
                 />
 
@@ -81,6 +82,7 @@ export default function EditProfile({ setViewMode, styles }) {
                 <TextInput
                     ref={genderVal}
                     style={[styles.input, editStyles.inputPadding]}
+                    selectTextOnFocus={true}
                     defaultValue={state.user.gender}
                 />
 
@@ -103,6 +105,7 @@ export default function EditProfile({ setViewMode, styles }) {
                         multiline
                         ref={aboutMeVal}
                         style={[styles.input, editStyles.inputPadding]}
+                        selectTextOnFocus={true}
                         defaultValue={state.user.about_me}
                     />
                 
@@ -232,5 +235,5 @@ const editStyles = StyleSheet.create({
     },
     inputPadding: {
         padding: 5,
-    }
+    },
 });
