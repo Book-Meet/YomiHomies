@@ -35,9 +35,7 @@ export interface User {
   books?: Object;
   authors?: Array<String>;
   genres?: Array<String>;
-  matches?: Array<User>;
-  pending?: Array<User>;
-  rejection?: Array<User>;
+  match?: Array<User>;
   gender?: String;
   open_to_meet?: Boolean;
   about_me?: String;
