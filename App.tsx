@@ -1,6 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useEffect, useContext, useReducer, useMemo} from 'react';
-//import { UserContext } from './userContext_state_config'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
@@ -55,7 +54,6 @@ function App() {
           id: currentUser.id,
           username: currentUser.username
         };
-        console.log('no Profile')
         const newProfile = await API.graphql(graphqlOperation(createProfile, { input }))
         let user = newProfile.data.createProfile;
         dispatch({type: ActionType.SetData, payload: user});
