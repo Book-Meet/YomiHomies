@@ -58,9 +58,10 @@ function App() {
         console.log('no Profile')
         const newProfile = await API.graphql(graphqlOperation(createProfile, { input }))
         let user = newProfile.data.createProfile;
+        dispatch({type: ActionType.SetData, payload: user});
       }else {
         let user = query.data.getProfile;  
-        dispatch({type: ActionType.SetData, payload: user})
+        dispatch({type: ActionType.SetData, payload: user});
       }
     })()
   }, [])
