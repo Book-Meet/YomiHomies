@@ -52,31 +52,31 @@ export default function TabHomeScreen()
     if(matches.length === 0) return null 
     return (
       <ImageBackground style={styles.imgBackground} resizeMode='cover' source={require("../assets/images/page_background.jpg")}>
-      <View style={styles.card}>
-        <Transitioning.View ref={transitionRef} transition={transition}>
-          <CardDetails index={0} />
-        </Transitioning.View>
-        <View style={styles.bottomButtonsContainer}>
-          <MaterialCommunityIcons.Button
-            name='close'
-            size={94}
-            backgroundColor='transparent'
-            underlayColor='transparent'
-            activeOpacity={-0.3}
-            color={colors.red}
-            onPress={() => swiperRef.current.swipeLeft()}
-          />
-          <MaterialCommunityIcons.Button
-            name='circle-outline'
-            size={94}
-            backgroundColor='transparent'
-            underlayColor='transparent'
-            activeOpacity={-0.3}
-            color={colors.blue}
-            onPress={() => swiperRef.current.swipeRight()}
-          />
+        <View style={styles.card}>
+          <Transitioning.View ref={transitionRef} transition={transition}>
+            <CardDetails index={0} />
+          <View style={styles.bottomButtonsContainer}>
+            <MaterialCommunityIcons.Button
+              name='close'
+              size={94}
+              backgroundColor='transparent'
+              underlayColor='transparent'
+              activeOpacity={-0.3}
+              color={colors.red}
+              onPress={() => swiperRef.current.swipeLeft()}
+            />
+            <MaterialCommunityIcons.Button
+              name='circle-outline'
+              size={94}
+              backgroundColor='transparent'
+              underlayColor='transparent'
+              activeOpacity={-0.3}
+              color={colors.blue}
+              onPress={() => swiperRef.current.swipeRight()}
+            />
+          </View>
+          </Transitioning.View>
         </View>
-      </View>
       </ImageBackground>
     );
   };
@@ -193,12 +193,6 @@ export default function TabHomeScreen()
       ) 
       : (<> 
       {/* <StatusBar hidden /> */}
-      {/* <MaterialCommunityIcons
-        name='crop-square'
-        size={width}
-        color={colors.blue}
-        style={styles.diamondIcon}
-      /> */}
       <View style={styles.swiperContainer}>
         <Swiper
         ref={swiperRef}
@@ -207,14 +201,14 @@ export default function TabHomeScreen()
         renderCard={(card) => <Card card={card} />}
         onSwipedLeft={onSwipedLeft}
         onSwipedRight={onSwipedRight}
-        stackSize={4}
-        stackScale={10}
-        stackSeparation={14}
+        stackSize={2}
+        stackScale={0}
+        stackSeparation={0}
         disableTopSwipe
         disableBottomSwipe
         animateOverlayLabelsOpacity
         animateCardOpacity
-        infinite
+        // infinite
         backgroundColor={'transparent'}
         overlayLabels={{
           left: {
@@ -268,7 +262,6 @@ const styles = StyleSheet.create({
   },
   card: {
     flex: 1,
-    borderRadius: 8,
     backgroundColor: 'transparent',
     // shadowRadius: 25,
     // shadowColor: colors.black,
@@ -276,14 +269,14 @@ const styles = StyleSheet.create({
     // shadowOffset: { width: 0, height: 0 },
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  cardImage: {
-    width: 160,
-    flex: 1,
-    resizeMode: 'contain'
+    height: "100%",
+    width: "100%",
   },
   swiperContainer: {
-    flex: 1
+    flex: 1,
+    height: "100%",
+    width: "100%",
+    backgroundColor: colors.blue,
   },
   // bottomContainer: {
   //   flex: 0.45,
@@ -292,9 +285,6 @@ const styles = StyleSheet.create({
   // cardDetails: {
   //   alignItems: 'center'
   // },
-  text: {
-    // fontFamily: 'Courier'
-  },
   name: {
     fontSize: 24, marginBottom: 10, color: colors.gray
   },
@@ -304,12 +294,6 @@ const styles = StyleSheet.create({
   bottomButtonsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-evenly'
-  },
-  diamondIcon: {
-    opacity: 0.05,
-    position: 'absolute',
-    top: 30,
-    left: -20
   },
   centeredView: {
     flex: 1,
@@ -344,8 +328,8 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   imgBackground: {
-    width: '100%',
-    height: '100%',
+    // width: '100%',
+    // height: '100%',
     flex: 1
   }
 });
