@@ -41,14 +41,13 @@ function App() {
   const colorScheme = useColorScheme();
   // use reducer declaration
   const [state, dispatch] = useReducer(reducer, initialAppState);
-
   const contextValue = useMemo(() => {
     return {state, dispatch}
   }, [state, dispatch]);
 
   useEffect(()=>{
     (async function () {
-      let [latitude, longitude] = await getLocation()
+      let [longitude, latitude]= await getLocation()
       let currentUser = await Auth.currentUserInfo()
       const query:any = await API.graphql(graphqlOperation(getProfile, { id:currentUser.id  }));
       if(query.data.getProfile === null){
@@ -71,13 +70,16 @@ function App() {
   }, [])
   
   async function getLocation(){
-    const {status} = await Location.requestForegroundPermissionsAsync();
-    if (status !== 'granted'){
-      console.error('YO WE NEED YOUR LOCATION!');
-      return;
+    try{
+      const {status} = await Location.requestPermissionsAsync()
+      if (status!='granted'){
+        console.log('YO WE NEED PERMISSION')
+      }
+      const {coords:{longitude, latitude}} = await Location.getCurrentPositionAsync();
+      return [longitude, latitude]
+    }catch (err){
+      console.log(err)
     }
-    const {coords:{longitude, latitude}} = await Location.getCurrentPositionAsync();
-    return [latitude, longitude];
   }
 
 
