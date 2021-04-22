@@ -48,7 +48,7 @@ function App() {
 
   useEffect(()=>{
     (async function () {
-      const {coords:{longitude, latitude}} = await Location.getCurrentPositionAsync();
+      let [latitude, longitude] = await getLocation()
       let currentUser = await Auth.currentUserInfo()
       const query:any = await API.graphql(graphqlOperation(getProfile, { id:currentUser.id  }));
       if(query.data.getProfile === null){
@@ -69,6 +69,17 @@ function App() {
       }
     })()
   }, [])
+  
+  async function getLocation(){
+    const {status} = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted'){
+      console.error('YO WE NEED YOUR LOCATION!');
+      return;
+    }
+    const {coords:{longitude, latitude}} = await Location.getCurrentPositionAsync();
+    return [latitude, longitude];
+  }
+
 
   if (!isLoadingComplete) {
     return null;
