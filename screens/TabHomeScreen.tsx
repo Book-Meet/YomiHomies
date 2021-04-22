@@ -4,14 +4,15 @@ import { StyleSheet, Image, StatusBar, SafeAreaView, Dimensions, Alert, Modal, P
 import Swiper from 'react-native-deck-swiper';
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Transitioning, Transition } from 'react-native-reanimated'
-import {listProfiles} from '../src/graphql/queries';
-import {createMatch} from '../src/graphql/mutations';
+import {listMatchs, listProfiles} from '../src/graphql/queries';
+import {createMatch, updateProfile} from '../src/graphql/mutations';
 import UserContext from '../utils/userContext';
 import { ActionType } from '../types';
 import { Text, View } from '../components/Themed';
 import API from '@aws-amplify/api';
 import { checkMatch } from '../utils/customQueries';
 import { transform } from '@babel/core';
+import * as Location from 'expo-location';
 
 const { width } = Dimensions.get('window');
 
@@ -129,6 +130,13 @@ export default function TabHomeScreen()
     }
   }
 
+  async function updateUserLocation (){
+    let now = Date.parse(new Date().toISOString())
+    if (now - Date.parse(state.user.updatedAt) > 86400000){
+      await API.graphql({query:updateProfile, variables:{id:state.user.id, latitude:state.user.latitude, longitude:state.user.longitude}});
+    }
+  }
+
   useEffect(() => {
     if (state.user.id == '') return;
     (async function fetchMatches (){
@@ -154,6 +162,7 @@ export default function TabHomeScreen()
         })
       })
       setMatches(profiles);
+      updateUserLocation();
     })()
   }, [state])
   
