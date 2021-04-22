@@ -66,7 +66,6 @@ export default function TabHomeScreen()
 
     // update database
     let reject = await API.graphql({query:createMatch, variables:{input:{matcherID:state.user.id, matcheeID:matches[0].id, status:"rejected"}}})
-    console.log("reject", reject);
 
     // update context
     let updatedUser = {...state.user}
@@ -77,7 +76,6 @@ export default function TabHomeScreen()
     let temp = [...matches];
     temp.splice(0, 1);
     setMatches(temp);
-    console.log(state.user);
   }
   
   const onSwipedRight = async () =>{
@@ -85,7 +83,6 @@ export default function TabHomeScreen()
 
     // update database
     let accept = await API.graphql({query:createMatch, variables:{input: {matcherID:state.user.id, matcheeID:matches[0].id, status:"accepted", matchedOn: matches[0].book}} })
-    console.log("accept", accept)
     
     // update context
     let updatedUser = {...state.user}
@@ -100,7 +97,6 @@ export default function TabHomeScreen()
     // check if it's a match
     let filter = { and: [{matcheeID: {eq: state.user.id }}, {matcherID: {eq: matches[0].id}}, {status: {eq: "accepted"}}]}
     let res = await API.graphql({query:checkMatch, variables: {filter: filter}})
-    console.log("data", res.data);
     if (res.data.listMatchs.items.length > 0) {
       setModalVisible(true);
     }
@@ -131,7 +127,6 @@ export default function TabHomeScreen()
         })
       })
       setMatches(profiles);
-      console.log("fetch matches run", profiles);
     })()
   }, [state])
   

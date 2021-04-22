@@ -41,6 +41,7 @@ type Match @model
   matcherID: ID!
   matcheeID: ID!
   status: String!
+  matchedOn: String
   matcherProfile: Profile! @connection(fields: ["matcherID"])
   matcheeProfile: Profile! @connection(fields: ["matcheeID"])
 }
