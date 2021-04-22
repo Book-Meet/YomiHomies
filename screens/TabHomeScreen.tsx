@@ -14,7 +14,7 @@ import { checkMatch } from '../utils/customQueries';
 import { transform } from '@babel/core';
 import * as Location from 'expo-location';
 
-const { width } = Dimensions.get('window');
+const { height, width } = Dimensions.get('window');
 
 const colors = {
   red: '#ec2379',
@@ -83,9 +83,9 @@ export default function TabHomeScreen()
   
   const CardDetails = ({ index }:any) => matches.length > 0 ? (
     <View style={styles.cardDetails} key={matches[0].id}>
-      <Text style={[styles.text, styles.name]}>{"Name: " + matches[0].username}</Text>
+      <Text style={[styles.text, styles.name]}>{matches[0].username}</Text>
       <Text style={[styles.text, styles.book]}>{"Book: " + matches[0].book}</Text>
-      <Text style={[styles.text, styles.name]}>{"About Me: " + matches[0].about_me}</Text>
+      <Text style={[styles.text, styles.book]}>{"About Me: " + matches[0].about_me}</Text>
     </View>
   ) : null;
 
@@ -194,59 +194,62 @@ export default function TabHomeScreen()
       : (<> 
       {/* <StatusBar hidden /> */}
       <View style={styles.swiperContainer}>
-        <Swiper
-        ref={swiperRef}
-        cards={matches}
-        cardIndex={0}
-        renderCard={(card) => <Card card={card} />}
-        onSwipedLeft={onSwipedLeft}
-        onSwipedRight={onSwipedRight}
-        stackSize={2}
-        stackScale={0}
-        stackSeparation={0}
-        disableTopSwipe
-        disableBottomSwipe
-        animateOverlayLabelsOpacity
-        animateCardOpacity
-        // infinite
-        backgroundColor={'transparent'}
-        overlayLabels={{
-          left: {
-            title: 'NOPE',
-            style: {
-              label: {
-                // backgroudColor: colors.red,
-                color: colors.white,
-                fontSize: 24
-              },
-              wrapper: {
-                flexDirection: 'column',
-                alignItems: 'flex-end',
-                justifyContent: 'flex-start',
-                marginTop: 20,
-                marginLeft: -20
+      <ImageBackground style={styles.imgBackground} resizeMode='cover' source={require("../assets/images/page_background.jpg")}>
+          <Swiper
+          ref={swiperRef}
+          cards={matches}
+          cardIndex={0}
+          renderCard={(card) => <Card card={card} />}
+          onSwipedLeft={onSwipedLeft}
+          onSwipedRight={onSwipedRight}
+          stackSize={2}
+          stackScale={0}
+          stackSeparation={0}
+          disableTopSwipe
+          disableBottomSwipe
+          animateOverlayLabelsOpacity
+          animateCardOpacity
+          // infinite
+          backgroundColor={'transparent'}
+          
+          overlayLabels={{
+            left: {
+              title: 'NOPE',
+              style: {
+                label: {
+                  // backgroudColor: colors.red,
+                  color: colors.white,
+                  fontSize: 24
+                },
+                wrapper: {
+                  flexDirection: 'column',
+                  alignItems: 'flex-end',
+                  justifyContent: 'flex-start',
+                  marginTop: 20,
+                  marginLeft: -20
+                }
+              }
+            },
+            right: {
+              title: 'LIKE',
+              style: {
+                label: {
+                  // backgroudColor: colors.blue,
+                  color: colors.white,
+                  fontSize: 24
+                },
+                wrapper: {
+                  flexDirection: 'column',
+                  alignItems: 'flex-start',
+                  justifyContent: 'flex-start',
+                  marginTop: 20,
+                  marginLeft: 20
+                }
               }
             }
-          },
-          right: {
-            title: 'LIKE',
-            style: {
-              label: {
-                // backgroudColor: colors.blue,
-                color: colors.white,
-                fontSize: 24
-              },
-              wrapper: {
-                flexDirection: 'column',
-                alignItems: 'flex-start',
-                justifyContent: 'flex-start',
-                marginTop: 20,
-                marginLeft: 20
-              }
-            }
-          }
-        }}
-        />
+          }}
+          />
+          </ImageBackground>
         </View>
       </>)}
     </View>
@@ -263,10 +266,6 @@ const styles = StyleSheet.create({
   card: {
     flex: 1,
     backgroundColor: 'transparent',
-    // shadowRadius: 25,
-    // shadowColor: colors.black,
-    // shadowOpacity: 0.08,
-    // shadowOffset: { width: 0, height: 0 },
     justifyContent: 'center',
     alignItems: 'center',
     height: "100%",
@@ -276,24 +275,28 @@ const styles = StyleSheet.create({
     flex: 1,
     height: "100%",
     width: "100%",
-    backgroundColor: colors.blue,
+    padding: 0,
+    backgroundColor: colors.white,
   },
   // bottomContainer: {
   //   flex: 0.45,
   //   justifyContent: 'space-evenly'
   // },
-  // cardDetails: {
-  //   alignItems: 'center'
-  // },
+  cardDetails: {
+    alignItems: 'flex-start',
+    backgroundColor: 'transparent',
+    padding: 5,
+  },
   name: {
-    fontSize: 24, marginBottom: 10, color: colors.gray
+    fontSize: 30, marginBottom: 10, color: "black", alignSelf: 'center'
   },
   book: {
-    color: colors.blue, fontSize: 25, fontWeight: '500'
+    color: "black", fontSize: 25, //fontWeight: '500', 
   },
   bottomButtonsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-evenly'
+    justifyContent: 'space-evenly',
+    backgroundColor: 'transparent'
   },
   centeredView: {
     flex: 1,
@@ -328,8 +331,8 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   imgBackground: {
-    // width: '100%',
-    // height: '100%',
+    width: "100%",
+    height: "100%",
     flex: 1
   }
 });
