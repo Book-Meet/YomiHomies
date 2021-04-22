@@ -9,6 +9,7 @@ import config from './src/aws-exports'
 import { getProfile} from './src/graphql/queries';
 import {createProfile} from './src/graphql/mutations';
 import { Auth } from "@aws-amplify/auth";
+import * as Location from 'expo-location'
 // @ts-ignore
 import { withAuthenticator} from 'aws-amplify-react-native';
 import { AppState, Actions, ActionType, initialAppState, User } from './types'
@@ -47,18 +48,23 @@ function App() {
 
   useEffect(()=>{
     (async function () {
+      const {coords:{longitude, latitude}} = await Location.getCurrentPositionAsync();
       let currentUser = await Auth.currentUserInfo()
       const query:any = await API.graphql(graphqlOperation(getProfile, { id:currentUser.id  }));
       if(query.data.getProfile === null){
         let input = {
           id: currentUser.id,
-          username: currentUser.username
+          username: currentUser.username,
+          latitude,
+          longitude
         };
         const newProfile = await API.graphql(graphqlOperation(createProfile, { input }))
         let user = newProfile.data.createProfile;
         dispatch({type: ActionType.SetData, payload: user});
       }else {
-        let user = query.data.getProfile;  
+        let user = query.data.getProfile;
+        user.latitude = latitude;
+        user.longitude = longitude;
         dispatch({type: ActionType.SetData, payload: user});
       }
     })()

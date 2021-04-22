@@ -258,6 +258,7 @@ export type Match = {
   matcherID?: string,
   matcheeID?: string,
   status?: string,
+  matchedOn?: string | null,
   createdAt?: string,
   updatedAt?: string,
   matcherProfile?: Profile,
@@ -286,12 +287,14 @@ export type CreateMatchInput = {
   matcherID: string,
   matcheeID: string,
   status: string,
+  matchedOn?: string | null,
 };
 
 export type ModelMatchConditionInput = {
   matcherID?: ModelIDInput | null,
   matcheeID?: ModelIDInput | null,
   status?: ModelStringInput | null,
+  matchedOn?: ModelStringInput | null,
   and?: Array< ModelMatchConditionInput | null > | null,
   or?: Array< ModelMatchConditionInput | null > | null,
   not?: ModelMatchConditionInput | null,
@@ -302,6 +305,7 @@ export type UpdateMatchInput = {
   matcherID?: string | null,
   matcheeID?: string | null,
   status?: string | null,
+  matchedOn?: string | null,
 };
 
 export type DeleteMatchInput = {
@@ -369,6 +373,7 @@ export type ModelMatchFilterInput = {
   matcherID?: ModelIDInput | null,
   matcheeID?: ModelIDInput | null,
   status?: ModelStringInput | null,
+  matchedOn?: ModelStringInput | null,
   and?: Array< ModelMatchFilterInput | null > | null,
   or?: Array< ModelMatchFilterInput | null > | null,
   not?: ModelMatchFilterInput | null,
@@ -586,6 +591,7 @@ export type CreateProfileMutation = {
         matcherID: string,
         matcheeID: string,
         status: string,
+        matchedOn?: string | null,
         createdAt: string,
         updatedAt: string,
         matcherProfile:  {
@@ -689,6 +695,7 @@ export type UpdateProfileMutation = {
         matcherID: string,
         matcheeID: string,
         status: string,
+        matchedOn?: string | null,
         createdAt: string,
         updatedAt: string,
         matcherProfile:  {
@@ -792,6 +799,7 @@ export type DeleteProfileMutation = {
         matcherID: string,
         matcheeID: string,
         status: string,
+        matchedOn?: string | null,
         createdAt: string,
         updatedAt: string,
         matcherProfile:  {
@@ -842,6 +850,7 @@ export type CreateMatchMutation = {
     matcherID: string,
     matcheeID: string,
     status: string,
+    matchedOn?: string | null,
     createdAt: string,
     updatedAt: string,
     matcherProfile:  {
@@ -903,6 +912,7 @@ export type CreateMatchMutation = {
           matcherID: string,
           matcheeID: string,
           status: string,
+          matchedOn?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
@@ -968,6 +978,7 @@ export type CreateMatchMutation = {
           matcherID: string,
           matcheeID: string,
           status: string,
+          matchedOn?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
@@ -989,6 +1000,7 @@ export type UpdateMatchMutation = {
     matcherID: string,
     matcheeID: string,
     status: string,
+    matchedOn?: string | null,
     createdAt: string,
     updatedAt: string,
     matcherProfile:  {
@@ -1050,6 +1062,7 @@ export type UpdateMatchMutation = {
           matcherID: string,
           matcheeID: string,
           status: string,
+          matchedOn?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
@@ -1115,6 +1128,7 @@ export type UpdateMatchMutation = {
           matcherID: string,
           matcheeID: string,
           status: string,
+          matchedOn?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
@@ -1136,6 +1150,7 @@ export type DeleteMatchMutation = {
     matcherID: string,
     matcheeID: string,
     status: string,
+    matchedOn?: string | null,
     createdAt: string,
     updatedAt: string,
     matcherProfile:  {
@@ -1197,6 +1212,7 @@ export type DeleteMatchMutation = {
           matcherID: string,
           matcheeID: string,
           status: string,
+          matchedOn?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
@@ -1262,6 +1278,7 @@ export type DeleteMatchMutation = {
           matcherID: string,
           matcheeID: string,
           status: string,
+          matchedOn?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
@@ -1451,6 +1468,7 @@ export type ListProfilesQuery = {
           matcherID: string,
           matcheeID: string,
           status: string,
+          matchedOn?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
@@ -1525,6 +1543,7 @@ export type GetProfileQuery = {
         matcherID: string,
         matcheeID: string,
         status: string,
+        matchedOn?: string | null,
         createdAt: string,
         updatedAt: string,
         matcherProfile:  {
@@ -1574,6 +1593,7 @@ export type GetMatchQuery = {
     matcherID: string,
     matcheeID: string,
     status: string,
+    matchedOn?: string | null,
     createdAt: string,
     updatedAt: string,
     matcherProfile:  {
@@ -1635,6 +1655,7 @@ export type GetMatchQuery = {
           matcherID: string,
           matcheeID: string,
           status: string,
+          matchedOn?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
@@ -1700,6 +1721,7 @@ export type GetMatchQuery = {
           matcherID: string,
           matcheeID: string,
           status: string,
+          matchedOn?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
@@ -1724,6 +1746,7 @@ export type ListMatchsQuery = {
       matcherID: string,
       matcheeID: string,
       status: string,
+      matchedOn?: string | null,
       createdAt: string,
       updatedAt: string,
       matcherProfile:  {
@@ -1955,6 +1978,7 @@ export type OnCreateProfileSubscription = {
         matcherID: string,
         matcheeID: string,
         status: string,
+        matchedOn?: string | null,
         createdAt: string,
         updatedAt: string,
         matcherProfile:  {
@@ -2053,6 +2077,7 @@ export type OnUpdateProfileSubscription = {
         matcherID: string,
         matcheeID: string,
         status: string,
+        matchedOn?: string | null,
         createdAt: string,
         updatedAt: string,
         matcherProfile:  {
@@ -2151,6 +2176,7 @@ export type OnDeleteProfileSubscription = {
         matcherID: string,
         matcheeID: string,
         status: string,
+        matchedOn?: string | null,
         createdAt: string,
         updatedAt: string,
         matcherProfile:  {
@@ -2196,6 +2222,7 @@ export type OnCreateMatchSubscription = {
     matcherID: string,
     matcheeID: string,
     status: string,
+    matchedOn?: string | null,
     createdAt: string,
     updatedAt: string,
     matcherProfile:  {
@@ -2257,6 +2284,7 @@ export type OnCreateMatchSubscription = {
           matcherID: string,
           matcheeID: string,
           status: string,
+          matchedOn?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
@@ -2322,6 +2350,7 @@ export type OnCreateMatchSubscription = {
           matcherID: string,
           matcheeID: string,
           status: string,
+          matchedOn?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
@@ -2338,6 +2367,7 @@ export type OnUpdateMatchSubscription = {
     matcherID: string,
     matcheeID: string,
     status: string,
+    matchedOn?: string | null,
     createdAt: string,
     updatedAt: string,
     matcherProfile:  {
@@ -2399,6 +2429,7 @@ export type OnUpdateMatchSubscription = {
           matcherID: string,
           matcheeID: string,
           status: string,
+          matchedOn?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
@@ -2464,6 +2495,7 @@ export type OnUpdateMatchSubscription = {
           matcherID: string,
           matcheeID: string,
           status: string,
+          matchedOn?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
@@ -2480,6 +2512,7 @@ export type OnDeleteMatchSubscription = {
     matcherID: string,
     matcheeID: string,
     status: string,
+    matchedOn?: string | null,
     createdAt: string,
     updatedAt: string,
     matcherProfile:  {
@@ -2541,6 +2574,7 @@ export type OnDeleteMatchSubscription = {
           matcherID: string,
           matcheeID: string,
           status: string,
+          matchedOn?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,
@@ -2606,6 +2640,7 @@ export type OnDeleteMatchSubscription = {
           matcherID: string,
           matcheeID: string,
           status: string,
+          matchedOn?: string | null,
           createdAt: string,
           updatedAt: string,
         } | null > | null,

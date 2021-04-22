@@ -156,6 +156,7 @@ export const listProfiles = /* GraphQL */ `
             matcherID
             matcheeID
             status
+            matchedOn
             createdAt
             updatedAt
           }
@@ -218,6 +219,7 @@ export const getProfile = /* GraphQL */ `
           matcherID
           matcheeID
           status
+          matchedOn
           createdAt
           updatedAt
           matcherProfile {
@@ -261,6 +263,7 @@ export const getMatch = /* GraphQL */ `
       matcherID
       matcheeID
       status
+      matchedOn
       createdAt
       updatedAt
       matcherProfile {
@@ -313,6 +316,7 @@ export const getMatch = /* GraphQL */ `
             matcherID
             matcheeID
             status
+            matchedOn
             createdAt
             updatedAt
           }
@@ -369,6 +373,7 @@ export const getMatch = /* GraphQL */ `
             matcherID
             matcheeID
             status
+            matchedOn
             createdAt
             updatedAt
           }
@@ -390,6 +395,7 @@ export const listMatchs = /* GraphQL */ `
         matcherID
         matcheeID
         status
+        matchedOn
         createdAt
         updatedAt
         matcherProfile {

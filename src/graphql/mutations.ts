@@ -186,6 +186,7 @@ export const createProfile = /* GraphQL */ `
           matcherID
           matcheeID
           status
+          matchedOn
           createdAt
           updatedAt
           matcherProfile {
@@ -277,6 +278,7 @@ export const updateProfile = /* GraphQL */ `
           matcherID
           matcheeID
           status
+          matchedOn
           createdAt
           updatedAt
           matcherProfile {
@@ -368,6 +370,7 @@ export const deleteProfile = /* GraphQL */ `
           matcherID
           matcheeID
           status
+          matchedOn
           createdAt
           updatedAt
           matcherProfile {
@@ -414,6 +417,7 @@ export const createMatch = /* GraphQL */ `
       matcherID
       matcheeID
       status
+      matchedOn
       createdAt
       updatedAt
       matcherProfile {
@@ -466,6 +470,7 @@ export const createMatch = /* GraphQL */ `
             matcherID
             matcheeID
             status
+            matchedOn
             createdAt
             updatedAt
           }
@@ -522,6 +527,7 @@ export const createMatch = /* GraphQL */ `
             matcherID
             matcheeID
             status
+            matchedOn
             createdAt
             updatedAt
           }
@@ -541,6 +547,7 @@ export const updateMatch = /* GraphQL */ `
       matcherID
       matcheeID
       status
+      matchedOn
       createdAt
       updatedAt
       matcherProfile {
@@ -593,6 +600,7 @@ export const updateMatch = /* GraphQL */ `
             matcherID
             matcheeID
             status
+            matchedOn
             createdAt
             updatedAt
           }
@@ -649,6 +657,7 @@ export const updateMatch = /* GraphQL */ `
             matcherID
             matcheeID
             status
+            matchedOn
             createdAt
             updatedAt
           }
@@ -668,6 +677,7 @@ export const deleteMatch = /* GraphQL */ `
       matcherID
       matcheeID
       status
+      matchedOn
       createdAt
       updatedAt
       matcherProfile {
@@ -720,6 +730,7 @@ export const deleteMatch = /* GraphQL */ `
             matcherID
             matcheeID
             status
+            matchedOn
             createdAt
             updatedAt
           }
@@ -776,6 +787,7 @@ export const deleteMatch = /* GraphQL */ `
             matcherID
             matcheeID
             status
+            matchedOn
             createdAt
             updatedAt
           }
