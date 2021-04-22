@@ -55,7 +55,6 @@ export default function EditProfile({ setViewMode, styles }) {
         }
         const newVals = {
             id: state.user.id,
-            _version: state.user._version,
             nickname: nicknameVal.current.value,
             gender: genderVal.current.value,
             about_me: aboutMeVal.current.value
@@ -85,7 +84,7 @@ export default function EditProfile({ setViewMode, styles }) {
     }
 
     async function handleDeleteBook(book:Books) {
-        let deleted = await API.graphql({query:deleteBook, variables:{ input:{ id:book.id, _version:book._version}}})
+        let deleted = await API.graphql({query:deleteBook, variables:{ input:{ id:book.id}}})
         let updatedUser = {...state.user};
         let ind = updatedUser.books.items.findIndex((book:any) => book.id === deleted.data.deleteBook.id)
         updatedUser.books.items.splice(ind, 1);
@@ -161,8 +160,7 @@ export default function EditProfile({ setViewMode, styles }) {
                 <View style={styles.content}>
                     <View style={styles.listBooks}>
                     { 
-                        state.user.books !== undefined ? state.user.books.items.filter(book => book._deleted !== true)
-                        .map((book) => {
+                        state.user.books !== undefined ? state.user.books.items.map((book) => {
                             return (
                             <View key={book.id}
                                 style={[editStyles.flexContainer]}>
@@ -182,7 +180,7 @@ export default function EditProfile({ setViewMode, styles }) {
                     }
                     </View>
                     {
-                        state.user.books === undefined || state.user.books.items.filter(book => book._deleted !== true).length < 5 ?
+                        state.user.books === undefined || state.user.books.items.length < 5 ?
                         (<>
                             <TextInput
                                 onChangeText={bookSearch}

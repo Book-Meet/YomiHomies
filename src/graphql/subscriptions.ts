@@ -8,9 +8,6 @@ export const onCreateGenre = /* GraphQL */ `
       id
       genre
       profileID
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -22,9 +19,6 @@ export const onUpdateGenre = /* GraphQL */ `
       id
       genre
       profileID
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -36,9 +30,6 @@ export const onDeleteGenre = /* GraphQL */ `
       id
       genre
       profileID
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -50,9 +41,6 @@ export const onCreateAuthor = /* GraphQL */ `
       id
       profileID
       name
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -64,9 +52,6 @@ export const onUpdateAuthor = /* GraphQL */ `
       id
       profileID
       name
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -78,9 +63,6 @@ export const onDeleteAuthor = /* GraphQL */ `
       id
       profileID
       name
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -93,9 +75,6 @@ export const onCreateBook = /* GraphQL */ `
       profileID
       title
       author
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -108,9 +87,6 @@ export const onUpdateBook = /* GraphQL */ `
       profileID
       title
       author
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -123,9 +99,6 @@ export const onDeleteBook = /* GraphQL */ `
       profileID
       title
       author
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -144,9 +117,6 @@ export const onCreateProfile = /* GraphQL */ `
       gender
       open_to_meet
       photo_source
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
       genres {
@@ -154,28 +124,20 @@ export const onCreateProfile = /* GraphQL */ `
           id
           genre
           profileID
-          _version
-          _deleted
-          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
-        startedAt
       }
       authors {
         items {
           id
           profileID
           name
-          _version
-          _deleted
-          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
-        startedAt
       }
       books {
         items {
@@ -183,14 +145,10 @@ export const onCreateProfile = /* GraphQL */ `
           profileID
           title
           author
-          _version
-          _deleted
-          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
-        startedAt
       }
       match {
         items {
@@ -198,9 +156,6 @@ export const onCreateProfile = /* GraphQL */ `
           matcherID
           matcheeID
           status
-          _version
-          _deleted
-          _lastChangedAt
           createdAt
           updatedAt
           matcherProfile {
@@ -214,9 +169,6 @@ export const onCreateProfile = /* GraphQL */ `
             gender
             open_to_meet
             photo_source
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
@@ -231,15 +183,11 @@ export const onCreateProfile = /* GraphQL */ `
             gender
             open_to_meet
             photo_source
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
         }
         nextToken
-        startedAt
       }
     }
   }
@@ -257,9 +205,6 @@ export const onUpdateProfile = /* GraphQL */ `
       gender
       open_to_meet
       photo_source
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
       genres {
@@ -267,28 +212,20 @@ export const onUpdateProfile = /* GraphQL */ `
           id
           genre
           profileID
-          _version
-          _deleted
-          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
-        startedAt
       }
       authors {
         items {
           id
           profileID
           name
-          _version
-          _deleted
-          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
-        startedAt
       }
       books {
         items {
@@ -296,14 +233,10 @@ export const onUpdateProfile = /* GraphQL */ `
           profileID
           title
           author
-          _version
-          _deleted
-          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
-        startedAt
       }
       match {
         items {
@@ -311,9 +244,6 @@ export const onUpdateProfile = /* GraphQL */ `
           matcherID
           matcheeID
           status
-          _version
-          _deleted
-          _lastChangedAt
           createdAt
           updatedAt
           matcherProfile {
@@ -327,9 +257,6 @@ export const onUpdateProfile = /* GraphQL */ `
             gender
             open_to_meet
             photo_source
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
@@ -344,15 +271,11 @@ export const onUpdateProfile = /* GraphQL */ `
             gender
             open_to_meet
             photo_source
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
         }
         nextToken
-        startedAt
       }
     }
   }
@@ -370,9 +293,6 @@ export const onDeleteProfile = /* GraphQL */ `
       gender
       open_to_meet
       photo_source
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
       genres {
@@ -380,28 +300,20 @@ export const onDeleteProfile = /* GraphQL */ `
           id
           genre
           profileID
-          _version
-          _deleted
-          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
-        startedAt
       }
       authors {
         items {
           id
           profileID
           name
-          _version
-          _deleted
-          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
-        startedAt
       }
       books {
         items {
@@ -409,14 +321,10 @@ export const onDeleteProfile = /* GraphQL */ `
           profileID
           title
           author
-          _version
-          _deleted
-          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
-        startedAt
       }
       match {
         items {
@@ -424,9 +332,6 @@ export const onDeleteProfile = /* GraphQL */ `
           matcherID
           matcheeID
           status
-          _version
-          _deleted
-          _lastChangedAt
           createdAt
           updatedAt
           matcherProfile {
@@ -440,9 +345,6 @@ export const onDeleteProfile = /* GraphQL */ `
             gender
             open_to_meet
             photo_source
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
@@ -457,15 +359,11 @@ export const onDeleteProfile = /* GraphQL */ `
             gender
             open_to_meet
             photo_source
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
         }
         nextToken
-        startedAt
       }
     }
   }
@@ -477,9 +375,6 @@ export const onCreateMatch = /* GraphQL */ `
       matcherID
       matcheeID
       status
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
       matcherProfile {
@@ -493,9 +388,6 @@ export const onCreateMatch = /* GraphQL */ `
         gender
         open_to_meet
         photo_source
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
         genres {
@@ -503,28 +395,20 @@ export const onCreateMatch = /* GraphQL */ `
             id
             genre
             profileID
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
         authors {
           items {
             id
             profileID
             name
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
         books {
           items {
@@ -532,14 +416,10 @@ export const onCreateMatch = /* GraphQL */ `
             profileID
             title
             author
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
         match {
           items {
@@ -547,14 +427,10 @@ export const onCreateMatch = /* GraphQL */ `
             matcherID
             matcheeID
             status
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
       }
       matcheeProfile {
@@ -568,9 +444,6 @@ export const onCreateMatch = /* GraphQL */ `
         gender
         open_to_meet
         photo_source
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
         genres {
@@ -578,28 +451,20 @@ export const onCreateMatch = /* GraphQL */ `
             id
             genre
             profileID
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
         authors {
           items {
             id
             profileID
             name
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
         books {
           items {
@@ -607,14 +472,10 @@ export const onCreateMatch = /* GraphQL */ `
             profileID
             title
             author
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
         match {
           items {
@@ -622,14 +483,10 @@ export const onCreateMatch = /* GraphQL */ `
             matcherID
             matcheeID
             status
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
       }
     }
@@ -642,9 +499,6 @@ export const onUpdateMatch = /* GraphQL */ `
       matcherID
       matcheeID
       status
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
       matcherProfile {
@@ -658,9 +512,6 @@ export const onUpdateMatch = /* GraphQL */ `
         gender
         open_to_meet
         photo_source
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
         genres {
@@ -668,28 +519,20 @@ export const onUpdateMatch = /* GraphQL */ `
             id
             genre
             profileID
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
         authors {
           items {
             id
             profileID
             name
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
         books {
           items {
@@ -697,14 +540,10 @@ export const onUpdateMatch = /* GraphQL */ `
             profileID
             title
             author
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
         match {
           items {
@@ -712,14 +551,10 @@ export const onUpdateMatch = /* GraphQL */ `
             matcherID
             matcheeID
             status
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
       }
       matcheeProfile {
@@ -733,9 +568,6 @@ export const onUpdateMatch = /* GraphQL */ `
         gender
         open_to_meet
         photo_source
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
         genres {
@@ -743,28 +575,20 @@ export const onUpdateMatch = /* GraphQL */ `
             id
             genre
             profileID
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
         authors {
           items {
             id
             profileID
             name
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
         books {
           items {
@@ -772,14 +596,10 @@ export const onUpdateMatch = /* GraphQL */ `
             profileID
             title
             author
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
         match {
           items {
@@ -787,14 +607,10 @@ export const onUpdateMatch = /* GraphQL */ `
             matcherID
             matcheeID
             status
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
       }
     }
@@ -807,9 +623,6 @@ export const onDeleteMatch = /* GraphQL */ `
       matcherID
       matcheeID
       status
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
       matcherProfile {
@@ -823,9 +636,6 @@ export const onDeleteMatch = /* GraphQL */ `
         gender
         open_to_meet
         photo_source
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
         genres {
@@ -833,28 +643,20 @@ export const onDeleteMatch = /* GraphQL */ `
             id
             genre
             profileID
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
         authors {
           items {
             id
             profileID
             name
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
         books {
           items {
@@ -862,14 +664,10 @@ export const onDeleteMatch = /* GraphQL */ `
             profileID
             title
             author
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
         match {
           items {
@@ -877,14 +675,10 @@ export const onDeleteMatch = /* GraphQL */ `
             matcherID
             matcheeID
             status
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
       }
       matcheeProfile {
@@ -898,9 +692,6 @@ export const onDeleteMatch = /* GraphQL */ `
         gender
         open_to_meet
         photo_source
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
         genres {
@@ -908,28 +699,20 @@ export const onDeleteMatch = /* GraphQL */ `
             id
             genre
             profileID
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
         authors {
           items {
             id
             profileID
             name
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
         books {
           items {
@@ -937,14 +720,10 @@ export const onDeleteMatch = /* GraphQL */ `
             profileID
             title
             author
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
         match {
           items {
@@ -952,14 +731,10 @@ export const onDeleteMatch = /* GraphQL */ `
             matcherID
             matcheeID
             status
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
       }
     }
