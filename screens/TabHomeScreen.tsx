@@ -7,8 +7,10 @@ import { Transitioning, Transition } from 'react-native-reanimated'
 import {listProfiles} from '../src/graphql/queries';
 import {createMatch} from '../src/graphql/mutations';
 import UserContext from '../utils/userContext';
+import { ActionType } from '../types';
 import { Text, View } from '../components/Themed';
 import API from '@aws-amplify/api';
+import { checkMatch } from '../utils/customQueries';
 
 const { width } = Dimensions.get('window');
 
@@ -61,8 +63,16 @@ export default function TabHomeScreen()
 
   const onSwipedLeft = async () => {
     transitionRef.current.animateNextTransition();
+
+    // update database
     let reject = await API.graphql({query:createMatch, variables:{input:{matcherID:state.user.id, matcheeID:matches[0].id, status:"rejected"}}})
-    // console.log(reject);
+
+    // update context
+    let updatedUser = {...state.user}
+    updatedUser.match.items.push(reject.data.createMatch);
+    dispatch({type: ActionType.SetData, payload: updatedUser});
+
+    // update matches state
     let temp = [...matches];
     temp.splice(0, 1);
     setMatches(temp);
@@ -70,33 +80,48 @@ export default function TabHomeScreen()
   
   const onSwipedRight = async () =>{
     transitionRef.current.animateNextTransition();
-    let status = '';
-    // console.log(matches[0])
-    // matches[0].match.items.some(a=>a.matcheeID === state.user.id && a.status != 'rejected') ? status = 'accepted': status = 'pending'
-    let addMatch = await API.graphql({query:createMatch, variables:{input: {matcherID:state.user.id, matcheeID:matches[0].id, status:"accepted"}} })
-    console.log(addMatch)
+
+    // update database
+    let accept = await API.graphql({query:createMatch, variables:{input: {matcherID:state.user.id, matcheeID:matches[0].id, status:"accepted", matchedOn: matches[0].book}} })
+    
+    // update context
+    let updatedUser = {...state.user}
+    updatedUser.match.items.push(accept.data.createMatch);
+    dispatch({type: ActionType.SetData, payload: updatedUser});
+
+    // update matches state
     let temp = [...matches];
     temp.splice(0, 1);
     setMatches(temp);
+
+    // check if it's a match
+    let filter = { and: [{matcheeID: {eq: state.user.id }}, {matcherID: {eq: matches[0].id}}, {status: {eq: "accepted"}}]}
+    let res = await API.graphql({query:checkMatch, variables: {filter: filter}})
+    if (res.data.listMatchs.items.length > 0) {
+      setModalVisible(true);
+    }
   }
 
   useEffect(() => {
     if (state.user.id == '') return;
     (async function fetchMatches (){
-      let profiles:any = await API.graphql({query:listProfiles});
+      let alreadySwiped = state.user.match.items.length > 0  
+        ? state.user.match.items.map(match => match.matcheeID)
+        : [];
+      let profiles:any = await API.graphql({query:listProfiles, variables: {filter: {not: {id: {eq: state.user.id}}}}});
       profiles = profiles.data.listProfiles.items;
-      profiles = profiles.map(a=>({id:a.id, books:a.books.items, about_me:a.about_me, username:a.username, match:a.match}))
-      profiles = profiles.filter(profile =>{
-        if (profile.id === state.user.id) return false;
-        for (let match of state.user.match.items){
-          if(match.matcheeID === profile.id) return false;
-        }
-        return state.user.books.items.some(a=>{
-          for (let books of profile.books){
-            if(books.title === a.title) {
-              profile.book = books.title;
-              return true
-            };
+      profiles = profiles.filter(profile => {
+        if (alreadySwiped.includes(profile.id)) return false;
+        // filter on books
+        if (state.user.books.items.length === 0) return false;
+        return state.user.books.items.some(a => {
+          if (profile.books.items.length > 0) {
+            for (let book of profile.books.items){
+              if (book.title === a.title) {
+                profile.book = book.title;
+                return true;
+              };
+            }
           }
           return false;
         })
@@ -122,7 +147,7 @@ export default function TabHomeScreen()
             <Text style={styles.modalText}>You got a match!</Text>
             <Pressable
               style={[styles.button,]}
-              onPress={() => setModalVisible(!modalVisible)}
+              onPress={() => setModalVisible(false)}
             >
               <Text>Hide Modal</Text>
             </Pressable>
