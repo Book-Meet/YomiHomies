@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useState } from 'react';
-import { StyleSheet, TextInput, Button, SafeAreaView, ScrollView, Pressable, FlatList, SearchBar } from 'react-native';
+import { StyleSheet, TextInput, Button, SafeAreaView, ScrollView, Pressable, FlatList, TouchableOpacity } from 'react-native';
 import { Text, View } from './Themed';
 import UserContext from '../utils/userContext'
 import { API } from 'aws-amplify'; 
@@ -15,27 +15,34 @@ export default function EditProfile({ setViewMode, styles }) {
     const [book, setBook] = useState("");
     const [author, setAuthor] = useState("");
     const [searchResult, setSearchResult] = useState([]);
-    const [keyword, setKeyword] = useState("");
 
-    async function bookSearch(keyword) {
-        // console.log(keyword);
-        setKeyword(keyword);
-        await fetch(`https://www.googleapis.com/books/v1/volumes?q=${keyword}&key=AIzaSyAwyO1wyyKB3ymXXdLNxI8a-sHnHjAku88`)
-        .then(res => res.json())
-        .then(result => {
-            // console.log("result: ", result);
-            // console.log("result.items: ", result.items);
-            setSearchResult(result.items);
-        })
+    async function bookSearch(val) {
+        setBook(val);
+        if (val === "") {
+            setSearchResult([]);
+            return;
+        } 
+        await fetch(`https://www.googleapis.com/books/v1/volumes?q=${val}&key=AIzaSyAwyO1wyyKB3ymXXdLNxI8a-sHnHjAku88`)
+            .then(res => res.json())
+            .then(result => {
+                setSearchResult(result.items);
+            });
+        
+    }
+
+    const pressHandler = (item) => {
+        setSearchResult([]);
+        setBook(item.title);
+        setAuthor(item.authors[0]);
     }
 
     const renderItem = ({item}) => {
         if(searchResult.length === 0) return null;
 
         return (
-            <View>
+            <TouchableOpacity onPress={() => pressHandler(item.volumeInfo)}>
                 <Text>{item.volumeInfo.title}</Text>
-            </View>
+            </TouchableOpacity>
         )
     }
     
@@ -48,7 +55,6 @@ export default function EditProfile({ setViewMode, styles }) {
         }
         const newVals = {
             id: state.user.id,
-            _version: state.user._version,
             nickname: nicknameVal.current.value,
             gender: genderVal.current.value,
             about_me: aboutMeVal.current.value
@@ -78,7 +84,7 @@ export default function EditProfile({ setViewMode, styles }) {
     }
 
     async function handleDeleteBook(book:Books) {
-        let deleted = await API.graphql({query:deleteBook, variables:{ input:{ id:book.id, _version:book._version}}})
+        let deleted = await API.graphql({query:deleteBook, variables:{ input:{ id:book.id}}})
         let updatedUser = {...state.user};
         let ind = updatedUser.books.items.findIndex((book:any) => book.id === deleted.data.deleteBook.id)
         updatedUser.books.items.splice(ind, 1);
@@ -154,8 +160,7 @@ export default function EditProfile({ setViewMode, styles }) {
                 <View style={styles.content}>
                     <View style={styles.listBooks}>
                     { 
-                        state.user.books !== undefined ? state.user.books.items.filter(book => book._deleted !== true)
-                        .map((book) => {
+                        state.user.books !== undefined ? state.user.books.items.map((book) => {
                             return (
                             <View key={book.id}
                                 style={[editStyles.flexContainer]}>
@@ -174,36 +179,22 @@ export default function EditProfile({ setViewMode, styles }) {
                     : null
                     }
                     </View>
-                    {/* google books autocomplete */}
-                    <>
-                        <TextInput
-                            onChangeText={bookSearch}
-                            value={keyword}
-                            style={styles.input}
-                            placeholder='book title?'
-                        />
-                        <FlatList
-                            // keyboardShouldPersistTaps='handled'
-                            renderItem={renderItem}
-                            data={searchResult !== undefined ? searchResult : []}
-                            keyExtractor={(item, index) => index.toString()}
-                        />
-                    </>
                     {
-                        state.user.books === undefined || state.user.books.items.filter(book => book._deleted !== true).length < 5 ?
+                        state.user.books === undefined || state.user.books.items.length < 5 ?
                         (<>
                             <TextInput
-                                onChangeText={setBook} 
+                                onChangeText={bookSearch}
                                 value={book}
                                 style={[styles.input, editStyles.inputPadding]}
-                                placeholder='book title...'
+                                placeholder='book title?'
                             />
-                            <TextInput
-                                onChangeText={setAuthor}
-                                value={author}
-                                style={[styles.input, editStyles.inputPadding]}
-                                placeholder='author name...'
+                                
+                            <FlatList
+                                renderItem={renderItem}
+                                data={searchResult.length > 0 ? searchResult : []}
+                                keyExtractor={(item, index) => index.toString()}
                             />
+
                             <Pressable
                                 onPress={() => handleAddBook()}
                                 style={[styles.button, editStyles.saveButton]}

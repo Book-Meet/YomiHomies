@@ -8,9 +8,6 @@ export const getGenre = /* GraphQL */ `
       id
       genre
       profileID
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -27,42 +24,10 @@ export const listGenres = /* GraphQL */ `
         id
         genre
         profileID
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncGenres = /* GraphQL */ `
-  query SyncGenres(
-    $filter: ModelGenreFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncGenres(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        genre
-        profileID
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
     }
   }
 `;
@@ -72,9 +37,6 @@ export const getAuthor = /* GraphQL */ `
       id
       profileID
       name
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -91,42 +53,10 @@ export const listAuthors = /* GraphQL */ `
         id
         profileID
         name
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncAuthors = /* GraphQL */ `
-  query SyncAuthors(
-    $filter: ModelAuthorFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncAuthors(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        profileID
-        name
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
     }
   }
 `;
@@ -137,9 +67,6 @@ export const getBook = /* GraphQL */ `
       profileID
       title
       author
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -157,43 +84,10 @@ export const listBooks = /* GraphQL */ `
         profileID
         title
         author
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncBooks = /* GraphQL */ `
-  query SyncBooks(
-    $filter: ModelBookFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncBooks(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        profileID
-        title
-        author
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
     }
   }
 `;
@@ -223,9 +117,6 @@ export const listProfiles = /* GraphQL */ `
         gender
         open_to_meet
         photo_source
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
         genres {
@@ -233,28 +124,20 @@ export const listProfiles = /* GraphQL */ `
             id
             genre
             profileID
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
         authors {
           items {
             id
             profileID
             name
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
         books {
           items {
@@ -262,14 +145,10 @@ export const listProfiles = /* GraphQL */ `
             profileID
             title
             author
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
         match {
           items {
@@ -277,18 +156,13 @@ export const listProfiles = /* GraphQL */ `
             matcherID
             matcheeID
             status
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
       }
       nextToken
-      startedAt
     }
   }
 `;
@@ -305,9 +179,6 @@ export const getProfile = /* GraphQL */ `
       gender
       open_to_meet
       photo_source
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
       genres {
@@ -315,28 +186,20 @@ export const getProfile = /* GraphQL */ `
           id
           genre
           profileID
-          _version
-          _deleted
-          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
-        startedAt
       }
       authors {
         items {
           id
           profileID
           name
-          _version
-          _deleted
-          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
-        startedAt
       }
       books {
         items {
@@ -344,14 +207,10 @@ export const getProfile = /* GraphQL */ `
           profileID
           title
           author
-          _version
-          _deleted
-          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
-        startedAt
       }
       match {
         items {
@@ -359,9 +218,6 @@ export const getProfile = /* GraphQL */ `
           matcherID
           matcheeID
           status
-          _version
-          _deleted
-          _lastChangedAt
           createdAt
           updatedAt
           matcherProfile {
@@ -375,9 +231,6 @@ export const getProfile = /* GraphQL */ `
             gender
             open_to_meet
             photo_source
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
@@ -392,109 +245,12 @@ export const getProfile = /* GraphQL */ `
             gender
             open_to_meet
             photo_source
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
         }
         nextToken
-        startedAt
       }
-    }
-  }
-`;
-export const syncProfiles = /* GraphQL */ `
-  query SyncProfiles(
-    $filter: ModelProfileFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncProfiles(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        username
-        nickname
-        about_me
-        birth_date
-        latitude
-        longitude
-        gender
-        open_to_meet
-        photo_source
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        genres {
-          items {
-            id
-            genre
-            profileID
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-          startedAt
-        }
-        authors {
-          items {
-            id
-            profileID
-            name
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-          startedAt
-        }
-        books {
-          items {
-            id
-            profileID
-            title
-            author
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-          startedAt
-        }
-        match {
-          items {
-            id
-            matcherID
-            matcheeID
-            status
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-          startedAt
-        }
-      }
-      nextToken
-      startedAt
     }
   }
 `;
@@ -505,9 +261,6 @@ export const getMatch = /* GraphQL */ `
       matcherID
       matcheeID
       status
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
       matcherProfile {
@@ -521,9 +274,6 @@ export const getMatch = /* GraphQL */ `
         gender
         open_to_meet
         photo_source
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
         genres {
@@ -531,28 +281,20 @@ export const getMatch = /* GraphQL */ `
             id
             genre
             profileID
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
         authors {
           items {
             id
             profileID
             name
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
         books {
           items {
@@ -560,14 +302,10 @@ export const getMatch = /* GraphQL */ `
             profileID
             title
             author
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
         match {
           items {
@@ -575,14 +313,10 @@ export const getMatch = /* GraphQL */ `
             matcherID
             matcheeID
             status
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
       }
       matcheeProfile {
@@ -596,9 +330,6 @@ export const getMatch = /* GraphQL */ `
         gender
         open_to_meet
         photo_source
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
         genres {
@@ -606,28 +337,20 @@ export const getMatch = /* GraphQL */ `
             id
             genre
             profileID
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
         authors {
           items {
             id
             profileID
             name
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
         books {
           items {
@@ -635,14 +358,10 @@ export const getMatch = /* GraphQL */ `
             profileID
             title
             author
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
         match {
           items {
@@ -650,14 +369,10 @@ export const getMatch = /* GraphQL */ `
             matcherID
             matcheeID
             status
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
-          startedAt
         }
       }
     }
@@ -675,9 +390,6 @@ export const listMatchs = /* GraphQL */ `
         matcherID
         matcheeID
         status
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
         matcherProfile {
@@ -691,26 +403,19 @@ export const listMatchs = /* GraphQL */ `
           gender
           open_to_meet
           photo_source
-          _version
-          _deleted
-          _lastChangedAt
           createdAt
           updatedAt
           genres {
             nextToken
-            startedAt
           }
           authors {
             nextToken
-            startedAt
           }
           books {
             nextToken
-            startedAt
           }
           match {
             nextToken
-            startedAt
           }
         }
         matcheeProfile {
@@ -724,126 +429,23 @@ export const listMatchs = /* GraphQL */ `
           gender
           open_to_meet
           photo_source
-          _version
-          _deleted
-          _lastChangedAt
           createdAt
           updatedAt
           genres {
             nextToken
-            startedAt
           }
           authors {
             nextToken
-            startedAt
           }
           books {
             nextToken
-            startedAt
           }
           match {
             nextToken
-            startedAt
           }
         }
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncMatches = /* GraphQL */ `
-  query SyncMatches(
-    $filter: ModelMatchFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncMatches(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        matcherID
-        matcheeID
-        status
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        matcherProfile {
-          id
-          username
-          nickname
-          about_me
-          birth_date
-          latitude
-          longitude
-          gender
-          open_to_meet
-          photo_source
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-          genres {
-            nextToken
-            startedAt
-          }
-          authors {
-            nextToken
-            startedAt
-          }
-          books {
-            nextToken
-            startedAt
-          }
-          match {
-            nextToken
-            startedAt
-          }
-        }
-        matcheeProfile {
-          id
-          username
-          nickname
-          about_me
-          birth_date
-          latitude
-          longitude
-          gender
-          open_to_meet
-          photo_source
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-          genres {
-            nextToken
-            startedAt
-          }
-          authors {
-            nextToken
-            startedAt
-          }
-          books {
-            nextToken
-            startedAt
-          }
-          match {
-            nextToken
-            startedAt
-          }
-        }
-      }
-      nextToken
-      startedAt
     }
   }
 `;
