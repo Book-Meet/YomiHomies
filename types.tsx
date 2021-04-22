@@ -42,7 +42,8 @@ export interface User {
   birth_date?: Date;
   nickname?: String;
   photo_source?: String;
-  _lastChangedAt?: any;
+  updatedAt?: any;
+  searchRadius?: Number;
 }
 
 export const initialUserState: User = {

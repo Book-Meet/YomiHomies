@@ -57,7 +57,9 @@ export default function EditProfile({ setViewMode, styles }) {
             id: state.user.id,
             nickname: nicknameVal.current.value,
             gender: genderVal.current.value,
-            about_me: aboutMeVal.current.value
+            about_me: aboutMeVal.current.value,
+            latitude: state.user.latitude,
+            longitude: state.user.longitude
         }
         let updated:any = await API.graphql({query:updateProfile, variables: {input:newVals, id:state.user.id}})
         dispatch({type: ActionType.SetData, payload: updated.data.updateProfile});
