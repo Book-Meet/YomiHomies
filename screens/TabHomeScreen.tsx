@@ -7,8 +7,10 @@ import { Transitioning, Transition } from 'react-native-reanimated'
 import {listProfiles} from '../src/graphql/queries';
 import {createMatch} from '../src/graphql/mutations';
 import UserContext from '../utils/userContext';
+import { ActionType } from '../types';
 import { Text, View } from '../components/Themed';
 import API from '@aws-amplify/api';
+import { checkMatch } from '../utils/customQueries';
 
 const { width } = Dimensions.get('window');
 
@@ -61,23 +63,47 @@ export default function TabHomeScreen()
 
   const onSwipedLeft = async () => {
     transitionRef.current.animateNextTransition();
+
+    // update database
     let reject = await API.graphql({query:createMatch, variables:{input:{matcherID:state.user.id, matcheeID:matches[0].id, status:"rejected"}}})
-    // console.log(reject);
+    console.log("reject", reject);
+
+    // update context
+    let updatedUser = {...state.user}
+    updatedUser.match.items.push(reject.data.createMatch);
+    dispatch({type: ActionType.SetData, payload: updatedUser});
+
+    // update matches state
     let temp = [...matches];
     temp.splice(0, 1);
     setMatches(temp);
+    console.log(state.user);
   }
   
   const onSwipedRight = async () =>{
     transitionRef.current.animateNextTransition();
-    let status = '';
-    // console.log(matches[0])
-    // matches[0].match.items.some(a=>a.matcheeID === state.user.id && a.status != 'rejected') ? status = 'accepted': status = 'pending'
-    let addMatch = await API.graphql({query:createMatch, variables:{input: {matcherID:state.user.id, matcheeID:matches[0].id, status:"accepted"}} })
-    console.log(addMatch)
+
+    // update database
+    let accept = await API.graphql({query:createMatch, variables:{input: {matcherID:state.user.id, matcheeID:matches[0].id, status:"accepted", matchedOn: matches[0].book}} })
+    console.log("accept", accept)
+    
+    // update context
+    let updatedUser = {...state.user}
+    updatedUser.match.items.push(accept.data.createMatch);
+    dispatch({type: ActionType.SetData, payload: updatedUser});
+
+    // update matches state
     let temp = [...matches];
     temp.splice(0, 1);
     setMatches(temp);
+
+    // check if it's a match
+    let filter = { and: [{matcheeID: {eq: state.user.id }}, {matcherID: {eq: matches[0].id}}, {status: {eq: "accepted"}}]}
+    let res = await API.graphql({query:checkMatch, variables: {filter: filter}})
+    console.log("data", res.data);
+    if (res.data.listMatchs.items.length > 0) {
+      setModalVisible(true);
+    }
   }
 
   useEffect(() => {
@@ -105,6 +131,7 @@ export default function TabHomeScreen()
         })
       })
       setMatches(profiles);
+      console.log("fetch matches run", profiles);
     })()
   }, [state])
   
@@ -125,7 +152,7 @@ export default function TabHomeScreen()
             <Text style={styles.modalText}>You got a match!</Text>
             <Pressable
               style={[styles.button,]}
-              onPress={() => setModalVisible(!modalVisible)}
+              onPress={() => setModalVisible(false)}
             >
               <Text>Hide Modal</Text>
             </Pressable>
