@@ -42,8 +42,6 @@ export interface User {
   birth_date?: Date;
   nickname?: String;
   photo_source?: String;
-  _version?: Number;
-  _deleted?: Boolean;
   _lastChangedAt?: any;
 }
 
@@ -65,7 +63,6 @@ export interface Books {
   author: String;
   profileID?: String;
   id?: String;
-  _version: Number;
 }
 
 export enum ActionType {
