@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useEffect, useState, useContext } from "react";
-import { StyleSheet, Image, StatusBar, SafeAreaView, Dimensions, Alert, Modal, Pressable } from 'react-native';
+import { StyleSheet, Image, StatusBar, SafeAreaView, Dimensions, Alert, Modal, Pressable, ImageBackground } from 'react-native';
 import Swiper from 'react-native-deck-swiper';
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Transitioning, Transition } from 'react-native-reanimated'
@@ -11,6 +11,7 @@ import { ActionType } from '../types';
 import { Text, View } from '../components/Themed';
 import API from '@aws-amplify/api';
 import { checkMatch } from '../utils/customQueries';
+import { transform } from '@babel/core';
 
 const { width } = Dimensions.get('window');
 
@@ -39,6 +40,8 @@ export default function TabHomeScreen()
       </Transition.Together>
     </Transition.Sequence>
   );
+
+  
   
   const swiperRef:any = React.createRef();
   const transitionRef:any = React.createRef();
@@ -47,9 +50,33 @@ export default function TabHomeScreen()
   {
     if(matches.length === 0) return null 
     return (
+      <ImageBackground style={styles.imgBackground} resizeMode='cover' source={require("../assets/images/page_background.jpg")}>
       <View style={styles.card}>
-        <Image source={{uri:"https://i.ibb.co/f8vR1P8/ace.jpg"}} style={styles.cardImage} />
+        <Transitioning.View ref={transitionRef} transition={transition}>
+          <CardDetails index={0} />
+        </Transitioning.View>
+        <View style={styles.bottomButtonsContainer}>
+          <MaterialCommunityIcons.Button
+            name='close'
+            size={94}
+            backgroundColor='transparent'
+            underlayColor='transparent'
+            activeOpacity={-0.3}
+            color={colors.red}
+            onPress={() => swiperRef.current.swipeLeft()}
+          />
+          <MaterialCommunityIcons.Button
+            name='circle-outline'
+            size={94}
+            backgroundColor='transparent'
+            underlayColor='transparent'
+            activeOpacity={-0.3}
+            color={colors.blue}
+            onPress={() => swiperRef.current.swipeRight()}
+          />
+        </View>
       </View>
+      </ImageBackground>
     );
   };
   
@@ -57,7 +84,7 @@ export default function TabHomeScreen()
     <View style={styles.cardDetails} key={matches[0].id}>
       <Text style={[styles.text, styles.name]}>{"Name: " + matches[0].username}</Text>
       <Text style={[styles.text, styles.book]}>{"Book: " + matches[0].book}</Text>
-      <Text style={[styles.text, styles.name]}>{"ABout Me: " + matches[0].about_me}</Text>
+      <Text style={[styles.text, styles.name]}>{"About Me: " + matches[0].about_me}</Text>
     </View>
   ) : null;
 
@@ -157,12 +184,12 @@ export default function TabHomeScreen()
       ) 
       : (<> 
       {/* <StatusBar hidden /> */}
-      <MaterialCommunityIcons
+      {/* <MaterialCommunityIcons
         name='crop-square'
         size={width}
         color={colors.blue}
         style={styles.diamondIcon}
-      />
+      /> */}
       <View style={styles.swiperContainer}>
         <Swiper
         ref={swiperRef}
@@ -218,31 +245,6 @@ export default function TabHomeScreen()
         }}
         />
         </View>
-      <View style={styles.bottomContainer}>
-        <Transitioning.View ref={transitionRef} transition={transition}>
-          <CardDetails index={0} />
-        </Transitioning.View>
-        <View style={styles.bottomButtonsContainer}>
-          <MaterialCommunityIcons.Button
-            name='close'
-            size={94}
-            backgroundColor='transparent'
-            underlayColor='transparent'
-            activeOpacity={-0.3}
-            color={colors.red}
-            onPress={() => swiperRef.current.swipeLeft()}
-          />
-          <MaterialCommunityIcons.Button
-            name='circle-outline'
-            size={94}
-            backgroundColor='transparent'
-            underlayColor='transparent'
-            activeOpacity={-0.3}
-            color={colors.blue}
-            onPress={() => swiperRef.current.swipeRight()}
-          />
-        </View>
-      </View>
       </>)}
     </View>
   );
@@ -256,15 +258,15 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   card: {
-    flex: 0.45,
+    flex: 1,
     borderRadius: 8,
-    shadowRadius: 25,
-    shadowColor: colors.black,
-    shadowOpacity: 0.08,
-    shadowOffset: { width: 0, height: 0 },
+    backgroundColor: 'transparent',
+    // shadowRadius: 25,
+    // shadowColor: colors.black,
+    // shadowOpacity: 0.08,
+    // shadowOffset: { width: 0, height: 0 },
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.white
   },
   cardImage: {
     width: 160,
@@ -272,15 +274,15 @@ const styles = StyleSheet.create({
     resizeMode: 'contain'
   },
   swiperContainer: {
-    flex: 0.55
+    flex: 1
   },
-  bottomContainer: {
-    flex: 0.45,
-    justifyContent: 'space-evenly'
-  },
-  cardDetails: {
-    alignItems: 'center'
-  },
+  // bottomContainer: {
+  //   flex: 0.45,
+  //   justifyContent: 'space-evenly'
+  // },
+  // cardDetails: {
+  //   alignItems: 'center'
+  // },
   text: {
     // fontFamily: 'Courier'
   },
@@ -331,118 +333,10 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center"
+  },
+  imgBackground: {
+    width: '100%',
+    height: '100%',
+    flex: 1
   }
 });
-
-// export default function TabHomeScreen()
-// {
-//   const [people, setPeople] = useState([
-//     {
-//         name: 'ace',
-//         uri : 'https://i.ibb.co/VqscmSr/ace.jpg'
-//     },
-//     {
-//       name : 'chopper',
-//       uri : 'https://i.ibb.co/82GDRYs/chopper.jpg'
-//     },
-//     {
-//       name : 'doflamingo',
-//       uri : 'https://i.ibb.co/NtM1Nt8/doflamingo.jpg'
-//     },
-//     {
-//       name : 'franky',
-//       uri : 'https://i.ibb.co/9nvgyNd/franky.jpg'
-//     },
-//     {
-//       name : 'luffy',
-//       uri : 'https://i.ibb.co/10XxfkX/luffy.jpg'
-//     },
-//     {
-//       name : 'sanji',
-//       uri : 'https://i.ibb.co/mD7kyVz/sanji.jpg'
-//     },
-//     {
-//       name : 'shanks',
-//       uri : 'https://i.ibb.co/J5kSTKJ/shanks.jpg'
-//     },
-//     {
-//       name : 'smoker',
-//       uri : 'https://i.ibb.co/0cCGDrR/smoker.jpg'
-//     },
-//     {
-//       name : 'usopp',
-//       uri : 'https://i.ibb.co/48LBJjn/usopp.jpg'
-//     },
-//     {
-//       name : 'zoro',
-//       uri : 'https://i.ibb.co/j8ZR1m3/zoro.jpg'
-//     },
-    
-// ]);
-//   return (
-//     <View >
-//       <View style={styles.container}>
-//         {
-//           people.map((person) =>
-//             <TinderCard
-//               preventSwipe={['up', 'down']}
-//             >
-//               <Image source={{ uri: person.uri }} style={{width: 400, height: 400}}
-//               />
-//               <Text style={styles.name}>{person.name}</Text>
-//             </TinderCard>
-//           )
-//         }
-//         </View>
-//       <Text style={styles.title}>Matching</Text>
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   tinderCards__cardContainer: {
-//     display: 'flex',
-//     justifyContent: 'center',
-//     marginTop: 5,
-//   },
-//   card: {
-//     position: 'relative',
-//     marginTop: 10,
-//     width: 600,
-//     padding: 20,
-//     height: 600,
-//     borderRadius: 20,
-//   },
-//   swipe: {
-//     position: "absolute",
-//   },
-//   title: {
-//     fontSize: 20,
-//     fontWeight: 'bold',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-//   container: {
-//     flex: 1,
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-//   name: {
-//     fontSize: 30,
-//     justifyContent: 'center',
-//     alignItems: 'center'
-//   }
-// });
-
-
-// container: {
-//   flex: 1,
-//   alignItems: 'center',
-//   justifyContent: 'center',
-// },
-
-// separator: {
-//   marginVertical: 30,
-//   height: 1,
-//   width: '80%',
-// },
