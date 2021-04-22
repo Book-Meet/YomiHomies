@@ -1,5 +1,6 @@
 import React from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, ImageBackground } from 'react-native';
+// import BG from '../assets/images/BG.png';
 // import { Text, View } from './Themed';
 
 //import { useRoute } from '@react-navigation/native';
@@ -13,9 +14,11 @@ export default function ChatRoomScreen() {
     //console.log(route.params);
 
     return (
-        <FlatList
-            data = {chatRoomData.messages}
-            renderItem={({item}) => <ChatMessage message={item} />}
-        />
+        // <ImageBackground style={{width: '100%', height: '100%'}} source={BG}>
+            <FlatList
+                data = {chatRoomData.messages}
+                renderItem={({item}) => <ChatMessage message={item} />}
+            />
+        // </ImageBackground>
     );
 }

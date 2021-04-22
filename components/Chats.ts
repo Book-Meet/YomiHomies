@@ -52,7 +52,7 @@ export default {
 	}, {
 		id: 'm6',
 		content: 'It is a bit tough, as I have 2 specializations. How about yours? Do you enjoy it?',
-		createdAt: '2020-10-03T14:49:00.000Z',
+		createdAt: '2020-10-03T14:52:00.000Z',
 		user: {
 			id: 'u2',
 			name: 'Lukas',
