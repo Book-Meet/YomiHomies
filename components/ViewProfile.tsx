@@ -19,8 +19,7 @@ export default function ViewProfile({ setViewMode, styles }) {
         </View>
         <View style={styles.content}>
           <Text style={styles.text}>Top Books: </Text>
-            { state.user.books !== undefined ? state.user.books.items.filter(book => book._deleted !== true)
-              .map(book => {
+            { state.user.books !== undefined ? state.user.books.items.map(book => {
             return (
               <Text key={book.id}>{book.title} - {book.author}</Text>
             )
