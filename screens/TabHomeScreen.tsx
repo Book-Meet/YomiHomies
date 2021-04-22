@@ -83,20 +83,23 @@ export default function TabHomeScreen()
   useEffect(() => {
     if (state.user.id == '') return;
     (async function fetchMatches (){
-      let profiles:any = await API.graphql({query:listProfiles});
+      let alreadySwiped = state.user.match.items.length > 0  
+        ? state.user.match.items.map(match => match.matcheeID)
+        : [];
+      let profiles:any = await API.graphql({query:listProfiles, variables: {filter: {not: {id: {eq: state.user.id}}}}});
       profiles = profiles.data.listProfiles.items;
-      profiles = profiles.map(a=>({id:a.id, books:a.books.items, about_me:a.about_me, username:a.username, match:a.match}))
-      profiles = profiles.filter(profile =>{
-        if (profile.id === state.user.id) return false;
-        for (let match of state.user.match.items){
-          if(match.matcheeID === profile.id) return false;
-        }
+      profiles = profiles.filter(profile => {
+        if (alreadySwiped.includes(profile.id)) return false;
+        // filter on books
+        if (state.user.books.items.length === 0) return false;
         return state.user.books.items.some(a => {
-          for (let books of profile.books){
-            if(books.title === a.title) {
-              profile.book = books.title;
-              return true
-            };
+          if (profile.books.items.length > 0) {
+            for (let book of profile.books.items){
+              if (book.title === a.title) {
+                profile.book = book.title;
+                return true;
+              };
+            }
           }
           return false;
         })
