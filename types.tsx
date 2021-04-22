@@ -75,3 +75,22 @@ export interface SetData {
 }
 
 export type Actions = SetData; 
+
+export type ChatUser = {
+  id: String;
+  name: String;
+  imageUri: String
+}
+
+export type Message = {
+  id: String;
+  user: ChatUser;
+  content: String;
+  createdAt: Date;
+}
+
+export type ChatRoom = {
+  id: String;
+  users: ChatUser[];
+  lasrMessage: Message;
+}

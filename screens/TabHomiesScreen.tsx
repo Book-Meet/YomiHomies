@@ -1,12 +1,13 @@
 import * as React from 'react';
 import {useState, useEffect, useContext} from 'react';
-import { StyleSheet, FlatList, SafeAreaView, Image } from 'react-native';
+import { StyleSheet, FlatList, SafeAreaView, Image, TouchableOpacity } from 'react-native';
 import {Text, View} from '../components/Themed'
 import Colors from '../constants/Colors';
 import { navItem } from '@aws-amplify/ui';
 import API from '@aws-amplify/api';
 import UserContext from '../utils/userContext';
-import {listBooks, listMatchs} from'../src/graphql/queries'
+import {listBooks, listMatchs} from '../src/graphql/queries';
+import ChatRoomScreen from '../components/ChatRoomScreen';
 
 interface matchItem {
   id: Number;
@@ -107,19 +108,22 @@ export default function TabHomiesScreen() {
     if (state.user.id ==='') return null;
     // console.log(item);
     return (
-      <View style={styles.item}>
+      // <View style={styles.item}>
+      <TouchableOpacity>
         <Image style={styles.icons} source={{uri:"https://i.ibb.co/f8vR1P8/ace.jpg"}} />
         <Text style={styles.nickname}>{"Name: " + item.username}</Text>
         <Text>{"Gender: " + item.gender}</Text>
         {/* <Text>{"Books: " + item.books}</Text> */}
         <Text>{"About Me: " + item.about_me}</Text>
         {/* <Text style={styles.chatPreview}>{item.chatPreview}</Text> */}
-      </View>
+      </TouchableOpacity>
+      // </View>
     );
   }
 
   return (
     <SafeAreaView style={styles.container}>
+      <ChatRoomScreen />
       { matches.length !== 0 ? (
         <>
           <FlatList
