@@ -91,7 +91,7 @@ export default function TabHomeScreen()
         for (let match of state.user.match.items){
           if(match.matcheeID === profile.id) return false;
         }
-        return state.user.books.items.some(a=>{
+        return state.user.books.items.some(a => {
           for (let books of profile.books){
             if(books.title === a.title) {
               profile.book = books.title;
