@@ -85,7 +85,7 @@ type Message
     queryField: "messagesByChatRoom"
   ) {
   id: ID!
-  createdAt: AWSDate!
+  createdAt: String!
   content: String!
   userID: ID!
   chatRoomID: ID!

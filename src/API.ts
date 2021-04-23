@@ -401,7 +401,7 @@ export type DeleteChatRoomInput = {
 
 export type CreateMessageInput = {
   id?: string | null,
-  createdAt: string,
+  createdAt?: string | null,
   content: string,
   userID: string,
   chatRoomID: string,

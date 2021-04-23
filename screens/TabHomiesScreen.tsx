@@ -4,86 +4,11 @@ import { StyleSheet, FlatList, SafeAreaView, Image } from 'react-native';
 import {Text, View} from '../components/Themed'
 import Colors from '../constants/Colors';
 import { navItem } from '@aws-amplify/ui';
-import API from '@aws-amplify/api';
+import API, {graphqlOperation} from '@aws-amplify/api';
 import UserContext from '../utils/userContext';
-import {listBooks, listMatchs} from'../src/graphql/queries'
-
-interface matchItem {
-  id: Number;
-  nickname: String;
-  chatPreview: String;
-  newMessages: Number;
-}
-
-let DATA: matchItem[] = [
-  {
-    id: 1,
-    nickname: "GuyWithFace",
-    chatPreview: "I have a face! I like Books!",
-    newMessages: 0
-  },
-  {
-    id: 2,
-    nickname: "GirlWithFace",
-    chatPreview: "I have a face too! I like Books!",
-    newMessages: 0
-  },
-  {
-    id: 3,
-    nickname: "GirlWithBook",
-    chatPreview: "I have a book! I like Faces!",
-    newMessages: 2
-  },
-  {
-    id: 4,
-    nickname: "GirlWithFace",
-    chatPreview: "I have a face! I like Books!",
-    newMessages: 1
-  },
-  {
-    id: 5,
-    nickname: "DogWithFace",
-    chatPreview: "I'm a dog with a face'! I like eating Books!",
-    newMessages: 0
-  },
-  {
-    id: 6,
-    nickname: "DogWithBook",
-    chatPreview: "I'm a dog with a book I used to have a book but I ate it...! I like eating Books!",
-    newMessages: 0
-  },
-  {
-    id: 7,
-    nickname: "Booksy Williams",
-    chatPreview: "I'm a dog with a book I used to have a book but I ate it...! I like eating Books!",
-    newMessages: 0
-  },
-  {
-    id: 8,
-    nickname: "The Yomiest of all Homies",
-    chatPreview: "I'm a dog with a book I used to have a book but I ate it...! I like eating Books!",
-    newMessages: 0
-  },
-  {
-    id: 9,
-    nickname: "You've never Yomied like me",
-    chatPreview: "I'm a dog with a book I used to have a book but I ate it...! I like eating Books!",
-    newMessages: 0
-  },
-  {
-    id: 10,
-    nickname: "Daddy's Home",
-    chatPreview: "I'm a dog with a book I used to have a book but I ate it...! I like eating Books!",
-    newMessages: 0
-  },
-  {
-    id: 11,
-    nickname: "Crokus",
-    chatPreview: "I'm a dog with a book I used to have a book but I ate it...! I like eating Books!",
-    newMessages: 0
-  },
-]
-
+import {listMatchs} from'../src/graphql/queries'
+import { onCreateMessage} from'../src/graphql/subscriptions'
+import { createMessage} from'../src/graphql/mutations'
 
 export default function TabHomiesScreen() {
 
@@ -102,6 +27,13 @@ export default function TabHomiesScreen() {
     })()
   }, [state])
 
+
+  useEffect(() => {
+    let subscription = API.graphql(graphqlOperation(onCreateMessage))
+    .subscribe({next: (data)=>{
+      console.log(data)
+    }})
+  }, [])
 
   const renderItem = ({item}:any) => {
     if (state.user.id ==='') return null;
