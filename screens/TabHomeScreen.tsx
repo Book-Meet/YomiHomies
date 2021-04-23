@@ -126,7 +126,6 @@ export default function TabHomeScreen()
   // }, [])
   useEffect(() =>
   {
-    console.log("state is:",state)
     if (state.user.id == '') return;
     (async function fetchMatches (){
       let alreadySwiped:any = state.user.match.items.length > 0  

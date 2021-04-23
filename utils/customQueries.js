@@ -33,6 +33,10 @@ export const listChatRooms = /* GraphQL */ `
             createdAt
             content
             updatedAt
+            user{
+              id
+              username
+            }
           }
         }
       }
