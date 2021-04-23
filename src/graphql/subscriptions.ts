@@ -156,6 +156,7 @@ export const onCreateProfile = /* GraphQL */ `
           matcherID
           matcheeID
           status
+          matchedOn
           createdAt
           updatedAt
           matcherProfile {
@@ -183,6 +184,35 @@ export const onCreateProfile = /* GraphQL */ `
             gender
             open_to_meet
             photo_source
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+      }
+      ChatRoomUser {
+        items {
+          id
+          userID
+          chatRoomID
+          createdAt
+          updatedAt
+          user {
+            id
+            username
+            nickname
+            about_me
+            birth_date
+            latitude
+            longitude
+            gender
+            open_to_meet
+            photo_source
+            createdAt
+            updatedAt
+          }
+          chatRoom {
+            id
             createdAt
             updatedAt
           }
@@ -244,6 +274,7 @@ export const onUpdateProfile = /* GraphQL */ `
           matcherID
           matcheeID
           status
+          matchedOn
           createdAt
           updatedAt
           matcherProfile {
@@ -271,6 +302,35 @@ export const onUpdateProfile = /* GraphQL */ `
             gender
             open_to_meet
             photo_source
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+      }
+      ChatRoomUser {
+        items {
+          id
+          userID
+          chatRoomID
+          createdAt
+          updatedAt
+          user {
+            id
+            username
+            nickname
+            about_me
+            birth_date
+            latitude
+            longitude
+            gender
+            open_to_meet
+            photo_source
+            createdAt
+            updatedAt
+          }
+          chatRoom {
+            id
             createdAt
             updatedAt
           }
@@ -332,6 +392,7 @@ export const onDeleteProfile = /* GraphQL */ `
           matcherID
           matcheeID
           status
+          matchedOn
           createdAt
           updatedAt
           matcherProfile {
@@ -365,6 +426,35 @@ export const onDeleteProfile = /* GraphQL */ `
         }
         nextToken
       }
+      ChatRoomUser {
+        items {
+          id
+          userID
+          chatRoomID
+          createdAt
+          updatedAt
+          user {
+            id
+            username
+            nickname
+            about_me
+            birth_date
+            latitude
+            longitude
+            gender
+            open_to_meet
+            photo_source
+            createdAt
+            updatedAt
+          }
+          chatRoom {
+            id
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -375,6 +465,7 @@ export const onCreateMatch = /* GraphQL */ `
       matcherID
       matcheeID
       status
+      matchedOn
       createdAt
       updatedAt
       matcherProfile {
@@ -427,6 +518,17 @@ export const onCreateMatch = /* GraphQL */ `
             matcherID
             matcheeID
             status
+            matchedOn
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        ChatRoomUser {
+          items {
+            id
+            userID
+            chatRoomID
             createdAt
             updatedAt
           }
@@ -483,6 +585,17 @@ export const onCreateMatch = /* GraphQL */ `
             matcherID
             matcheeID
             status
+            matchedOn
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        ChatRoomUser {
+          items {
+            id
+            userID
+            chatRoomID
             createdAt
             updatedAt
           }
@@ -499,6 +612,7 @@ export const onUpdateMatch = /* GraphQL */ `
       matcherID
       matcheeID
       status
+      matchedOn
       createdAt
       updatedAt
       matcherProfile {
@@ -551,6 +665,17 @@ export const onUpdateMatch = /* GraphQL */ `
             matcherID
             matcheeID
             status
+            matchedOn
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        ChatRoomUser {
+          items {
+            id
+            userID
+            chatRoomID
             createdAt
             updatedAt
           }
@@ -607,6 +732,17 @@ export const onUpdateMatch = /* GraphQL */ `
             matcherID
             matcheeID
             status
+            matchedOn
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        ChatRoomUser {
+          items {
+            id
+            userID
+            chatRoomID
             createdAt
             updatedAt
           }
@@ -623,6 +759,7 @@ export const onDeleteMatch = /* GraphQL */ `
       matcherID
       matcheeID
       status
+      matchedOn
       createdAt
       updatedAt
       matcherProfile {
@@ -675,6 +812,17 @@ export const onDeleteMatch = /* GraphQL */ `
             matcherID
             matcheeID
             status
+            matchedOn
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        ChatRoomUser {
+          items {
+            id
+            userID
+            chatRoomID
             createdAt
             updatedAt
           }
@@ -731,7 +879,849 @@ export const onDeleteMatch = /* GraphQL */ `
             matcherID
             matcheeID
             status
+            matchedOn
             createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        ChatRoomUser {
+          items {
+            id
+            userID
+            chatRoomID
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+      }
+    }
+  }
+`;
+export const onCreateChatRoomUser = /* GraphQL */ `
+  subscription OnCreateChatRoomUser {
+    onCreateChatRoomUser {
+      id
+      userID
+      chatRoomID
+      createdAt
+      updatedAt
+      user {
+        id
+        username
+        nickname
+        about_me
+        birth_date
+        latitude
+        longitude
+        gender
+        open_to_meet
+        photo_source
+        createdAt
+        updatedAt
+        genres {
+          items {
+            id
+            genre
+            profileID
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        authors {
+          items {
+            id
+            profileID
+            name
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        books {
+          items {
+            id
+            profileID
+            title
+            author
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        match {
+          items {
+            id
+            matcherID
+            matcheeID
+            status
+            matchedOn
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        ChatRoomUser {
+          items {
+            id
+            userID
+            chatRoomID
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+      }
+      chatRoom {
+        id
+        createdAt
+        updatedAt
+        ChatRoomUsers {
+          items {
+            id
+            userID
+            chatRoomID
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        messages {
+          items {
+            id
+            createdAt
+            content
+            userID
+            chatRoomID
+            updatedAt
+          }
+          nextToken
+        }
+      }
+    }
+  }
+`;
+export const onUpdateChatRoomUser = /* GraphQL */ `
+  subscription OnUpdateChatRoomUser {
+    onUpdateChatRoomUser {
+      id
+      userID
+      chatRoomID
+      createdAt
+      updatedAt
+      user {
+        id
+        username
+        nickname
+        about_me
+        birth_date
+        latitude
+        longitude
+        gender
+        open_to_meet
+        photo_source
+        createdAt
+        updatedAt
+        genres {
+          items {
+            id
+            genre
+            profileID
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        authors {
+          items {
+            id
+            profileID
+            name
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        books {
+          items {
+            id
+            profileID
+            title
+            author
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        match {
+          items {
+            id
+            matcherID
+            matcheeID
+            status
+            matchedOn
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        ChatRoomUser {
+          items {
+            id
+            userID
+            chatRoomID
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+      }
+      chatRoom {
+        id
+        createdAt
+        updatedAt
+        ChatRoomUsers {
+          items {
+            id
+            userID
+            chatRoomID
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        messages {
+          items {
+            id
+            createdAt
+            content
+            userID
+            chatRoomID
+            updatedAt
+          }
+          nextToken
+        }
+      }
+    }
+  }
+`;
+export const onDeleteChatRoomUser = /* GraphQL */ `
+  subscription OnDeleteChatRoomUser {
+    onDeleteChatRoomUser {
+      id
+      userID
+      chatRoomID
+      createdAt
+      updatedAt
+      user {
+        id
+        username
+        nickname
+        about_me
+        birth_date
+        latitude
+        longitude
+        gender
+        open_to_meet
+        photo_source
+        createdAt
+        updatedAt
+        genres {
+          items {
+            id
+            genre
+            profileID
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        authors {
+          items {
+            id
+            profileID
+            name
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        books {
+          items {
+            id
+            profileID
+            title
+            author
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        match {
+          items {
+            id
+            matcherID
+            matcheeID
+            status
+            matchedOn
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        ChatRoomUser {
+          items {
+            id
+            userID
+            chatRoomID
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+      }
+      chatRoom {
+        id
+        createdAt
+        updatedAt
+        ChatRoomUsers {
+          items {
+            id
+            userID
+            chatRoomID
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        messages {
+          items {
+            id
+            createdAt
+            content
+            userID
+            chatRoomID
+            updatedAt
+          }
+          nextToken
+        }
+      }
+    }
+  }
+`;
+export const onCreateChatRoom = /* GraphQL */ `
+  subscription OnCreateChatRoom {
+    onCreateChatRoom {
+      id
+      createdAt
+      updatedAt
+      ChatRoomUsers {
+        items {
+          id
+          userID
+          chatRoomID
+          createdAt
+          updatedAt
+          user {
+            id
+            username
+            nickname
+            about_me
+            birth_date
+            latitude
+            longitude
+            gender
+            open_to_meet
+            photo_source
+            createdAt
+            updatedAt
+          }
+          chatRoom {
+            id
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+      }
+      messages {
+        items {
+          id
+          createdAt
+          content
+          userID
+          chatRoomID
+          updatedAt
+          user {
+            id
+            username
+            nickname
+            about_me
+            birth_date
+            latitude
+            longitude
+            gender
+            open_to_meet
+            photo_source
+            createdAt
+            updatedAt
+          }
+          chatRoom {
+            id
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const onUpdateChatRoom = /* GraphQL */ `
+  subscription OnUpdateChatRoom {
+    onUpdateChatRoom {
+      id
+      createdAt
+      updatedAt
+      ChatRoomUsers {
+        items {
+          id
+          userID
+          chatRoomID
+          createdAt
+          updatedAt
+          user {
+            id
+            username
+            nickname
+            about_me
+            birth_date
+            latitude
+            longitude
+            gender
+            open_to_meet
+            photo_source
+            createdAt
+            updatedAt
+          }
+          chatRoom {
+            id
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+      }
+      messages {
+        items {
+          id
+          createdAt
+          content
+          userID
+          chatRoomID
+          updatedAt
+          user {
+            id
+            username
+            nickname
+            about_me
+            birth_date
+            latitude
+            longitude
+            gender
+            open_to_meet
+            photo_source
+            createdAt
+            updatedAt
+          }
+          chatRoom {
+            id
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const onDeleteChatRoom = /* GraphQL */ `
+  subscription OnDeleteChatRoom {
+    onDeleteChatRoom {
+      id
+      createdAt
+      updatedAt
+      ChatRoomUsers {
+        items {
+          id
+          userID
+          chatRoomID
+          createdAt
+          updatedAt
+          user {
+            id
+            username
+            nickname
+            about_me
+            birth_date
+            latitude
+            longitude
+            gender
+            open_to_meet
+            photo_source
+            createdAt
+            updatedAt
+          }
+          chatRoom {
+            id
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+      }
+      messages {
+        items {
+          id
+          createdAt
+          content
+          userID
+          chatRoomID
+          updatedAt
+          user {
+            id
+            username
+            nickname
+            about_me
+            birth_date
+            latitude
+            longitude
+            gender
+            open_to_meet
+            photo_source
+            createdAt
+            updatedAt
+          }
+          chatRoom {
+            id
+            createdAt
+            updatedAt
+          }
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const onCreateMessage = /* GraphQL */ `
+  subscription OnCreateMessage {
+    onCreateMessage {
+      id
+      createdAt
+      content
+      userID
+      chatRoomID
+      updatedAt
+      user {
+        id
+        username
+        nickname
+        about_me
+        birth_date
+        latitude
+        longitude
+        gender
+        open_to_meet
+        photo_source
+        createdAt
+        updatedAt
+        genres {
+          items {
+            id
+            genre
+            profileID
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        authors {
+          items {
+            id
+            profileID
+            name
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        books {
+          items {
+            id
+            profileID
+            title
+            author
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        match {
+          items {
+            id
+            matcherID
+            matcheeID
+            status
+            matchedOn
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        ChatRoomUser {
+          items {
+            id
+            userID
+            chatRoomID
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+      }
+      chatRoom {
+        id
+        createdAt
+        updatedAt
+        ChatRoomUsers {
+          items {
+            id
+            userID
+            chatRoomID
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        messages {
+          items {
+            id
+            createdAt
+            content
+            userID
+            chatRoomID
+            updatedAt
+          }
+          nextToken
+        }
+      }
+    }
+  }
+`;
+export const onUpdateMessage = /* GraphQL */ `
+  subscription OnUpdateMessage {
+    onUpdateMessage {
+      id
+      createdAt
+      content
+      userID
+      chatRoomID
+      updatedAt
+      user {
+        id
+        username
+        nickname
+        about_me
+        birth_date
+        latitude
+        longitude
+        gender
+        open_to_meet
+        photo_source
+        createdAt
+        updatedAt
+        genres {
+          items {
+            id
+            genre
+            profileID
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        authors {
+          items {
+            id
+            profileID
+            name
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        books {
+          items {
+            id
+            profileID
+            title
+            author
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        match {
+          items {
+            id
+            matcherID
+            matcheeID
+            status
+            matchedOn
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        ChatRoomUser {
+          items {
+            id
+            userID
+            chatRoomID
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+      }
+      chatRoom {
+        id
+        createdAt
+        updatedAt
+        ChatRoomUsers {
+          items {
+            id
+            userID
+            chatRoomID
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        messages {
+          items {
+            id
+            createdAt
+            content
+            userID
+            chatRoomID
+            updatedAt
+          }
+          nextToken
+        }
+      }
+    }
+  }
+`;
+export const onDeleteMessage = /* GraphQL */ `
+  subscription OnDeleteMessage {
+    onDeleteMessage {
+      id
+      createdAt
+      content
+      userID
+      chatRoomID
+      updatedAt
+      user {
+        id
+        username
+        nickname
+        about_me
+        birth_date
+        latitude
+        longitude
+        gender
+        open_to_meet
+        photo_source
+        createdAt
+        updatedAt
+        genres {
+          items {
+            id
+            genre
+            profileID
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        authors {
+          items {
+            id
+            profileID
+            name
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        books {
+          items {
+            id
+            profileID
+            title
+            author
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        match {
+          items {
+            id
+            matcherID
+            matcheeID
+            status
+            matchedOn
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        ChatRoomUser {
+          items {
+            id
+            userID
+            chatRoomID
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+      }
+      chatRoom {
+        id
+        createdAt
+        updatedAt
+        ChatRoomUsers {
+          items {
+            id
+            userID
+            chatRoomID
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        messages {
+          items {
+            id
+            createdAt
+            content
+            userID
+            chatRoomID
             updatedAt
           }
           nextToken

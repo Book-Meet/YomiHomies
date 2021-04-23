@@ -4,13 +4,15 @@ import { StyleSheet, Image, StatusBar, SafeAreaView, Dimensions, Alert, Modal, P
 import Swiper from 'react-native-deck-swiper';
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Transitioning, Transition } from 'react-native-reanimated'
-import {listProfiles} from '../src/graphql/queries';
-import {createMatch} from '../src/graphql/mutations';
+import {listMatchs, listProfiles} from '../src/graphql/queries';
+import {createMatch, updateProfile} from '../src/graphql/mutations';
 import UserContext from '../utils/userContext';
+import { ActionType, User } from '../types';
 import { Text, View } from '../components/Themed';
 import API from '@aws-amplify/api';
+import { checkMatch } from '../utils/customQueries';
+import * as Location from 'expo-location';
 
-const { width } = Dimensions.get('window');
 
 const colors = {
   red: '#ec2379',
@@ -20,12 +22,13 @@ const colors = {
   white: '#ffffff'
 };
 
+const { width } = Dimensions.get('window');
 const ANIMATION_DURATION = 200;
 
 export default function TabHomeScreen()
 {
   const { state, dispatch } = useContext(UserContext)
-  const [matches, setMatches] = useState([]);
+  const [matches, setMatches]:any = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
 
   const transition = (
@@ -61,8 +64,16 @@ export default function TabHomeScreen()
 
   const onSwipedLeft = async () => {
     transitionRef.current.animateNextTransition();
-    let reject = await API.graphql({query:createMatch, variables:{input:{matcherID:state.user.id, matcheeID:matches[0].id, status:"rejected"}}})
-    // console.log(reject);
+
+    // update database
+    let reject:any = await API.graphql({query:createMatch, variables:{input:{matcherID:state.user.id, matcheeID:matches[0].id, status:"rejected"}}})
+
+    // update context
+    let updatedUser:any = {...state.user}
+    updatedUser.match.items.push(reject.data.createMatch);
+    dispatch({type: ActionType.SetData, payload: updatedUser});
+
+    // update matches state
     let temp = [...matches];
     temp.splice(0, 1);
     setMatches(temp);
@@ -70,42 +81,82 @@ export default function TabHomeScreen()
   
   const onSwipedRight = async () =>{
     transitionRef.current.animateNextTransition();
-    let status = '';
-    // console.log(matches[0])
-    // matches[0].match.items.some(a=>a.matcheeID === state.user.id && a.status != 'rejected') ? status = 'accepted': status = 'pending'
-    let addMatch = await API.graphql({query:createMatch, variables:{input: {matcherID:state.user.id, matcheeID:matches[0].id, status:"accepted"}} })
-    console.log(addMatch)
+
+    // update database
+    let accept = await API.graphql({query:createMatch, variables:{input: {matcherID:state.user.id, matcheeID:matches[0].id, status:"accepted", matchedOn: matches[0].book}} })
+    
+    // update context
+    let updatedUser:any = {...state.user}
+    updatedUser.match.items.push(accept.data.createMatch);
+    dispatch({type: ActionType.SetData, payload: updatedUser});
+
+    // update matches state
     let temp = [...matches];
     temp.splice(0, 1);
     setMatches(temp);
+
+    // check if it's a match
+    let filter = { and: [{matcheeID: {eq: state.user.id }}, {matcherID: {eq: matches[0].id}}, {status: {eq: "accepted"}}]}
+    let res:any = await API.graphql({query:checkMatch, variables: {filter: filter}})
+    if (res.data.listMatchs.items.length > 0) {
+      setModalVisible(true);
+    }
   }
 
-  useEffect(() => {
+  async function updateUserLocation (){
+    let now = Date.parse(new Date().toISOString())
+    if (now - Date.parse(state.user.updatedAt) > 86400000){
+      await API.graphql({query:updateProfile, variables:{id:state.user.id, latitude:state.user.latitude, longitude:state.user.longitude}});
+    }
+  }
+
+  // useEffect(() => {
+  //   (async function  (){
+  //     const profiles = await API.graphql(graphqlOperation(listProfiles));
+  //     const eachProfile = profiles.data.listProfiles.items
+  //     // console.log(eachProfile);
+  //     // console.log(eachProfile.length)
+  //     // console.log(typeof eachProfile)
+  //     // eachProfile.map((val) =>
+  //     // {
+  //     //   console.log(val._version)
+  //     // })
+  //     setImage(eachProfile)
+  //   })()
+  // }, [])
+  useEffect(() =>
+  {
+    console.log("state is:",state)
     if (state.user.id == '') return;
     (async function fetchMatches (){
-      let profiles:any = await API.graphql({query:listProfiles});
+      let alreadySwiped:any = state.user.match.items.length > 0  
+        ? state.user.match.items.map(match => match.matcheeID)
+        : [];
+      let profiles:any = await API.graphql({query:listProfiles, variables: {filter: {not: {id: {eq: state.user.id}}}}});
       profiles = profiles.data.listProfiles.items;
-      profiles = profiles.map(a=>({id:a.id, books:a.books.items, about_me:a.about_me, username:a.username, match:a.match}))
-      profiles = profiles.filter(profile =>{
-        if (profile.id === state.user.id) return false;
-        for (let match of state.user.match.items){
-          if(match.matcheeID === profile.id) return false;
-        }
-        return state.user.books.items.some(a=>{
-          for (let books of profile.books){
-            if(books.title === a.title) {
-              profile.book = books.title;
-              return true
-            };
+      profiles = profiles.filter(profile => {
+        if (alreadySwiped.includes(profile.id)) return false;
+        // filter on books
+        if (state.user.books.items.length === 0) return false;
+        return state.user.books.items.some(a => {
+          if (profile.books.items.length > 0) {
+            for (let book of profile.books.items){
+              if (book.title === a.title) {
+                profile.book = book.title;
+                return true;
+              };
+            }
           }
           return false;
         })
       })
       setMatches(profiles);
+      updateUserLocation();
     })()
   }, [state])
   
 
+// DOM
   return (
     <View style={styles.container}>
       { modalVisible ? (
@@ -122,7 +173,7 @@ export default function TabHomeScreen()
             <Text style={styles.modalText}>You got a match!</Text>
             <Pressable
               style={[styles.button,]}
-              onPress={() => setModalVisible(!modalVisible)}
+              onPress={() => setModalVisible(false)}
             >
               <Text>Hide Modal</Text>
             </Pressable>
@@ -223,6 +274,7 @@ export default function TabHomeScreen()
   );
 }
 
+// define styles(CSS)
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -309,51 +361,10 @@ const styles = StyleSheet.create({
   }
 });
 
+
+// //previous code(tinder-card)
 // export default function TabHomeScreen()
 // {
-//   const [people, setPeople] = useState([
-//     {
-//         name: 'ace',
-//         uri : 'https://i.ibb.co/VqscmSr/ace.jpg'
-//     },
-//     {
-//       name : 'chopper',
-//       uri : 'https://i.ibb.co/82GDRYs/chopper.jpg'
-//     },
-//     {
-//       name : 'doflamingo',
-//       uri : 'https://i.ibb.co/NtM1Nt8/doflamingo.jpg'
-//     },
-//     {
-//       name : 'franky',
-//       uri : 'https://i.ibb.co/9nvgyNd/franky.jpg'
-//     },
-//     {
-//       name : 'luffy',
-//       uri : 'https://i.ibb.co/10XxfkX/luffy.jpg'
-//     },
-//     {
-//       name : 'sanji',
-//       uri : 'https://i.ibb.co/mD7kyVz/sanji.jpg'
-//     },
-//     {
-//       name : 'shanks',
-//       uri : 'https://i.ibb.co/J5kSTKJ/shanks.jpg'
-//     },
-//     {
-//       name : 'smoker',
-//       uri : 'https://i.ibb.co/0cCGDrR/smoker.jpg'
-//     },
-//     {
-//       name : 'usopp',
-//       uri : 'https://i.ibb.co/48LBJjn/usopp.jpg'
-//     },
-//     {
-//       name : 'zoro',
-//       uri : 'https://i.ibb.co/j8ZR1m3/zoro.jpg'
-//     },
-    
-// ]);
 //   return (
 //     <View >
 //       <View style={styles.container}>

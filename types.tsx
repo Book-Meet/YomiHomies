@@ -42,7 +42,8 @@ export interface User {
   birth_date?: Date;
   nickname?: String;
   photo_source?: String;
-  _lastChangedAt?: any;
+  updatedAt?: any;
+  searchRadius?: Number;
 }
 
 export const initialUserState: User = {
@@ -74,23 +75,23 @@ export interface SetData {
   payload: User;
 }
 
-export type Actions = SetData; 
-
 export type ChatUser = {
   id: String;
   name: String;
-  imageUri: String;
+  inageUri: String;
 }
 
 export type Message = {
   id: String;
   user: ChatUser;
   content: String;
-  createdAt: Date;
+  createdAt: Number;
 }
 
 export type ChatRoom = {
   id: String;
-  users: ChatUser[];
-  lasrMessage: Message;
+  users: [ChatUser];
+  lastMessage: Message;
 }
+
+export type Actions = SetData; 
