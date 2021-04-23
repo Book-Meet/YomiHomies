@@ -7,7 +7,6 @@ import { navItem } from '@aws-amplify/ui';
 import API from '@aws-amplify/api';
 import UserContext from '../utils/userContext';
 import {listBooks, listMatchs} from '../src/graphql/queries';
-import ChatRoomScreen from '../components/ChatRoomScreen';
 
 interface matchItem {
   id: Number;
@@ -123,7 +122,6 @@ export default function TabHomiesScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ChatRoomScreen />
       { matches.length !== 0 ? (
         <>
           <FlatList

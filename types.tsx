@@ -79,7 +79,7 @@ export type Actions = SetData;
 export type ChatUser = {
   id: String;
   name: String;
-  imageUri: String
+  imageUri: String;
 }
 
 export type Message = {
