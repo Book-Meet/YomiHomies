@@ -13,16 +13,9 @@ import API from '@aws-amplify/api';
 import { checkMatch } from '../utils/customQueries';
 import { transform } from '@babel/core';
 import * as Location from 'expo-location';
+import Colors from '../constants/Colors'
 
 const { height, width } = Dimensions.get('window');
-
-const colors = {
-  red: '#ec2379',
-  blue: '#0070ff',
-  gray: '#777777',
-  black: '#000000',
-  white: '#ffffff'
-};
 
 const ANIMATION_DURATION = 200;
 
@@ -42,8 +35,6 @@ export default function TabHomeScreen()
     </Transition.Sequence>
   );
 
-  
-  
   const swiperRef:any = React.createRef();
   const transitionRef:any = React.createRef();
   
@@ -51,43 +42,66 @@ export default function TabHomeScreen()
   {
     if(matches.length === 0) return null 
     return (
-      <ImageBackground style={styles.imgBackground} resizeMode='cover' source={require("../assets/images/page_background.jpg")}>
         <View style={styles.card}>
           <Transitioning.View ref={transitionRef} transition={transition}>
-            <CardDetails index={0} card={card}/>
+            {console.log(card)}
+            <CardDetails index={index} card={card}/>
           <View style={styles.bottomButtonsContainer}>
             <MaterialCommunityIcons.Button
               name='close'
-              size={94}
+              size={60}
               backgroundColor='transparent'
               underlayColor='transparent'
               activeOpacity={-0.3}
-              color={colors.red}
+              color={Colors.pallete.atomicTangerine}
               onPress={() => swiperRef.current.swipeLeft()}
             />
             <MaterialCommunityIcons.Button
               name='circle-outline'
-              size={94}
+              size={60}
               backgroundColor='transparent'
               underlayColor='transparent'
               activeOpacity={-0.3}
-              color={colors.blue}
+              color={Colors.pallete.lapisLazuli}
               onPress={() => swiperRef.current.swipeRight()}
             />
           </View>
           </Transitioning.View>
         </View>
-      </ImageBackground>
     );
   };
   
-  const CardDetails = ({ card }:any) => matches.length > 0 ? (
-    <View style={styles.cardDetails} key={card.id}>
-      <Text style={[styles.text, styles.name]}>{card.username}</Text>
-      <Text style={[styles.text, styles.book]}>{"Book: " + card.book}</Text>
-      <Text style={[styles.text, styles.book]}>{"About Me: " + card.about_me}</Text>
+  const CardDetails = ({card, index}:any) => card.username == undefined ? null : (
+    <View style={styles.cardDetails} key={index}>
+      <Text style={styles.title}> {card.username}</Text>
+
+        <View style={[{flexDirection: 'row'}, {alignContent: 'space-around'}]}>
+          <Text style={[{margin: 10}, {borderBottomWidth: 1}]}>Nickname: <Text>{card.nickname}</Text></Text>
+          <Text style={[{margin: 10}, {borderBottomWidth: 1}]}>Gender: <Text>{card.gender}</Text></Text>
+        </View>
+        <View >
+          <Text >Top Books: </Text>
+            { card.books !== undefined ? card.books.items.map(book => {
+            return (
+              <Text key={book.id}>{book.title} - {book.author}</Text>
+            )
+            })
+            : null
+            }
+        
+          {/* <Text >Top Authors: </Text>
+            { card.authors !== undefined ? card.authors.items.map(auth => {
+            return (
+              <Text key={auth.id}>{auth.name}</Text>
+            )
+            })
+            : null
+            } */}
+          <Text>About me: </Text>
+          <Text>{card.about_me}</Text>
+        </View>
     </View>
-  ) : null;
+  );
 
   const onSwipedLeft = async () => {
     transitionRef.current.animateNextTransition();
@@ -168,7 +182,7 @@ export default function TabHomeScreen()
   
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       { modalVisible ? (
       <Modal
         animationType="slide"
@@ -193,8 +207,7 @@ export default function TabHomeScreen()
       ) 
       : (<> 
       {/* <StatusBar hidden /> */}
-      <View style={styles.swiperContainer}>
-      <ImageBackground style={styles.imgBackground} resizeMode='cover' source={require("../assets/images/page_background.jpg")}>
+      <SafeAreaView style={styles.swiperContainer}>
           <Swiper
           ref={swiperRef}
           cards={matches}
@@ -212,17 +225,13 @@ export default function TabHomeScreen()
           disableTopSwipe
           disableBottomSwipe
           animateOverlayLabelsOpacity
-          animateCardOpacity
-          // infinite
-          backgroundColor={'transparent'}
-          
+          animateCardOpacity         
           overlayLabels={{
             left: {
               title: 'NOPE',
               style: {
                 label: {
-                  // backgroudColor: colors.red,
-                  color: colors.white,
+                  color: Colors.pallete.white,
                   fontSize: 24
                 },
                 wrapper: {
@@ -238,8 +247,7 @@ export default function TabHomeScreen()
               title: 'LIKE',
               style: {
                 label: {
-                  // backgroudColor: colors.blue,
-                  color: colors.white,
+                  color: Colors.pallete.white,
                   fontSize: 24
                 },
                 wrapper: {
@@ -253,39 +261,42 @@ export default function TabHomeScreen()
             }
           }}
           />
-          </ImageBackground>
-        </View>
+        </SafeAreaView>
       </>)}
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
-    height: "100%",
-    width: "100%",
+    backgroundColor: Colors.pallete.linen,
+    alignItems: 'flex-start'
   },
   card: {
-    flex: 1,
-    backgroundColor: 'transparent',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: "100%",
+    flex: 0.8,
     width: "100%",
+    backgroundColor: Colors.pallete.linen,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    borderColor: Colors.pallete.darkCornflowerBlue,
+    borderStyle: "solid",
+    borderWidth: 1,
+    borderRadius: 20,
+    padding: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 0
+    },
+    shadowOpacity: 0.35,
+    shadowRadius: 6,
+    elevation: 10
   },
   swiperContainer: {
     flex: 1,
-    height: "100%",
-    width: "100%",
-    padding: 0,
-    backgroundColor: colors.white,
+    justifyContent: "center",
   },
-  // bottomContainer: {
-  //   flex: 0.45,
-  //   justifyContent: 'space-evenly'
-  // },
   cardDetails: {
     alignItems: 'flex-start',
     backgroundColor: 'transparent',
@@ -334,9 +345,9 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     textAlign: "center"
   },
-  imgBackground: {
-    width: "100%",
-    height: "100%",
-    flex: 1
-  }
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 20,
+  },
 });
