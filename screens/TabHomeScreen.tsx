@@ -37,14 +37,42 @@ export default function TabHomeScreen()
   const swiperRef:any = React.createRef();
   const transitionRef:any = React.createRef();
   
-  const renderCard = (card:any, index:any) =>
+  const showCard = (card:any, index:Number) =>
   {
-    if(matches.length === 0) return null 
+    if (card.username === undefined) return null;
+    if (matches.length === 0) return null; 
     return (
         <View style={styles.card}>
           <Transitioning.View ref={transitionRef} transition={transition}>
-            {console.log(card)}
-            <CardDetails index={index} card={card}/>
+          <View style={styles.cardDetails} key={index}>
+            <Text style={styles.title}>{card.username}</Text>
+
+              <View style={[{flexDirection: 'row'}, {alignContent: 'space-around'}]}>
+                <Text style={[{margin: 10}, {borderBottomWidth: 1}]}>Nickname: <Text>{card.nickname}</Text></Text>
+                <Text style={[{margin: 10}, {borderBottomWidth: 1}]}>Gender: <Text>{card.gender}</Text></Text>
+              </View>
+              <View >
+                <Text >Top Books: </Text>
+                  { card.books !== undefined ? card.books.items.map(book => {
+                  return (
+                    <Text key={book.id}>{book.title} - {book.author}</Text>
+                  )
+                  })
+                  : null
+                  }
+              
+                {/* <Text >Top Authors: </Text>
+                  { card.authors !== undefined ? card.authors.items.map(auth => {
+                  return (
+                    <Text key={auth.id}>{auth.name}</Text>
+                  )
+                  })
+                  : null
+                  } */}
+                <Text>About me: </Text>
+                <Text>{card.about_me}</Text>
+              </View>
+          </View>
           <View style={styles.bottomButtonsContainer}>
             <MaterialCommunityIcons.Button
               name='close'
@@ -69,38 +97,7 @@ export default function TabHomeScreen()
         </View>
     );
   };
-  
-  const CardDetails = ({card, index}:any) => card.username == undefined ? null : (
-    <View style={styles.cardDetails} key={index}>
-      <Text style={styles.title}> {card.username}</Text>
 
-        <View style={[{flexDirection: 'row'}, {alignContent: 'space-around'}]}>
-          <Text style={[{margin: 10}, {borderBottomWidth: 1}]}>Nickname: <Text>{card.nickname}</Text></Text>
-          <Text style={[{margin: 10}, {borderBottomWidth: 1}]}>Gender: <Text>{card.gender}</Text></Text>
-        </View>
-        <View >
-          <Text >Top Books: </Text>
-            { card.books !== undefined ? card.books.items.map(book => {
-            return (
-              <Text key={book.id}>{book.title} - {book.author}</Text>
-            )
-            })
-            : null
-            }
-        
-          {/* <Text >Top Authors: </Text>
-            { card.authors !== undefined ? card.authors.items.map(auth => {
-            return (
-              <Text key={auth.id}>{auth.name}</Text>
-            )
-            })
-            : null
-            } */}
-          <Text>About me: </Text>
-          <Text>{card.about_me}</Text>
-        </View>
-    </View>
-  );
 
   const onSwipedLeft = async () => {
     transitionRef.current.animateNextTransition();
@@ -169,6 +166,7 @@ export default function TabHomeScreen()
     console.log("state is:",state)
     if (state.user.id == '') return;
     (async function fetchMatches (){
+      console.log("fetching matches");
       let alreadySwiped:any = state.user.match.items.length > 0  
         ? state.user.match.items.map(match => match.matcheeID)
         : [];
@@ -193,7 +191,7 @@ export default function TabHomeScreen()
       setMatches(profiles);
       updateUserLocation();
     })()
-  }, [state])
+  }, [state.user.id, state.reSearch])
   
 
 // DOM
@@ -208,32 +206,32 @@ export default function TabHomeScreen()
           setModalVisible(!modalVisible);
         }}
       >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>You got a match!</Text>
-            <Pressable
-              style={[styles.button,]}
-              onPress={() => setModalVisible(false)}
-            >
-              <Text>Hide Modal</Text>
-            </Pressable>
-          </View>
+        <View style={styles.modalView}>
+          <Text style={styles.modalText}>You got a match!</Text>
+          <Pressable
+            style={[styles.button,]}
+            onPress={() => setModalVisible(false)}
+          >
+            <Text>Hide Modal</Text>
+          </Pressable>
         </View>
       </Modal>
       ) 
       : (<> 
       {/* <StatusBar hidden /> */}
       <SafeAreaView style={styles.swiperContainer}>
+        {matches.length > 0 ? 
           <Swiper
           ref={swiperRef}
           cards={matches}
           cardIndex={0}
-          renderCard={renderCard}
+          renderCard={showCard}
           onSwipedLeft={onSwipedLeft}
           onSwipedRight={onSwipedRight}
+          onSwipedAll={() => {console.log('SwipedAll')}}
           cardHorizontalMargin= {0}
           cardVerticalMargin={0}
-          stackSize={2}
+          stackSize={1}
           stackScale={0}
           stackSeparation={0}
           inputRotationRange={[0, 0, 0]}
@@ -241,7 +239,7 @@ export default function TabHomeScreen()
           disableTopSwipe
           disableBottomSwipe
           animateOverlayLabelsOpacity
-          animateCardOpacity         
+          animateCardOpacity      
           overlayLabels={{
             left: {
               title: 'NOPE',
@@ -277,6 +275,7 @@ export default function TabHomeScreen()
             }
           }}
           />
+          : null}
         </SafeAreaView>
       </>)}
     </SafeAreaView>
@@ -330,13 +329,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     backgroundColor: 'transparent'
   },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    alignSelf: "center",
-    marginTop: 75
-  },
   modalView: {
     margin: 20,
     backgroundColor: "white",
@@ -361,7 +353,6 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center"
-<<<<<<< HEAD
   },
   title: {
     fontSize: 20,
@@ -369,79 +360,3 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 });
-=======
-  }
-});
-
-
-// //previous code(tinder-card)
-// export default function TabHomeScreen()
-// {
-//   return (
-//     <View >
-//       <View style={styles.container}>
-//         {
-//           people.map((person) =>
-//             <TinderCard
-//               preventSwipe={['up', 'down']}
-//             >
-//               <Image source={{ uri: person.uri }} style={{width: 400, height: 400}}
-//               />
-//               <Text style={styles.name}>{person.name}</Text>
-//             </TinderCard>
-//           )
-//         }
-//         </View>
-//       <Text style={styles.title}>Matching</Text>
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   tinderCards__cardContainer: {
-//     display: 'flex',
-//     justifyContent: 'center',
-//     marginTop: 5,
-//   },
-//   card: {
-//     position: 'relative',
-//     marginTop: 10,
-//     width: 600,
-//     padding: 20,
-//     height: 600,
-//     borderRadius: 20,
-//   },
-//   swipe: {
-//     position: "absolute",
-//   },
-//   title: {
-//     fontSize: 20,
-//     fontWeight: 'bold',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-//   container: {
-//     flex: 1,
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-//   name: {
-//     fontSize: 30,
-//     justifyContent: 'center',
-//     alignItems: 'center'
-//   }
-// });
-
-
-// container: {
-//   flex: 1,
-//   alignItems: 'center',
-//   justifyContent: 'center',
-// },
-
-// separator: {
-//   marginVertical: 30,
-//   height: 1,
-//   width: '80%',
-// },
->>>>>>> 3dd4aa90c8f77b84467f99dd0372b9cd4d7d838f

@@ -48,7 +48,7 @@
     "react-native-safe-area-context": "3.1.9",
     "react-native-screens": "~2.15.0",
     "react-native-vector-icons": "^8.1.0",
-    "react-native-view-overflow": "0.0.5",
+    "react-native-view-overflow": "0.0.4",
     "react-native-web": "^0.13.18",
     "react-spring": "^9.1.1",
     "react-tinder-card": "^1.4.0"
