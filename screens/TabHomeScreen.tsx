@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useEffect, useState, useContext } from "react";
-import { StyleSheet, Image, StatusBar, SafeAreaView, Dimensions, Alert, Modal, Pressable, ImageBackground } from 'react-native';
+import { StyleSheet, Image, StatusBar, SafeAreaView, Dimensions, Alert, Modal, Pressable, ImageBackground, Button } from 'react-native';
 import Swiper from 'react-native-deck-swiper';
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Transitioning, Transition } from 'react-native-reanimated'
@@ -37,69 +37,59 @@ export default function TabHomeScreen()
   const swiperRef:any = React.createRef();
   const transitionRef:any = React.createRef();
   
-  const showCard = (card:any, index:Number) =>
+  const Card = ({card}:any) =>
   {
     if (matches.length === 0) return null; 
     return (
-        <View style={styles.card}>
-          {/* <Transitioning.View ref={transitionRef} transition={transition}> */}
-          <View style={styles.cardDetails}>
-            <Text style={styles.title}>{matches[0].username}</Text>
+      <View style={styles.card}>
+        <Image source={{uri:"https://i.ibb.co/f8vR1P8/ace.jpg"}} style={styles.cardImage} />
+        {/* <View style={styles.cardDetails}>
+          <Text style={styles.title}>{matches[0].username}</Text>
 
-              <View style={[{flexDirection: 'row'}, {alignContent: 'space-around'}]}>
-                <Text style={[{margin: 10}, {borderBottomWidth: 1}]}>Nickname: <Text>{matches[0].nickname}</Text></Text>
-                <Text style={[{margin: 10}, {borderBottomWidth: 1}]}>Gender: <Text>{matches[0].gender}</Text></Text>
-              </View>
-              <View >
-                <Text >Top Books: </Text>
-                  { matches[0].books !== undefined ? matches[0].books.items.map(book => {
-                  return (
-                    <Text key={book.id}>{book.title} - {book.author}</Text>
-                  )
-                  })
-                  : null
-                  }
-              
-                {/* <Text >Top Authors: </Text>
-                  { matches[0].authors !== undefined ? matches[0].authors.items.map(auth => {
-                  return (
-                    <Text key={auth.id}>{auth.name}</Text>
-                  )
-                  })
-                  : null
-                  } */}
-                <Text>About me: </Text>
-                <Text>{matches[0].about_me}</Text>
-              </View>
-          </View>
-          <View style={styles.bottomButtonsContainer}>
-            <MaterialCommunityIcons.Button
-              name='close'
-              size={60}
-              backgroundColor='transparent'
-              underlayColor='transparent'
-              activeOpacity={-0.3}
-              color={Colors.pallete.atomicTangerine}
-              onPress={() => swiperRef.current.swipeLeft()}
-            />
-            <MaterialCommunityIcons.Button
-              name='circle-outline'
-              size={60}
-              backgroundColor='transparent'
-              underlayColor='transparent'
-              activeOpacity={-0.3}
-              color={Colors.pallete.lapisLazuli}
-              onPress={() => swiperRef.current.swipeRight()}
-            />
-          </View>
-          {/* </Transitioning.View> */}
+            <View style={[{flexDirection: 'row'}, {alignContent: 'space-around'}]}>
+              <Text style={[{margin: 10}, {borderBottomWidth: 1}]}>Nickname: <Text>{matches[0].nickname}</Text></Text>
+              <Text style={[{margin: 10}, {borderBottomWidth: 1}]}>Gender: <Text>{matches[0].gender}</Text></Text>
+            </View>
+            <View >
+              <Text >Top Books: </Text>
+                { matches[0].books !== undefined ? matches[0].books.items.map(book => {
+                return (
+                  <Text key={book.id}>{book.title} - {book.author}</Text>
+                )
+                })
+                : null
+                }
+              <Text>About me: </Text>
+              <Text>{matches[0].about_me}</Text>
+            </View>
         </View>
+        <View style={styles.bottomButtonsContainer}>
+          <MaterialCommunityIcons.Button
+            name='close'
+            size={60}
+            backgroundColor='transparent'
+            underlayColor='transparent'
+            activeOpacity={-0.3}
+            color={Colors.pallete.atomicTangerine}
+            onPress={() => swiperRef.current.swipeLeft()}
+          />
+          <MaterialCommunityIcons.Button
+            name='circle-outline'
+            size={60}
+            backgroundColor='transparent'
+            underlayColor='transparent'
+            activeOpacity={-0.3}
+            color={Colors.pallete.lapisLazuli}
+            onPress={() => swiperRef.current.swipeRight()}
+          />
+        </View> */}
+      </View>
     );
   };
 
 
   const onSwipedLeft = async () => {
-    transitionRef.current.animateNextTransition();
+    //transitionRef.current.animateNextTransition();
 
     // update database
     let reject:any = await API.graphql({query:createMatch, variables:{input:{matcherID:state.user.id, matcheeID:matches[0].id, status:"rejected"}}})
@@ -116,7 +106,7 @@ export default function TabHomeScreen()
   }
   
   const onSwipedRight = async () =>{
-    transitionRef.current.animateNextTransition();
+    //transitionRef.current.animateNextTransition();
 
     // update database
     let accept = await API.graphql({query:createMatch, variables:{input: {matcherID:state.user.id, matcheeID:matches[0].id, status:"accepted", matchedOn: matches[0].book}} })
@@ -146,23 +136,8 @@ export default function TabHomeScreen()
     }
   }
 
-  // useEffect(() => {
-  //   (async function  (){
-  //     const profiles = await API.graphql(graphqlOperation(listProfiles));
-  //     const eachProfile = profiles.data.listProfiles.items
-  //     // console.log(eachProfile);
-  //     // console.log(eachProfile.length)
-  //     // console.log(typeof eachProfile)
-  //     // eachProfile.map((val) =>
-  //     // {
-  //     //   console.log(val._version)
-  //     // })
-  //     setImage(eachProfile)
-  //   })()
-  // }, [])
   useEffect(() =>
   {
-    console.log("state is:",state)
     if (state.user.id == '') return;
     (async function fetchMatches (){
       console.log("fetching matches");
@@ -192,10 +167,9 @@ export default function TabHomeScreen()
     })()
   }, [state.user.id, state.reSearch])
   
-
 // DOM
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       { modalVisible ? (
       <Modal
         animationType="slide"
@@ -218,13 +192,12 @@ export default function TabHomeScreen()
       ) 
       : (<> 
       {/* <StatusBar hidden /> */}
-      <View style={styles.swiperContainer}>
-        {matches.length > 0 ? 
+        <View style={styles.swiperContainer}>
           <Swiper
           ref={swiperRef}
           cards={matches}
           cardIndex={0}
-          renderCard={showCard}
+          renderCard={(card, index) => <Card card={card} index={index}/>}
           onSwipedLeft={onSwipedLeft}
           onSwipedRight={onSwipedRight}
           infinite
@@ -274,10 +247,10 @@ export default function TabHomeScreen()
             }
           }}
           />
-          : null}
         </View>
+        <Button title="Click Me" onPress={()=> swiperRef.current.swipeRight()} />
       </>)}
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -357,5 +330,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginTop: 20,
+  },
+  cardImage: {
+    width: 160,
+    flex: 1,
+    resizeMode: 'contain'
   },
 });
