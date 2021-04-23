@@ -118,19 +118,6 @@ export default function EditProfile({ setViewMode, styles }) {
                     defaultValue={state.user.gender}
                 />
 
-                {/* <Text>Top Genres:</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder='new genres...'
-                        onChangeText={(val)=> alert(val)}
-                    />
-
-                <Text>Top Authors:</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder='new Authors...'
-                        onChangeText={(val)=> alert(val)}
-                    /> */}
 
                 <Text style={editStyles.bold} >About me:</Text>
                     <TextInput
@@ -139,19 +126,19 @@ export default function EditProfile({ setViewMode, styles }) {
                         style={[styles.input, editStyles.inputPadding]}
                         selectTextOnFocus={true}
                         defaultValue={state.user.about_me}
-                    />
+                        />
                 
                 <View style={[editStyles.buttons,]}>
                     <Pressable
                         onPress={() => setViewMode("view")}
                         style={[styles.button, editStyles.cancelButton]}
-                    >
+                        >
                         <Text>Cancel</Text>
                     </Pressable>
                     <Pressable
                         onPress={() => handleSave()}
                         style={[styles.button, editStyles.saveButton]}
-                    >
+                        >
                         <Text>Save</Text>
                     </Pressable>
                 </View>
@@ -160,16 +147,16 @@ export default function EditProfile({ setViewMode, styles }) {
 
                 <Text style={[editStyles.bold,]} >Top Books (up to 5):</Text>
                 <View style={styles.content}>
-                    <View style={styles.listBooks}>
+                    <View style={styles.lists}>
                     { 
                         state.user.books !== undefined ? state.user.books.items.map((book) => {
                             return (
-                            <View key={book.id}
+                                <View key={book.id}
                                 style={[editStyles.flexContainer]}>
                                 <Pressable
                                     onPress={() => handleDeleteBook(book)}
                                     style={[editStyles.xContainer]}
-                                >
+                                    >
                                     <Octicons name="trashcan" size={20} color="#F00" style={editStyles.xButton} />
                                 </Pressable>
                                 <Text style={styles.listItem}>
@@ -178,7 +165,7 @@ export default function EditProfile({ setViewMode, styles }) {
                             </View>
                             )
                         })
-                    : null
+                        : null
                     }
                     </View>
                     {
@@ -189,24 +176,88 @@ export default function EditProfile({ setViewMode, styles }) {
                                 value={book}
                                 style={[styles.input, editStyles.inputPadding]}
                                 placeholder='book title?'
-                            />
+                                />
                                 
                             <FlatList
                                 renderItem={renderItem}
                                 data={searchResult.length > 0 ? searchResult : []}
                                 keyExtractor={(item, index) => index.toString()}
-                            />
+                                />
 
                             <Pressable
                                 onPress={() => handleAddBook()}
                                 style={[styles.button, editStyles.saveButton]}
-                            >
+                                >
                                 <Text>Add Book</Text>
                             </Pressable>
                         </>)
                         : null
                     }
                 </View>
+
+                <View  style={styles.separator} ></View>
+
+                <Text style={[editStyles.bold,]}>Top Authors (up to 3):</Text>
+                <View style={styles.content}>
+                    <View style={styles.lists}>
+                    { 
+                        state.user.authors !== undefined ? state.user.authors.items.map((author) => {
+                            return (
+                                <View key={author.id}
+                                style={[editStyles.flexContainer]}>
+                                <Pressable
+                                    onPress={() => handleDeleteAuthor(author)}
+                                    style={[editStyles.xContainer]}
+                                    >
+                                    <Octicons name="trashcan" size={20} color="#F00" style={editStyles.xButton} />
+                                </Pressable>
+                                <Text style={styles.listItem}>
+                                    {author.name}
+                                </Text>
+                            </View>
+                            )
+                        })
+                        : null
+                    }
+                    </View>
+                    {
+                        state.user.books === undefined || state.user.books.items.length < 5 ?
+                        (<>
+                            <TextInput
+                                onChangeText={bookSearch}
+                                value={book}
+                                style={[styles.input, editStyles.inputPadding]}
+                                placeholder='book title?'
+                                />
+                                
+                            <FlatList
+                                renderItem={renderItem}
+                                data={searchResult.length > 0 ? searchResult : []}
+                                keyExtractor={(item, index) => index.toString()}
+                                />
+
+                            <Pressable
+                                onPress={() => handleAddBook()}
+                                style={[styles.button, editStyles.saveButton]}
+                                >
+                                <Text>Add Book</Text>
+                            </Pressable>
+                        </>)
+                        : null
+                    }
+                </View>
+                    {/* <TextInput
+                        style={styles.input}
+                        placeholder='new genres...'
+                        onChangeText={(val)=> alert(val)}
+                    /> */}
+                
+                <Text style={[editStyles.bold,]}>Top Genres (up to 3):</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder='new Authors...'
+                        onChangeText={(val)=> alert(val)}
+                    />
             </ScrollView>
         </SafeAreaView>
     );
@@ -245,7 +296,7 @@ const editStyles = StyleSheet.create({
         marginTop: 4,
         marginBottom: 3,
     },
-    listBooks: {
+    lists: {
         display: "flex",
         flexDirection: "row",
         flexWrap: "nowrap",
