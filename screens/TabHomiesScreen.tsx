@@ -32,7 +32,14 @@ export default function TabHomiesScreen()
 
       let chatRooms = await API.graphql(graphqlOperation(listChatRooms, {userID:state.user.id}));
       chatRooms = chatRooms.data.listChatRooms.items;
-      let chatRoomIDs = chatRooms.map(a=>a.ChatRoomUsers.items[0] ? a.ChatRoomUsers.items[0].userID : null)
+      console.log('chat rooms ', chatRooms)
+      let chatRoomIDs = chatRooms.map(a=>{
+        if(a.ChatRoomUsers.items[0] && a.ChatRoomUsers.items[0].userID === state.user.id){
+          return a.ChatRoomUsers.items[1].userID;
+        } else{
+          return a.ChatRoomUsers.items[0].userID;
+        }
+      })
 
       for(let match of matches){
         if(chatRoomIDs.includes(match.id)){
@@ -42,6 +49,7 @@ export default function TabHomiesScreen()
           let newChatRoom = await API.graphql(graphqlOperation(createChatRoom, {input:{id:newUUID}}));
           let newChatRoomUser = await API.graphql(graphqlOperation(createChatRoomUser, {input:{chatRoomID:newChatRoom.data.createChatRoom.id, userID: match.id}}))
           let myChatRoomUser = await API.graphql(graphqlOperation(createChatRoomUser, {input:{chatRoomID:newChatRoom.data.createChatRoom.id, userID: state.user.id}}))
+          //local matches doesn't upload so it crashes
         }
       }
       setLoading(false)

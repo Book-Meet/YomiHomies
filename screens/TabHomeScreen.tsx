@@ -106,7 +106,7 @@ export default function TabHomeScreen()
   async function updateUserLocation (){
     let now = Date.parse(new Date().toISOString())
     if (now - Date.parse(state.user.updatedAt) > 86400000){
-      await API.graphql({query:updateProfile, variables:{id:state.user.id, latitude:state.user.latitude, longitude:state.user.longitude}});
+      await API.graphql({query:updateProfile, variables:{input:{id:state.user.id, latitude:state.user.latitude, longitude:state.user.longitude}}});
     }
   }
 
@@ -154,6 +154,7 @@ export default function TabHomeScreen()
     })()
   }, [state])
   
+  console.log(state.user)
 
 // DOM
   return (
