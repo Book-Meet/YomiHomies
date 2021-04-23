@@ -39,21 +39,20 @@ export default function TabHomeScreen()
   
   const showCard = (card:any, index:Number) =>
   {
-    if (card.username === undefined) return null;
     if (matches.length === 0) return null; 
     return (
         <View style={styles.card}>
-          <Transitioning.View ref={transitionRef} transition={transition}>
-          <View style={styles.cardDetails} key={index}>
-            <Text style={styles.title}>{card.username}</Text>
+          {/* <Transitioning.View ref={transitionRef} transition={transition}> */}
+          <View style={styles.cardDetails}>
+            <Text style={styles.title}>{matches[0].username}</Text>
 
               <View style={[{flexDirection: 'row'}, {alignContent: 'space-around'}]}>
-                <Text style={[{margin: 10}, {borderBottomWidth: 1}]}>Nickname: <Text>{card.nickname}</Text></Text>
-                <Text style={[{margin: 10}, {borderBottomWidth: 1}]}>Gender: <Text>{card.gender}</Text></Text>
+                <Text style={[{margin: 10}, {borderBottomWidth: 1}]}>Nickname: <Text>{matches[0].nickname}</Text></Text>
+                <Text style={[{margin: 10}, {borderBottomWidth: 1}]}>Gender: <Text>{matches[0].gender}</Text></Text>
               </View>
               <View >
                 <Text >Top Books: </Text>
-                  { card.books !== undefined ? card.books.items.map(book => {
+                  { matches[0].books !== undefined ? matches[0].books.items.map(book => {
                   return (
                     <Text key={book.id}>{book.title} - {book.author}</Text>
                   )
@@ -62,7 +61,7 @@ export default function TabHomeScreen()
                   }
               
                 {/* <Text >Top Authors: </Text>
-                  { card.authors !== undefined ? card.authors.items.map(auth => {
+                  { matches[0].authors !== undefined ? matches[0].authors.items.map(auth => {
                   return (
                     <Text key={auth.id}>{auth.name}</Text>
                   )
@@ -70,7 +69,7 @@ export default function TabHomeScreen()
                   : null
                   } */}
                 <Text>About me: </Text>
-                <Text>{card.about_me}</Text>
+                <Text>{matches[0].about_me}</Text>
               </View>
           </View>
           <View style={styles.bottomButtonsContainer}>
@@ -93,7 +92,7 @@ export default function TabHomeScreen()
               onPress={() => swiperRef.current.swipeRight()}
             />
           </View>
-          </Transitioning.View>
+          {/* </Transitioning.View> */}
         </View>
     );
   };
@@ -143,7 +142,7 @@ export default function TabHomeScreen()
   async function updateUserLocation (){
     let now = Date.parse(new Date().toISOString())
     if (now - Date.parse(state.user.updatedAt) > 86400000){
-      await API.graphql({query:updateProfile, variables:{id:state.user.id, latitude:state.user.latitude, longitude:state.user.longitude}});
+      await API.graphql({query:updateProfile, variables: {input: {id:state.user.id, latitude:state.user.latitude, longitude:state.user.longitude}}});
     }
   }
 
@@ -219,7 +218,7 @@ export default function TabHomeScreen()
       ) 
       : (<> 
       {/* <StatusBar hidden /> */}
-      <SafeAreaView style={styles.swiperContainer}>
+      <View style={styles.swiperContainer}>
         {matches.length > 0 ? 
           <Swiper
           ref={swiperRef}
@@ -228,10 +227,10 @@ export default function TabHomeScreen()
           renderCard={showCard}
           onSwipedLeft={onSwipedLeft}
           onSwipedRight={onSwipedRight}
-          onSwipedAll={() => {console.log('SwipedAll')}}
+          infinite
           cardHorizontalMargin= {0}
           cardVerticalMargin={0}
-          stackSize={1}
+          stackSize={2}
           stackScale={0}
           stackSeparation={0}
           inputRotationRange={[0, 0, 0]}
@@ -276,7 +275,7 @@ export default function TabHomeScreen()
           }}
           />
           : null}
-        </SafeAreaView>
+        </View>
       </>)}
     </SafeAreaView>
   );
