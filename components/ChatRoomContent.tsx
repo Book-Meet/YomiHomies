@@ -8,8 +8,7 @@ export type ChatMessageProps = {
     message: Message;
 }
 
-export default function ChatMessage(props: ChatMessageProps) {
-    const { message } = props;
+export default function ChatMessage({ message }: ChatMessageProps) {
 
     const isMyMessage = () => {
         return message.user.id === 'u1';
