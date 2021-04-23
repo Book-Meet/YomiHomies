@@ -4,23 +4,31 @@ import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 
 import Colors from '../constants/Colors';
-import useColorScheme from '../hooks/useColorScheme';
+// import useColorScheme from '../hooks/useColorScheme';
 import TabHomiesScreen from '../screens/TabHomiesScreen';
 import TabHomeScreen from '../screens/TabHomeScreen';
 import TabProfileScreen from '../screens/TabProfileScreen';
 import TabSettingsScreen from '../screens/TabSettingsScreen';
 import { BottomTabParamList, TabHomiesParamList, TabHomeParamList, 
   TabProfileParamList, TabSettingsParamList  } from '../types';
+import { StyleSheet } from 'react-native';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
+const tabBarStyles = {
+  activeTintColor: Colors.pallete.atomicTangerine,
+  inactiveTintColor: Colors.pallete.apricot,
+  activeBackgroundColor: Colors.pallete.lapisLazuli,
+  inactiveBackgroundColor: Colors.pallete.lapisLazuli
+}
+
 export default function BottomTabNavigator() {
-  const colorScheme = useColorScheme();
+  // const colorScheme = useColorScheme();
 
   return (
     <BottomTab.Navigator
       initialRouteName="Home"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
+      tabBarOptions={tabBarStyles}>
       <BottomTab.Screen
         name="Homies"
         component={TabHomiesNavigator}
@@ -57,7 +65,7 @@ export default function BottomTabNavigator() {
 // https://icons.expo.fyi/
 
 function OcticonIcons(props: {name: React.ComponentProps<typeof Octicons>['name']; color: string}) {
-  return <Octicons size={30} style={{marginBottom: -3}} {...props} />
+  return <Octicons size={30} style={{marginBottom: -3, color: props.color}} {...props} />
 }
 
 const TabHomiesStack = createStackNavigator<TabHomiesParamList>()
@@ -67,7 +75,11 @@ function TabHomiesNavigator() {
       <TabHomiesStack.Screen 
         name="TabHomiesScreen"
         component={TabHomiesScreen}
-        options={{headerTitle: "Homies"}}
+        options={{
+          headerStyle: headerStyles.header, 
+          headerTintColor,
+          headerTitleStyle: headerStyles.title,
+          headerTitle: "Homies"}}
       />
     </TabHomiesStack.Navigator>
   )
@@ -80,7 +92,11 @@ function TabHomeNavigator() {
       <TabHomeStack.Screen 
         name="TabHomeScreen"
         component={TabHomeScreen}
-        options={{headerTitle: "Home"}}
+        options={{
+          headerStyle: headerStyles.header, 
+          headerTintColor,
+          headerTitleStyle: headerStyles.title,
+          headerTitle: "Home"}}
       />
     </TabHomeStack.Navigator>
   )
@@ -93,7 +109,11 @@ function TabProfileNavigator() {
       <TabProfileStack.Screen 
         name="TabProfileScreen"
         component={TabProfileScreen}
-        options={{headerTitle: "Profile"}}
+        options={{
+          headerStyle: headerStyles.header, 
+          headerTintColor,
+          headerTitleStyle: headerStyles.title,
+          headerTitle: "Profile"}}
       />
     </TabProfileStack.Navigator>
   )
@@ -106,8 +126,24 @@ function TabSettingsNavigator() {
       <TabSettingsStack.Screen 
         name="TabSettingsScreen"
         component={TabSettingsScreen}
-        options={{headerTitle: "Settings"}}
+        options={{
+          headerStyle: headerStyles.header, 
+          headerTintColor,
+          headerTitleStyle: headerStyles.title,
+          headerTitle: "Settings"}}
       />
     </TabSettingsStack.Navigator>
   )
 }
+
+const headerStyles = StyleSheet.create({
+  header: {
+    backgroundColor: Colors.pallete.lapisLazuli,
+  },
+  title: {
+    color: Colors.pallete.linen,
+    fontWeight: 'bold'
+  },
+})
+
+const headerTintColor = Colors.pallete.apricot

@@ -47,14 +47,14 @@ export default function TabHomeScreen()
   const swiperRef:any = React.createRef();
   const transitionRef:any = React.createRef();
   
-  const Card = ({ card }:any) =>
+  const renderCard = (card:any, index:any) =>
   {
     if(matches.length === 0) return null 
     return (
       <ImageBackground style={styles.imgBackground} resizeMode='cover' source={require("../assets/images/page_background.jpg")}>
         <View style={styles.card}>
           <Transitioning.View ref={transitionRef} transition={transition}>
-            <CardDetails index={0} />
+            <CardDetails index={0} card={card}/>
           <View style={styles.bottomButtonsContainer}>
             <MaterialCommunityIcons.Button
               name='close'
@@ -81,11 +81,11 @@ export default function TabHomeScreen()
     );
   };
   
-  const CardDetails = ({ index }:any) => matches.length > 0 ? (
-    <View style={styles.cardDetails} key={matches[0].id}>
-      <Text style={[styles.text, styles.name]}>{matches[0].username}</Text>
-      <Text style={[styles.text, styles.book]}>{"Book: " + matches[0].book}</Text>
-      <Text style={[styles.text, styles.book]}>{"About Me: " + matches[0].about_me}</Text>
+  const CardDetails = ({ card }:any) => matches.length > 0 ? (
+    <View style={styles.cardDetails} key={card.id}>
+      <Text style={[styles.text, styles.name]}>{card.username}</Text>
+      <Text style={[styles.text, styles.book]}>{"Book: " + card.book}</Text>
+      <Text style={[styles.text, styles.book]}>{"About Me: " + card.about_me}</Text>
     </View>
   ) : null;
 
@@ -199,12 +199,16 @@ export default function TabHomeScreen()
           ref={swiperRef}
           cards={matches}
           cardIndex={0}
-          renderCard={(card) => <Card card={card} />}
+          renderCard={renderCard}
           onSwipedLeft={onSwipedLeft}
           onSwipedRight={onSwipedRight}
+          cardHorizontalMargin= {0}
+          cardVerticalMargin={0}
           stackSize={2}
           stackScale={0}
           stackSeparation={0}
+          inputRotationRange={[0, 0, 0]}
+          outputRotationRange={["0deg", "0deg", "0deg"]}
           disableTopSwipe
           disableBottomSwipe
           animateOverlayLabelsOpacity
