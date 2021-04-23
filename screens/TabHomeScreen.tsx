@@ -13,7 +13,6 @@ import API from '@aws-amplify/api';
 import { checkMatch } from '../utils/customQueries';
 import * as Location from 'expo-location';
 
-const { width } = Dimensions.get('window');
 
 const colors = {
   red: '#ec2379',
@@ -23,6 +22,7 @@ const colors = {
   white: '#ffffff'
 };
 
+const { width } = Dimensions.get('window');
 const ANIMATION_DURATION = 200;
 
 export default function TabHomeScreen()
@@ -110,7 +110,23 @@ export default function TabHomeScreen()
     }
   }
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   (async function  (){
+  //     const profiles = await API.graphql(graphqlOperation(listProfiles));
+  //     const eachProfile = profiles.data.listProfiles.items
+  //     // console.log(eachProfile);
+  //     // console.log(eachProfile.length)
+  //     // console.log(typeof eachProfile)
+  //     // eachProfile.map((val) =>
+  //     // {
+  //     //   console.log(val._version)
+  //     // })
+  //     setImage(eachProfile)
+  //   })()
+  // }, [])
+  useEffect(() =>
+  {
+    console.log("state is:",state)
     if (state.user.id == '') return;
     (async function fetchMatches (){
       let alreadySwiped:any = state.user.match.items.length > 0  
@@ -140,6 +156,7 @@ export default function TabHomeScreen()
   }, [state])
   
 
+// DOM
   return (
     <View style={styles.container}>
       { modalVisible ? (
@@ -257,6 +274,7 @@ export default function TabHomeScreen()
   );
 }
 
+// define styles(CSS)
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -343,51 +361,10 @@ const styles = StyleSheet.create({
   }
 });
 
+
+// //previous code(tinder-card)
 // export default function TabHomeScreen()
 // {
-//   const [people, setPeople] = useState([
-//     {
-//         name: 'ace',
-//         uri : 'https://i.ibb.co/VqscmSr/ace.jpg'
-//     },
-//     {
-//       name : 'chopper',
-//       uri : 'https://i.ibb.co/82GDRYs/chopper.jpg'
-//     },
-//     {
-//       name : 'doflamingo',
-//       uri : 'https://i.ibb.co/NtM1Nt8/doflamingo.jpg'
-//     },
-//     {
-//       name : 'franky',
-//       uri : 'https://i.ibb.co/9nvgyNd/franky.jpg'
-//     },
-//     {
-//       name : 'luffy',
-//       uri : 'https://i.ibb.co/10XxfkX/luffy.jpg'
-//     },
-//     {
-//       name : 'sanji',
-//       uri : 'https://i.ibb.co/mD7kyVz/sanji.jpg'
-//     },
-//     {
-//       name : 'shanks',
-//       uri : 'https://i.ibb.co/J5kSTKJ/shanks.jpg'
-//     },
-//     {
-//       name : 'smoker',
-//       uri : 'https://i.ibb.co/0cCGDrR/smoker.jpg'
-//     },
-//     {
-//       name : 'usopp',
-//       uri : 'https://i.ibb.co/48LBJjn/usopp.jpg'
-//     },
-//     {
-//       name : 'zoro',
-//       uri : 'https://i.ibb.co/j8ZR1m3/zoro.jpg'
-//     },
-    
-// ]);
 //   return (
 //     <View >
 //       <View style={styles.container}>
