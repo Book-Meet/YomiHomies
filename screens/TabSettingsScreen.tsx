@@ -6,6 +6,7 @@ import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import UserContext from '../utils/userContext';
 import { ActionType } from '../types';
+import { CheckBox } from 'react-native-elements';
 
 
 export default function TabSettingsScreen() {
@@ -19,6 +20,7 @@ export default function TabSettingsScreen() {
 
   const [filterRadius, setFilterRadius] = useState(100);
   const { state, dispatch } = useContext(UserContext)
+  const [isSelected, setSelection] = useState(false);
 
   function setUserFilter(){
     let updatedUser ={...state.user};
@@ -44,16 +46,30 @@ export default function TabSettingsScreen() {
       />
       
       
-      <Text>Matching Genders:</Text>
-      <Text>Male</Text>
-      <Text>Female</Text>
-      <Text>Others</Text>
-      <Text>Any</Text>
-      <Text>Open to Meet Face to Face?</Text>
-      <Text>Yes</Text><Text>No</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/TabOneScreen.tsx" />
-      <Button title="Log out" accessibilityLabel="Log out" onPress={()=>Auth.signOut()}></Button>
+      <View style={styles.container}>
+        <Text>Matching Genders:</Text>
+        <CheckBox
+          title='Male'
+          value={isSelected}
+          onValueChange={setSelection}
+        />
+        <CheckBox
+          title='Female'
+          checked={state.checked}
+        />
+        <CheckBox
+          title='Others'
+          checked={state.checked}
+        />
+        <CheckBox
+          title='Any'
+          checked={state.checked}
+          />
+          <Text>Open to Meet Face to Face?</Text>
+        <Text>Yes</Text><Text>No</Text>
+        <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+        <Button title="Log out" accessibilityLabel="Log out" onPress={()=>Auth.signOut()}></Button>
+      </View>
     </View>
 
   );
