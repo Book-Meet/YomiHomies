@@ -41,6 +41,7 @@
     "react-native-animated-spinkit": "^1.5.2",
     "react-native-bouncy-checkbox": "^1.0.7",
     "react-native-deck-swiper": "^2.0.5",
+    "react-native-elements": "^3.4.0",
     "react-native-gesture-handler": "~1.8.0",
     "react-native-modal": "^11.10.0",
     "react-native-paper": "^4.7.2",
