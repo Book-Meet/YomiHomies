@@ -75,4 +75,23 @@ export interface SetData {
   payload: User;
 }
 
+export type ChatUser = {
+  id: String;
+  name: String;
+  inageUri: String;
+}
+
+export type Message = {
+  id: String;
+  user: ChatUser;
+  content: String;
+  createdAt: Number;
+}
+
+export type ChatRoom = {
+  id: String;
+  users: [ChatUser];
+  lastMessage: Message;
+}
+
 export type Actions = SetData; 

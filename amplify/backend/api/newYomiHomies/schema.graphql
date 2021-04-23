@@ -1,23 +1,32 @@
-type Genre @model @key(name: "byProfile", fields: ["profileID"]) @auth(rules: [{allow: public}]) {
+type Genre
+  @model
+  @key(name: "byProfile", fields: ["profileID"])
+  @auth(rules: [{ allow: public }]) {
   id: ID!
   genre: String
   profileID: ID
 }
 
-type Author @model @key(name: "byProfile", fields: ["profileID"]) @auth(rules: [{allow: public}]) {
+type Author
+  @model
+  @key(name: "byProfile", fields: ["profileID"])
+  @auth(rules: [{ allow: public }]) {
   id: ID!
   profileID: ID
   name: String
 }
 
-type Book @model @key(name: "byProfile", fields: ["profileID"]) @auth(rules: [{allow: public}]) {
+type Book
+  @model
+  @key(name: "byProfile", fields: ["profileID"])
+  @auth(rules: [{ allow: public }]) {
   id: ID!
   profileID: ID
   title: String
   author: String
 }
 
-type Profile @model @key(fields: ["id"]) @auth(rules: [{allow: public}]) {
+type Profile @model @key(fields: ["id"]) @auth(rules: [{ allow: public }]) {
   id: ID!
   username: String
   nickname: String
@@ -32,11 +41,13 @@ type Profile @model @key(fields: ["id"]) @auth(rules: [{allow: public}]) {
   genres: [Genre] @connection(keyName: "byProfile", fields: ["id"])
   match: [Match] @connection(keyName: "byMatch", fields: ["id"])
   photo_source: String
+  ChatRoomUser: [ChatRoomUser] @connection(keyName: "byUser", fields: ["id"])
 }
 
-type Match @model 
-  @key (name: "byMatch", fields: ["matcherID", "matcheeID"])
-  @auth(rules: [{allow: public}]) {
+type Match
+  @model
+  @key(name: "byMatch", fields: ["matcherID", "matcheeID"])
+  @auth(rules: [{ allow: public }]) {
   id: ID!
   matcherID: ID!
   matcheeID: ID!
@@ -46,4 +57,38 @@ type Match @model
   matcheeProfile: Profile! @connection(fields: ["matcheeID"])
 }
 
- 
+type ChatRoomUser
+  @model
+  @key(name: "byChatRoom", fields: ["chatRoomID", "userID"])
+  @key(name: "byUser", fields: ["userID", "chatRoomID"])
+  @auth(rules: [{ allow: public }]) {
+  id: ID!
+  userID: ID!
+  chatRoomID: ID!
+  user: Profile @connection(fields: ["userID"])
+  chatRoom: ChatRoom @connection(fields: ["chatRoomID"])
+}
+
+type ChatRoom @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  ChatRoomUsers: [ChatRoomUser]
+    @connection(keyName: "byChatRoom", fields: ["id"])
+  messages: [Message] @connection(keyName: "byChatRoom", fields: ["id"])
+}
+
+type Message
+  @model
+  @auth(rules: [{ allow: public }])
+  @key(
+    name: "byChatRoom"
+    fields: ["chatRoomID", "createdAt"]
+    queryField: "messagesByChatRoom"
+  ) {
+  id: ID!
+  createdAt: String!
+  content: String!
+  userID: ID!
+  chatRoomID: ID!
+  user: Profile @connection(fields: ["userID"])
+  chatRoom: ChatRoom @connection(fields: ["chatRoomID"])
+}
