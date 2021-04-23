@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Image, TouchableWithoutFeedback } from 'react-native';
 import { ChatRoom } from '../../types';
 import styles from './style';
-import moment from 'moment';
+// import moment from 'moment';
 import { useNavigation } from '@react-navigation/native';
 
 export type ChatListItemProps = {
@@ -13,7 +13,7 @@ const ChatListItem = (props: ChatListItemProps) =>
 {
     const { chatRoom } = props;
 
-    const navigation = useNavigation();
+    // const navigation = useNavigation();
 
     const user = chatRoom.users[1];
     
@@ -31,9 +31,9 @@ const ChatListItem = (props: ChatListItemProps) =>
                         <Text numberOfLines={2} style={styles.lastMessage}>{chatRoom.lastMessage.content}</Text>
                     </View>
                 </View>
-                <Text style={styles.time}>
+                {/* <Text style={styles.time}>
                     {moment(chatRoom.lastMessage.createdAt).format("YYYY-MM-DD")}
-                </Text>
+                </Text> */}
             </View>
         </TouchableWithoutFeedback>
     )
