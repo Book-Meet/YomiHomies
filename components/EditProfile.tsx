@@ -3,8 +3,8 @@ import { StyleSheet, TextInput, Button, SafeAreaView, ScrollView, Pressable, Fla
 import { Text, View } from './Themed';
 import UserContext from '../utils/userContext'
 import { API } from 'aws-amplify'; 
-import { updateProfile, createBook, deleteBook} from '../src/graphql/mutations';
-import { ActionType, Books } from '../types';
+import { updateProfile, createBook, deleteBook, createAuthor, deleteAuthor, createGenre, deleteGenre} from '../src/graphql/mutations';
+import { ActionType, Books, Authors, Genres } from '../types';
 import { Octicons } from '@expo/vector-icons';
 
 export default function EditProfile({ setViewMode, styles }) {
@@ -15,7 +15,10 @@ export default function EditProfile({ setViewMode, styles }) {
     const [book, setBook] = useState("");
     const [author, setAuthor] = useState("");
     const [searchResult, setSearchResult] = useState([]);
+    const [favAuthor, setFavAuthor] = useState("");
+    const [genre, setGenre] = useState("");
 
+    //Google Books API
     async function bookSearch(val) {
         setBook(val);
         if (val === "") {
@@ -66,6 +69,7 @@ export default function EditProfile({ setViewMode, styles }) {
         setViewMode("view");
     }
 
+    // Edit favorite books
     async function handleAddBook() {
         // validation checks
         if (author === "" || book === "") {
@@ -90,6 +94,58 @@ export default function EditProfile({ setViewMode, styles }) {
         let updatedUser = {...state.user};
         let ind = updatedUser.books.items.findIndex((book:any) => book.id === deleted.data.deleteBook.id)
         updatedUser.books.items.splice(ind, 1);
+        dispatch({type: ActionType.SetData, payload: updatedUser});
+    }
+
+    // Edit favorite authors
+    async function handleAddAuthor() {
+        // validation checks
+        if (favAuthor === "") {
+            alert("Author fields must have a value");
+            return;
+        }
+        const newAuthor:Authors = {
+            name: favAuthor,
+            profileID: state.user.id
+        }
+        let addedAuthor = await API.graphql({query:createAuthor, variables:{input:newAuthor}});
+        let updatedUser = {...state.user}
+        updatedUser.authors.items.push(addedAuthor.data.createAuthor);
+        dispatch({type: ActionType.SetData, payload: updatedUser});
+        setFavAuthor("");
+    }
+
+    async function handleDeleteAuthor(author:Authors) {
+        let deleted = await API.graphql({query:deleteAuthor, variables:{ input:{ id:author.id}}})
+        let updatedUser = {...state.user};
+        let ind = updatedUser.authors.items.findIndex((author:any) => author.id === deleted.data.deleteAuthor.id)
+        updatedUser.authors.items.splice(ind, 1);
+        dispatch({type: ActionType.SetData, payload: updatedUser});
+    }
+
+    // Edit favorite genres
+    async function handleAddGenre() {
+        // validation checks
+        if (genre === "") {
+            alert("Genre fields must have a value");
+            return;
+        }
+        const newGenre:Genres = {
+            genre: genre,
+            profileID: state.user.id
+        }
+        let addedGenre = await API.graphql({query:createGenre, variables:{input:newGenre}});
+        let updatedUser = {...state.user}
+        updatedUser.genres.items.push(addedGenre.data.createGenre);
+        dispatch({type: ActionType.SetData, payload: updatedUser});
+        setGenre("");
+    }
+
+    async function handleDeleteGenre(genre:Genres) {
+        let deleted = await API.graphql({query:deleteGenre, variables:{ input:{ id:genre.id}}})
+        let updatedUser = {...state.user};
+        let ind = updatedUser.genres.items.findIndex((genre:any) => genre.id === deleted.data.deleteGenre.id)
+        updatedUser.genres.items.splice(ind, 1);
         dispatch({type: ActionType.SetData, payload: updatedUser});
     }
 
@@ -221,43 +277,72 @@ export default function EditProfile({ setViewMode, styles }) {
                     }
                     </View>
                     {
-                        state.user.books === undefined || state.user.books.items.length < 5 ?
+                        state.user.authors === undefined || state.user.authors.items.length < 3 ?
                         (<>
                             <TextInput
-                                onChangeText={bookSearch}
-                                value={book}
+                                onChangeText={setFavAuthor}
+                                value={favAuthor}
                                 style={[styles.input, editStyles.inputPadding]}
-                                placeholder='book title?'
-                                />
-                                
-                            <FlatList
-                                renderItem={renderItem}
-                                data={searchResult.length > 0 ? searchResult : []}
-                                keyExtractor={(item, index) => index.toString()}
+                                placeholder='Favorite Author?'
                                 />
 
                             <Pressable
-                                onPress={() => handleAddBook()}
+                                onPress={() => handleAddAuthor()}
                                 style={[styles.button, editStyles.saveButton]}
                                 >
-                                <Text>Add Book</Text>
+                                <Text>Add Author</Text>
                             </Pressable>
                         </>)
                         : null
                     }
                 </View>
-                    {/* <TextInput
-                        style={styles.input}
-                        placeholder='new genres...'
-                        onChangeText={(val)=> alert(val)}
-                    /> */}
-                
+
+                <View  style={styles.separator} ></View>
+
                 <Text style={[editStyles.bold,]}>Top Genres (up to 3):</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder='new Authors...'
-                        onChangeText={(val)=> alert(val)}
-                    />
+                <View style={styles.content}>
+                    <View style={styles.lists}>
+                    { 
+                        state.user.genres !== undefined ? state.user.genres.items.map((genre) => {
+                            return (
+                                <View key={genre.id}
+                                style={[editStyles.flexContainer]}>
+                                <Pressable
+                                    onPress={() => handleDeleteGenre(genre)}
+                                    style={[editStyles.xContainer]}
+                                    >
+                                    <Octicons name="trashcan" size={20} color="#F00" style={editStyles.xButton} />
+                                </Pressable>
+                                <Text style={styles.listItem}>
+                                    {genre.genre}
+                                </Text>
+                            </View>
+                            )
+                        })
+                        : null
+                    }
+                    </View>
+                    {
+                        state.user.genres === undefined || state.user.genres.items.length < 3 ?
+                        (<>
+                            <TextInput
+                                onChangeText={setGenre}
+                                value={genre}
+                                style={[styles.input, editStyles.inputPadding]}
+                                placeholder='Favorite Genre?'
+                                />
+
+                            <Pressable
+                                onPress={() => handleAddGenre()}
+                                style={[styles.button, editStyles.saveButton]}
+                                >
+                                <Text>Add Genre</Text>
+                            </Pressable>
+                        </>)
+                        : null
+                    }
+                </View>
+
             </ScrollView>
         </SafeAreaView>
     );

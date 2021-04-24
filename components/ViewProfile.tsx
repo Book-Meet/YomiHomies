@@ -28,13 +28,23 @@ export default function ViewProfile({ setViewMode, styles }) {
             }
         
           <Text style={styles.text}>Top Authors: </Text>
-            { state.user.authors !== undefined ? state.user.authors.items.map(auth => {
+            { state.user.authors !== undefined ? state.user.authors.items.map(author => {
             return (
-              <Text key={auth.id}>{auth.name}</Text>
+              <Text key={author.id}>{author.name}</Text>
             )
             })
             : null
             }
+        
+          <Text style={styles.text}>Top Genres: </Text>
+            { state.user.genres !== undefined ? state.user.genres.items.map(genre => {
+            return (
+              <Text key={genre.id}>{genre.genre}</Text>
+            )
+            })
+            : null
+            }
+
           <Text style={styles.text}>About me: </Text>
           <Text>{state.user.about_me}</Text>
         </View>
