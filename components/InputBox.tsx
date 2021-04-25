@@ -3,11 +3,13 @@ import { useState } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { Text, View } from './Themed';
 import { MaterialCommunityIcons, FontAwesome5, Entypo, Fontisto, MaterialIcons } from '@expo/vector-icons';
+import API, { graphqlOperation } from '@aws-amplify/api'
+import { createMessage } from '../src/graphql/mutations';
 
-export default function InputBox() {
+export default function InputBox({myID, chatRoomID}) {
 
     const [message, setMessage] = useState('');
-
+    const input = {input:{userID:myID,chatRoomID, content:null}}
     const onMicrophonePress = () => {
         console.log('Microphone');
     }
@@ -17,6 +19,17 @@ export default function InputBox() {
 
         // Need to send the message to back-end
 
+        // console.log(myID);
+        // console.log(chatRoomID);
+
+        async function sendMessage(){
+            input.input.content = message;
+            // console.log(input);
+            let newMessage = await API.graphql(graphqlOperation(createMessage, input))
+            // console.log(newMessage);
+        }
+        sendMessage()
+        input.content = null;
         setMessage('');
     }
 
