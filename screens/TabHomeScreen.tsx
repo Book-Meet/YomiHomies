@@ -30,9 +30,31 @@ export default function TabHomeScreen()
     return (
       <View style={styles.card}>
         <View style={styles.profileContainer}>
-          <Text style={[styles.text, styles.name]}>{"Name: " + matches[index].username}</Text>
-          <Text style={[styles.text, styles.book]}>{"Book: " + matches[index].book}</Text>
-          <Text style={[styles.text, styles.name]}>{"About Me: " + matches[index].about_me}</Text>
+          <Text style={styles.title}> {matches[index].nickname}</Text>
+          <View style={[{flexDirection: 'row'}, {alignContent: 'space-around', backgroundColor: 'transparent'}]}>
+            <Text style={[styles.text, {margin: 10}, {borderBottomWidth: 1}]}>Username: <Text>{matches[index].username}</Text></Text>
+            <Text style={[styles.text, {margin: 10}, {borderBottomWidth: 1}]}>Gender: <Text>{matches[index].gender}</Text></Text>
+          </View>
+          <View style={[styles.content, {backgroundColor: 'transparent'}]}>
+            <Text style={styles.text}>Top Books: </Text>
+              { matches[index].books !== undefined ? matches[index].books.items.map(book => {
+              return (
+                <Text key={book.id}>{book.title} - {book.author}</Text>
+              )
+              })
+              : null
+              }
+            <Text style={styles.text}>Top Authors: </Text>
+              { matches[index].authors !== undefined ? matches[index].authors.items.map(auth => {
+              return (
+                <Text key={auth.id}>{auth.name}</Text>
+              )
+              })
+              : null
+              }
+            <Text style={styles.text}>About me: </Text>
+            <Text>{matches[index].about_me}</Text>
+          </View>
         </View>
         <View style={styles.bottomButtonsContainer}>
           <MaterialCommunityIcons.Button
@@ -248,20 +270,17 @@ const styles = StyleSheet.create({
   },
   profileContainer: {
     justifyContent: 'space-evenly',
-    backgroundColor: 'transparent',
+    backgroundColor: Colors.pallete.apricot,
   },
   cardDetails: {
     alignItems: 'center'
   },
-  text: {
-    // fontFamily: 'Courier'
-  },
-  name: {
-    fontSize: 24, marginBottom: 10, color: Colors.pallete.darkCornflowerBlue
-  },
-  book: {
-    color: Colors.pallete.lapisLazuli, fontSize: 25, fontWeight: '500'
-  },
+  // name: {
+  //   fontSize: 24, marginBottom: 10, color: Colors.pallete.darkCornflowerBlue
+  // },
+  // book: {
+  //   color: Colors.pallete.lapisLazuli, fontSize: 25, fontWeight: '500'
+  // },
   bottomButtonsContainer: {
     flexDirection: 'row',
     width: '100%',
@@ -299,7 +318,24 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center"
-  }
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 20,
+    alignSelf: 'center',
+  },
+  content: {
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+  },
+  text: {
+    lineHeight: 20,
+    fontSize: 14,
+    marginTop: 10,
+    marginBottom: 10,
+    fontWeight: 'bold',
+  },
 });
 
 
