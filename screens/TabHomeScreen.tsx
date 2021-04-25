@@ -5,7 +5,7 @@ import Swiper from 'react-native-deck-swiper';
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Transitioning, Transition } from 'react-native-reanimated'
 import {listProfiles} from '../src/graphql/queries';
-import {createMatch} from '../src/graphql/mutations';
+import {createMatch, updateProfile} from '../src/graphql/mutations';
 import UserContext from '../utils/userContext';
 import { ActionType } from '../types';
 import { Text, View } from '../components/Themed';
@@ -26,18 +26,19 @@ export default function TabHomeScreen()
   
   const Card = ({ card, index }:any) =>
   {
-    if(matches.length === 0) return null 
+    if(matches.length === 0) return null;
+    if(card === undefined) return null;
     return (
       <View style={styles.card}>
         <View style={styles.profileContainer}>
-          <Text style={styles.title}> {matches[index].nickname}</Text>
+          <Text style={styles.title}> {card.nickname}</Text>
           <View style={[{flexDirection: 'row'}, {alignContent: 'space-around', backgroundColor: 'transparent'}]}>
-            <Text style={[styles.text, {margin: 10}, {borderBottomWidth: 1}]}>Username: <Text>{matches[index].username}</Text></Text>
-            <Text style={[styles.text, {margin: 10}, {borderBottomWidth: 1}]}>Gender: <Text>{matches[index].gender}</Text></Text>
+            <Text style={[styles.text, {margin: 10}, {borderBottomWidth: 1}]}>Username: <Text>{card.username}</Text></Text>
+            <Text style={[styles.text, {margin: 10}, {borderBottomWidth: 1}]}>Gender: <Text>{card.gender}</Text></Text>
           </View>
           <View style={[styles.content, {backgroundColor: 'transparent'}]}>
             <Text style={styles.text}>Top Books: </Text>
-              { matches[index].books !== undefined ? matches[index].books.items.map(book => {
+              { card.books !== undefined ? card.books.items.map(book => {
               return (
                 <Text key={book.id}>{book.title} - {book.author}</Text>
               )
@@ -45,7 +46,7 @@ export default function TabHomeScreen()
               : null
               }
             <Text style={styles.text}>Top Authors: </Text>
-              { matches[index].authors !== undefined ? matches[index].authors.items.map(auth => {
+              { card.authors !== undefined ? card.authors.items.map(auth => {
               return (
                 <Text key={auth.id}>{auth.name}</Text>
               )
@@ -53,7 +54,7 @@ export default function TabHomeScreen()
               : null
               }
             <Text style={styles.text}>About me: </Text>
-            <Text>{matches[index].about_me}</Text>
+            <Text>{card.about_me}</Text>
           </View>
         </View>
         <View style={styles.bottomButtonsContainer}>
@@ -64,7 +65,7 @@ export default function TabHomeScreen()
             underlayColor='transparent'
             activeOpacity={-0.3}
             color={Colors.pallete.atomicTangerine}
-            onPress={() => swiperRef.current.swipeLeft()}
+            onPress={(e) => swiperRef.current.swipeLeft()}
           />
           <MaterialCommunityIcons.Button
             name='circle-outline'
@@ -73,7 +74,7 @@ export default function TabHomeScreen()
             underlayColor='transparent'
             activeOpacity={-0.3}
             color={Colors.pallete.blueNcs}
-            onPress={() => swiperRef.current.swipeRight()}
+            onPress={(e) => swiperRef.current.swipeRight()}
           />
         </View>
       </View>
@@ -82,8 +83,6 @@ export default function TabHomeScreen()
 
 
   const onSwipedLeft = async () => {
-    //transitionRef.current.animateNextTransition();
-
     // update database
     let reject = await API.graphql({query:createMatch, variables:{input:{matcherID:state.user.id, matcheeID:matches[0].id, status:"rejected"}}})
 
@@ -93,14 +92,12 @@ export default function TabHomeScreen()
     dispatch({type: ActionType.SetData, payload: updatedUser});
 
     // update matches state
-    let temp = [...matches];
-    temp.splice(0, 1);
-    setMatches(temp);
+    // let temp = [...matches];
+    // temp.splice(0, 1);
+    // setMatches(temp);
   }
 
   const onSwipedRight = async () =>{
-    //transitionRef.current.animateNextTransition();
-
     // update database
     let accept = await API.graphql({query:createMatch, variables:{input: {matcherID:state.user.id, matcheeID:matches[0].id, status:"accepted", matchedOn: matches[0].book}} })
 
@@ -110,15 +107,22 @@ export default function TabHomeScreen()
     dispatch({type: ActionType.SetData, payload: updatedUser});
 
     // update matches state
-    let temp = [...matches];
-    temp.splice(0, 1);
-    setMatches(temp);
+    // let temp = [...matches];
+    // temp.splice(0, 1);
+    // setMatches(temp);
 
     // check if it's a match
     let filter = { and: [{matcheeID: {eq: state.user.id }}, {matcherID: {eq: matches[0].id}}, {status: {eq: "accepted"}}]}
     let res = await API.graphql({query:checkMatch, variables: {filter: filter}})
     if (res.data.listMatchs.items.length > 0) {
       setModalVisible(true);
+    }
+  }
+
+  async function updateUserLocation (){
+    let now = Date.parse(new Date().toISOString())
+    if (now - Date.parse(state.user.updatedAt) > 86400000){
+      await API.graphql({query:updateProfile, variables: {input: {id:state.user.id, latitude:state.user.latitude, longitude:state.user.longitude}}});
     }
   }
 
@@ -147,8 +151,9 @@ export default function TabHomeScreen()
         })
       })
       setMatches(profiles);
+      updateUserLocation();
     })()
-  }, [state])
+  }, [state.user.id, state.reSearch])
   
   return (
     <View style={styles.container}>
@@ -176,62 +181,68 @@ export default function TabHomeScreen()
       ) 
       : (<>
       {/* <StatusBar hidden /> */}
-      <View style={styles.swiperContainer}>
-        <Swiper
-        ref={swiperRef}
-        cards={matches}
-        cardIndex={0}
-        renderCard={(card, index) => <Card card={card} index={index} />}
-        onSwipedLeft={onSwipedLeft}
-        onSwipedRight={onSwipedRight}
-        stackSize={4}
-        stackScale={10}
-        stackSeparation={14}
-        disableTopSwipe
-        disableBottomSwipe
-        inputRotationRange={[0, 0, 0]}
-        outputRotationRange={["0deg", "0deg", "0deg"]}
-        cardVerticalMargin={20}
-        animateOverlayLabelsOpacity
-        animateCardOpacity
-        infinite
-        backgroundColor={'transparent'}
-        overlayLabels={{
-          left: {
-            title: 'NOPE',
-            style: {
-              label: {
-                color: Colors.pallete.atomicTangerine,
-                fontSize: 24
-              },
-              wrapper: {
-                flexDirection: 'column',
-                alignItems: 'flex-end',
-                justifyContent: 'flex-start',
-                marginTop: 20,
-                marginLeft: -20
+      { matches.length > 0 ? 
+        <View style={styles.swiperContainer}>
+          <Swiper
+          ref={swiperRef}
+          cards={matches}
+          cardIndex={0}
+          renderCard={(card, index) => <Card card={card} index={index} />}
+          onSwipedLeft={onSwipedLeft}
+          onSwipedRight={onSwipedRight}
+          onSwipedAll={() => setMatches([])}
+          stackSize={2}
+          stackScale={10}
+          stackSeparation={14}
+          disableTopSwipe
+          disableBottomSwipe
+          inputRotationRange={[0, 0, 0]}
+          outputRotationRange={["0deg", "0deg", "0deg"]}
+          cardVerticalMargin={20}
+          animateOverlayLabelsOpacity
+          animateCardOpacity
+          // infinite
+          backgroundColor={'transparent'}
+          overlayLabels={{
+            left: {
+              title: 'NOPE',
+              style: {
+                label: {
+                  color: Colors.pallete.atomicTangerine,
+                  fontSize: 24
+                },
+                wrapper: {
+                  flexDirection: 'column',
+                  alignItems: 'flex-end',
+                  justifyContent: 'flex-start',
+                  marginTop: 20,
+                  marginLeft: -20
+                }
+              }
+            },
+            right: {
+              title: 'LIKE',
+              style: {
+                label: {
+                  color: Colors.pallete.lapisLazuli,
+                  fontSize: 24
+                },
+                wrapper: {
+                  flexDirection: 'column',
+                  alignItems: 'flex-start',
+                  justifyContent: 'flex-start',
+                  marginTop: 20,
+                  marginLeft: 20
+                }
               }
             }
-          },
-          right: {
-            title: 'LIKE',
-            style: {
-              label: {
-                color: Colors.pallete.lapisLazuli,
-                fontSize: 24
-              },
-              wrapper: {
-                flexDirection: 'column',
-                alignItems: 'flex-start',
-                justifyContent: 'flex-start',
-                marginTop: 20,
-                marginLeft: 20
-              }
-            }
-          }
-        }}
-        />
-      </View>
+          }}
+          />
+        </View>
+      :
+      (
+        <Text style={styles.noMatch}>No more matches with current settings. Try changing your top books in your profile or editing your search preferences.</Text>
+      )}
       </>)}
     </View>
   );
@@ -336,6 +347,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     fontWeight: 'bold',
   },
+  noMatch: {
+    fontSize: 20,
+    margin: 50,
+  }
 });
 
 
