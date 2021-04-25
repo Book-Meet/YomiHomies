@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import { StyleSheet, Image, StatusBar, SafeAreaView, Dimensions, Alert, Modal, Pressable } from 'react-native';
 import Swiper from 'react-native-deck-swiper';
 import { MaterialCommunityIcons } from '@expo/vector-icons'
@@ -22,10 +22,12 @@ export default function TabHomeScreen()
   const [matches, setMatches] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const swiperRef:any = React.createRef();
+  const swiperRef:any = useRef();
   
   const Card = ({ card, index }:any) =>
   {
+    console.log("card", card, index);
+    console.log("matches", matches)
     if(matches.length === 0) return null;
     if(card === undefined) return null;
     return (
@@ -65,7 +67,7 @@ export default function TabHomeScreen()
             underlayColor='transparent'
             activeOpacity={-0.3}
             color={Colors.pallete.atomicTangerine}
-            onPress={(e) => swiperRef.current.swipeLeft()}
+            onPress={() => swiperRef.current.swipeLeft(index)}
           />
           <MaterialCommunityIcons.Button
             name='circle-outline'
@@ -74,7 +76,7 @@ export default function TabHomeScreen()
             underlayColor='transparent'
             activeOpacity={-0.3}
             color={Colors.pallete.blueNcs}
-            onPress={(e) => swiperRef.current.swipeRight()}
+            onPress={() => swiperRef.current.swipeRight(index)}
           />
         </View>
       </View>
@@ -82,9 +84,9 @@ export default function TabHomeScreen()
   };
 
 
-  const onSwipedLeft = async () => {
+  const onSwipedLeft = async (index) => {
     // update database
-    let reject = await API.graphql({query:createMatch, variables:{input:{matcherID:state.user.id, matcheeID:matches[0].id, status:"rejected"}}})
+    let reject = await API.graphql({query:createMatch, variables:{input:{matcherID:state.user.id, matcheeID:matches[index].id, status:"rejected"}}})
 
     // update context
     let updatedUser = {...state.user}
@@ -97,9 +99,9 @@ export default function TabHomeScreen()
     // setMatches(temp);
   }
 
-  const onSwipedRight = async () =>{
+  const onSwipedRight = async (index) =>{
     // update database
-    let accept = await API.graphql({query:createMatch, variables:{input: {matcherID:state.user.id, matcheeID:matches[0].id, status:"accepted", matchedOn: matches[0].book}} })
+    let accept = await API.graphql({query:createMatch, variables:{input: {matcherID:state.user.id, matcheeID:matches[index].id, status:"accepted", matchedOn: matches[0].book}} })
 
     // update context
     let updatedUser = {...state.user}
@@ -112,7 +114,7 @@ export default function TabHomeScreen()
     // setMatches(temp);
 
     // check if it's a match
-    let filter = { and: [{matcheeID: {eq: state.user.id }}, {matcherID: {eq: matches[0].id}}, {status: {eq: "accepted"}}]}
+    let filter = { and: [{matcheeID: {eq: state.user.id }}, {matcherID: {eq: matches[index].id}}, {status: {eq: "accepted"}}]}
     let res = await API.graphql({query:checkMatch, variables: {filter: filter}})
     if (res.data.listMatchs.items.length > 0) {
       setModalVisible(true);
@@ -157,39 +159,15 @@ export default function TabHomeScreen()
   
   return (
     <View style={styles.container}>
-      { modalVisible ? (
-      <Modal
-        animationType="slide"
-        transparent={false}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>You got a match!</Text>
-            <Pressable
-              style={[styles.button,]}
-              onPress={() => setModalVisible(false)}
-            >
-              <Text>Hide Modal</Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
-      ) 
-      : (<>
-      {/* <StatusBar hidden /> */}
-      { matches.length > 0 ? 
+      { matches.length > 0 ? <>
         <View style={styles.swiperContainer}>
           <Swiper
           ref={swiperRef}
           cards={matches}
           cardIndex={0}
           renderCard={(card, index) => <Card card={card} index={index} />}
-          onSwipedLeft={onSwipedLeft}
-          onSwipedRight={onSwipedRight}
+          onSwipedLeft={(index) => onSwipedLeft(index)}
+          onSwipedRight={(index) => onSwipedRight(index)}
           onSwipedAll={() => setMatches([])}
           stackSize={2}
           stackScale={10}
@@ -239,11 +217,31 @@ export default function TabHomeScreen()
           }}
           />
         </View>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}
+        >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>You got a match!</Text>
+            <Pressable
+              style={[styles.button,]}
+              onPress={() => setModalVisible(false)}
+            >
+              <Text>Hide Modal</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+      </>
       :
       (
-        <Text style={styles.noMatch}>No more matches with current settings. Try changing your top books in your profile or editing your search preferences.</Text>
+        <Text style={styles.noMatch}>{`No more matches with current settings... \n\nTry changing your top books in your profile or editing your search preferences.`}</Text>
       )}
-      </>)}
     </View>
   );
 }
@@ -286,12 +284,6 @@ const styles = StyleSheet.create({
   cardDetails: {
     alignItems: 'center'
   },
-  // name: {
-  //   fontSize: 24, marginBottom: 10, color: Colors.pallete.darkCornflowerBlue
-  // },
-  // book: {
-  //   color: Colors.pallete.lapisLazuli, fontSize: 25, fontWeight: '500'
-  // },
   bottomButtonsContainer: {
     flexDirection: 'row',
     width: '100%',
