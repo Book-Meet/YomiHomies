@@ -67,6 +67,16 @@ export interface Books {
   profileID?: String;
   id?: String;
 }
+export interface Authors {
+  name: String;
+  profileID?: String;
+  id?: String;
+}
+export interface Genres {
+  genre: String;
+  profileID?: String;
+  id?: String;
+}
 
 export enum ActionType {
   SetData,
