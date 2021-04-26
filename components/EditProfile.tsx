@@ -6,12 +6,13 @@ import { API } from 'aws-amplify';
 import { updateProfile, createBook, deleteBook, createAuthor, deleteAuthor, createGenre, deleteGenre} from '../src/graphql/mutations';
 import { ActionType, Books, Authors, Genres } from '../types';
 import { Octicons } from '@expo/vector-icons';
+import Colors from '../constants/Colors'
 
 export default function EditProfile({ setViewMode, styles }) {
     const { state, dispatch } = useContext(UserContext);
-    const nicknameVal = useRef(null);
-    const genderVal = useRef(null);
-    const aboutMeVal = useRef(null);
+    const [nickname, setNickname] = useState(state.user.nickname || "");
+    const [gender, setGender] = useState(state.user.gender || "");
+    const [aboutMe, setAboutMe] = useState(state.user.about_me || "");
     const [book, setBook] = useState("");
     const [author, setAuthor] = useState("");
     const [searchResult, setSearchResult] = useState([]);
@@ -21,7 +22,7 @@ export default function EditProfile({ setViewMode, styles }) {
     //Google Books API
     async function bookSearch(val) {
         setBook(val);
-        if (val === "") {
+        if (val === "" || val.replace(/\s/g, '') === "") {
             setSearchResult([]);
             return;
         } 
@@ -51,16 +52,16 @@ export default function EditProfile({ setViewMode, styles }) {
     
     async function handleSave() {
         // validation checks
-        if (nicknameVal.current.value === "" || genderVal.current.value === ""
-        || aboutMeVal.current.value === "") {
+        if (nickname === "" || gender === ""
+        || aboutMe === "") {
             alert("No blank fields allowed!");
             return;
         }
         const newVals = {
             id: state.user.id,
-            nickname: nicknameVal.current.value,
-            gender: genderVal.current.value,
-            about_me: aboutMeVal.current.value,
+            nickname: nickname,
+            gender: gender,
+            about_me: aboutMe,
             latitude: state.user.latitude,
             longitude: state.user.longitude
         }
@@ -162,28 +163,28 @@ export default function EditProfile({ setViewMode, styles }) {
 
                 <Text style={editStyles.bold}>Nickname:</Text>
                 <TextInput
-                    ref={nicknameVal}
                     style={[styles.input, editStyles.inputPadding]}
                     selectTextOnFocus={true}
-                    defaultValue={state.user.nickname}
+                    value={nickname}
+                    onChangeText={setNickname}
                 />
 
                 <Text style={editStyles.bold} >Gender:</Text>
                 <TextInput
-                    ref={genderVal}
                     style={[styles.input, editStyles.inputPadding]}
                     selectTextOnFocus={true}
-                    defaultValue={state.user.gender}
+                    value={gender}
+                    onChangeText={setGender}
                 />
 
 
                 <Text style={editStyles.bold} >About me:</Text>
                     <TextInput
                         multiline
-                        ref={aboutMeVal}
                         style={[styles.input, editStyles.inputPadding]}
                         selectTextOnFocus={true}
-                        defaultValue={state.user.about_me}
+                        value={aboutMe}
+                        onChangeText={setAboutMe}
                         />
                 
                 <View style={[editStyles.buttons,]}>
@@ -197,7 +198,7 @@ export default function EditProfile({ setViewMode, styles }) {
                         onPress={() => handleSave()}
                         style={[styles.button, editStyles.saveButton]}
                         >
-                        <Text>Save</Text>
+                        <Text style={styles.darkButtonText}>Save</Text>
                     </Pressable>
                 </View>
 
@@ -246,7 +247,7 @@ export default function EditProfile({ setViewMode, styles }) {
                                 onPress={() => handleAddBook()}
                                 style={[styles.button, editStyles.saveButton]}
                                 >
-                                <Text>Add Book</Text>
+                                <Text style={styles.darkButtonText}>Add Book</Text>
                             </Pressable>
                         </>)
                         : null
@@ -292,7 +293,7 @@ export default function EditProfile({ setViewMode, styles }) {
                                 onPress={() => handleAddAuthor()}
                                 style={[styles.button, editStyles.saveButton]}
                                 >
-                                <Text>Add Author</Text>
+                                <Text style={styles.darkButtonText}>Add Author</Text>
                             </Pressable>
                         </>)
                         : null
@@ -338,7 +339,7 @@ export default function EditProfile({ setViewMode, styles }) {
                                 onPress={() => handleAddGenre()}
                                 style={[styles.button, editStyles.saveButton]}
                                 >
-                                <Text>Add Genre</Text>
+                                <Text style={styles.darkButtonText}>Add Genre</Text>
                             </Pressable>
                         </>)
                         : null
@@ -357,13 +358,6 @@ const editStyles = StyleSheet.create({
         alignContent:"flex-start",
         alignItems: "center"
     },
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: Dimensions.get('screen').width
-    },
     buttons: {
         display: "flex",
         flexDirection: "row",
@@ -371,7 +365,7 @@ const editStyles = StyleSheet.create({
         textAlign: "center",
     },
     xButton: {
-        color: "#000",
+        color: Colors.pallete.darkCornflowerBlue,
     },
     xContainer: {
         // borderColor: "#000",
@@ -394,11 +388,12 @@ const editStyles = StyleSheet.create({
         flex: 6
     },
     saveButton: {
-        backgroundColor: "#5CC166",
+        backgroundColor: Colors.pallete.lapisLazuli,
+        color: Colors.pallete.white,
         width: 100,
     },
     cancelButton: {
-        backgroundColor: "#FF925C",
+        backgroundColor: Colors.pallete.atomicTangerine,
         width: 100
     },
     bold: {
