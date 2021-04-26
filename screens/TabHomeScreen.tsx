@@ -11,6 +11,7 @@ import { Text, View } from '../components/Themed';
 import API from '@aws-amplify/api';
 import { checkMatch } from '../utils/customQueries';
 import Colors from '../constants/Colors';
+import {isPointWithinRadius} from 'geolib'
 
 
 export default function TabHomeScreen()
@@ -137,6 +138,9 @@ export default function TabHomeScreen()
           return false;
         })
       })
+      if(state.user.searchRadius){
+        profiles = profiles.filter(a=>isPointWithinRadius({latitude:a.latitude, longitude:a.longitude}, {latitude:state.user.latitude, longitude, state.user.longitude}, state.user.searchRadius* 1000))
+      }
       setMatches(profiles);
       updateUserLocation();
     })()
