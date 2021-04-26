@@ -6,6 +6,7 @@ import { API } from 'aws-amplify';
 import { updateProfile, createBook, deleteBook, createAuthor, deleteAuthor, createGenre, deleteGenre} from '../src/graphql/mutations';
 import { ActionType, Books, Authors, Genres } from '../types';
 import { Octicons } from '@expo/vector-icons';
+import Colors from '../constants/Colors'
 
 export default function EditProfile({ setViewMode, styles }) {
     const { state, dispatch } = useContext(UserContext);
@@ -197,7 +198,7 @@ export default function EditProfile({ setViewMode, styles }) {
                         onPress={() => handleSave()}
                         style={[styles.button, editStyles.saveButton]}
                         >
-                        <Text>Save</Text>
+                        <Text style={styles.darkButtonText}>Save</Text>
                     </Pressable>
                 </View>
 
@@ -246,7 +247,7 @@ export default function EditProfile({ setViewMode, styles }) {
                                 onPress={() => handleAddBook()}
                                 style={[styles.button, editStyles.saveButton]}
                                 >
-                                <Text>Add Book</Text>
+                                <Text style={styles.darkButtonText}>Add Book</Text>
                             </Pressable>
                         </>)
                         : null
@@ -292,7 +293,7 @@ export default function EditProfile({ setViewMode, styles }) {
                                 onPress={() => handleAddAuthor()}
                                 style={[styles.button, editStyles.saveButton]}
                                 >
-                                <Text>Add Author</Text>
+                                <Text style={styles.darkButtonText}>Add Author</Text>
                             </Pressable>
                         </>)
                         : null
@@ -338,7 +339,7 @@ export default function EditProfile({ setViewMode, styles }) {
                                 onPress={() => handleAddGenre()}
                                 style={[styles.button, editStyles.saveButton]}
                                 >
-                                <Text>Add Genre</Text>
+                                <Text style={styles.darkButtonText}>Add Genre</Text>
                             </Pressable>
                         </>)
                         : null
@@ -357,13 +358,6 @@ const editStyles = StyleSheet.create({
         alignContent:"flex-start",
         alignItems: "center"
     },
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: Dimensions.get('screen').width
-    },
     buttons: {
         display: "flex",
         flexDirection: "row",
@@ -371,7 +365,7 @@ const editStyles = StyleSheet.create({
         textAlign: "center",
     },
     xButton: {
-        color: "#000",
+        color: Colors.pallete.darkCornflowerBlue,
     },
     xContainer: {
         // borderColor: "#000",
@@ -394,11 +388,12 @@ const editStyles = StyleSheet.create({
         flex: 6
     },
     saveButton: {
-        backgroundColor: "#5CC166",
+        backgroundColor: Colors.pallete.lapisLazuli,
+        color: Colors.pallete.white,
         width: 100,
     },
     cancelButton: {
-        backgroundColor: "#FF925C",
+        backgroundColor: Colors.pallete.atomicTangerine,
         width: 100
     },
     bold: {
