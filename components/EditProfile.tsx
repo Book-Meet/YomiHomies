@@ -83,6 +83,7 @@ export default function EditProfile({ setViewMode, styles }) {
         dispatch({type: ActionType.SetData, payload: updatedUser});
         setAuthor("");
         setBook("");
+        dispatch({type: ActionType.Search});
     }
 
     async function handleDeleteBook(book:Books) {
@@ -91,6 +92,7 @@ export default function EditProfile({ setViewMode, styles }) {
         let ind = updatedUser.books.items.findIndex((book:any) => book.id === deleted.data.deleteBook.id)
         updatedUser.books.items.splice(ind, 1);
         dispatch({type: ActionType.SetData, payload: updatedUser});
+        dispatch({type: ActionType.Search});
     }
 
     return (

@@ -31,6 +31,9 @@ function reducer(state: AppState, action: Actions): AppState {
   switch (action.type) {
       case ActionType.SetData:
         return { ...state, user: action.payload }
+      case ActionType.Search:
+        console.log("changed search state");
+        return {...state, reSearch: !state.reSearch}
       default:
         return state
   }

@@ -1,103 +1,108 @@
 import * as React from 'react';
-import { useEffect, useState, useContext } from "react";
-import { StyleSheet, Image, StatusBar, SafeAreaView, Dimensions, Alert, Modal, Pressable } from 'react-native';
+import { useEffect, useState, useContext, useRef } from "react";
+import { StyleSheet, Modal, Pressable } from 'react-native';
 import Swiper from 'react-native-deck-swiper';
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { Transitioning, Transition } from 'react-native-reanimated'
-import {listMatchs, listProfiles} from '../src/graphql/queries';
+import {listProfiles} from '../src/graphql/queries';
 import {createMatch, updateProfile} from '../src/graphql/mutations';
 import UserContext from '../utils/userContext';
-import { ActionType, User } from '../types';
+import { ActionType } from '../types';
 import { Text, View } from '../components/Themed';
 import API from '@aws-amplify/api';
 import { checkMatch } from '../utils/customQueries';
-import * as Location from 'expo-location';
+import Colors from '../constants/Colors';
 
-
-const colors = {
-  red: '#ec2379',
-  blue: '#0070ff',
-  gray: '#777777',
-  black: '#000000',
-  white: '#ffffff'
-};
-
-const { width } = Dimensions.get('window');
-const ANIMATION_DURATION = 200;
 
 export default function TabHomeScreen()
 {
   const { state, dispatch } = useContext(UserContext)
-  const [matches, setMatches]:any = useState([]);
+  const [matches, setMatches] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const transition = (
-    <Transition.Sequence>
-      <Transition.Out type='slide-bottom' durationMs={ANIMATION_DURATION} interpolation='easeIn'/>
-      <Transition.Together>
-        <Transition.In type='fade' durationMs={ANIMATION_DURATION} delayMs={ANIMATION_DURATION / 2}/>
-        <Transition.In type='slide-bottom' durationMs={ANIMATION_DURATION} delayMs={ANIMATION_DURATION / 2} interpolation='easeOut'/>
-      </Transition.Together>
-    </Transition.Sequence>
-  );
+  const swiperRef:any = useRef();
   
-  const swiperRef:any = React.createRef();
-  const transitionRef:any = React.createRef();
-  
-  const Card = ({ card }:any) =>
+  const Card = ({ card, index }:any) =>
   {
-    if(matches.length === 0) return null 
+    console.log("card", card, index);
+    console.log("matches", matches)
+    if(matches.length === 0) return null;
+    if(card === undefined) return null;
     return (
       <View style={styles.card}>
-        <Image source={{uri:"https://i.ibb.co/f8vR1P8/ace.jpg"}} style={styles.cardImage} />
+        <View style={styles.profileContainer}>
+          <Text style={styles.title}> {card.nickname}</Text>
+          <View style={[{flexDirection: 'row'}, {alignContent: 'space-around', backgroundColor: 'transparent'}]}>
+            <Text style={[styles.text, {margin: 10}, {borderBottomWidth: 1}]}>Username: <Text>{card.username}</Text></Text>
+            <Text style={[styles.text, {margin: 10}, {borderBottomWidth: 1}]}>Gender: <Text>{card.gender}</Text></Text>
+          </View>
+          <View style={[styles.content, {backgroundColor: 'transparent'}]}>
+            <Text style={styles.text}>Top Books: </Text>
+              { card.books !== undefined ? card.books.items.map(book => {
+              return (
+                <Text key={book.id}>{book.title} - {book.author}</Text>
+              )
+              })
+              : null
+              }
+            <Text style={styles.text}>Top Authors: </Text>
+              { card.authors !== undefined ? card.authors.items.map(auth => {
+              return (
+                <Text key={auth.id}>{auth.name}</Text>
+              )
+              })
+              : null
+              }
+            <Text style={styles.text}>About me: </Text>
+            <Text>{card.about_me}</Text>
+          </View>
+        </View>
+        <View style={styles.bottomButtonsContainer}>
+          <MaterialCommunityIcons.Button
+            name='close'
+            size={60}
+            backgroundColor='transparent'
+            underlayColor='transparent'
+            activeOpacity={-0.3}
+            color={Colors.pallete.atomicTangerine}
+            onPress={() => swiperRef.current.swipeLeft(index)}
+          />
+          <MaterialCommunityIcons.Button
+            name='circle-outline'
+            size={60}
+            backgroundColor='transparent'
+            underlayColor='transparent'
+            activeOpacity={-0.3}
+            color={Colors.pallete.blueNcs}
+            onPress={() => swiperRef.current.swipeRight(index)}
+          />
+        </View>
       </View>
     );
   };
-  
-  const CardDetails = ({ index }:any) => matches.length > 0 ? (
-    <View style={styles.cardDetails} key={matches[0].id}>
-      <Text style={[styles.text, styles.name]}>{"Name: " + matches[0].username}</Text>
-      <Text style={[styles.text, styles.book]}>{"Book: " + matches[0].book}</Text>
-      <Text style={[styles.text, styles.name]}>{"ABout Me: " + matches[0].about_me}</Text>
-    </View>
-  ) : null;
 
-  const onSwipedLeft = async () => {
-    transitionRef.current.animateNextTransition();
 
+  const onSwipedLeft = async (index:Number) => {
     // update database
-    let reject:any = await API.graphql({query:createMatch, variables:{input:{matcherID:state.user.id, matcheeID:matches[0].id, status:"rejected"}}})
+    let reject = await API.graphql({query:createMatch, variables:{input:{matcherID:state.user.id, matcheeID:matches[index].id, status:"rejected"}}})
 
     // update context
-    let updatedUser:any = {...state.user}
+    let updatedUser = {...state.user}
     updatedUser.match.items.push(reject.data.createMatch);
     dispatch({type: ActionType.SetData, payload: updatedUser});
-
-    // update matches state
-    let temp = [...matches];
-    temp.splice(0, 1);
-    setMatches(temp);
   }
-  
-  const onSwipedRight = async () =>{
-    transitionRef.current.animateNextTransition();
 
+  const onSwipedRight = async (index:Number) =>{
     // update database
-    let accept = await API.graphql({query:createMatch, variables:{input: {matcherID:state.user.id, matcheeID:matches[0].id, status:"accepted", matchedOn: matches[0].book}} })
-    
+    let accept = await API.graphql({query:createMatch, variables:{input: {matcherID:state.user.id, matcheeID:matches[index].id, status:"accepted", matchedOn: matches[0].book}} })
+
     // update context
-    let updatedUser:any = {...state.user}
+    let updatedUser = {...state.user}
     updatedUser.match.items.push(accept.data.createMatch);
     dispatch({type: ActionType.SetData, payload: updatedUser});
 
-    // update matches state
-    let temp = [...matches];
-    temp.splice(0, 1);
-    setMatches(temp);
-
     // check if it's a match
-    let filter = { and: [{matcheeID: {eq: state.user.id }}, {matcherID: {eq: matches[0].id}}, {status: {eq: "accepted"}}]}
-    let res:any = await API.graphql({query:checkMatch, variables: {filter: filter}})
+    let filter = { and: [{matcheeID: {eq: state.user.id }}, {matcherID: {eq: matches[index].id}}, {status: {eq: "accepted"}}]}
+    let res = await API.graphql({query:checkMatch, variables: {filter: filter}})
     if (res.data.listMatchs.items.length > 0) {
       setModalVisible(true);
     }
@@ -109,12 +114,11 @@ export default function TabHomeScreen()
       await API.graphql({query:updateProfile, variables:{input:{id:state.user.id, latitude:state.user.latitude, longitude:state.user.longitude}}});
     }
   }
-
   useEffect(() =>
   {
     if (state.user.id == '') return;
     (async function fetchMatches (){
-      let alreadySwiped:any = state.user.match.items.length > 0  
+      let alreadySwiped = state.user.match.items.length > 0  
         ? state.user.match.items.map(match => match.matcheeID)
         : [];
       let profiles:any = await API.graphql({query:listProfiles, variables: {filter: {not: {id: {eq: state.user.id}}}}});
@@ -138,20 +142,76 @@ export default function TabHomeScreen()
       setMatches(profiles);
       updateUserLocation();
     })()
-  }, [state])
+  }, [state.user.id, state.reSearch])
   
-// DOM
   return (
     <View style={styles.container}>
-      { modalVisible ? (
-      <Modal
-        animationType="slide"
-        transparent={false}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
-      >
+      { matches.length > 0 ? <>
+        <View style={styles.swiperContainer}>
+          <Swiper
+          ref={swiperRef}
+          cards={matches}
+          cardIndex={0}
+          renderCard={(card, index) => <Card card={card} index={index} />}
+          onSwipedLeft={(index) => onSwipedLeft(index)}
+          onSwipedRight={(index) => onSwipedRight(index)}
+          onSwipedAll={() => setMatches([])}
+          stackSize={2}
+          stackScale={10}
+          stackSeparation={14}
+          disableTopSwipe
+          disableBottomSwipe
+          inputRotationRange={[0, 0, 0]}
+          outputRotationRange={["0deg", "0deg", "0deg"]}
+          cardVerticalMargin={20}
+          animateOverlayLabelsOpacity
+          animateCardOpacity
+          // infinite
+          backgroundColor={'transparent'}
+          overlayLabels={{
+            left: {
+              title: 'NOPE',
+              style: {
+                label: {
+                  color: Colors.pallete.atomicTangerine,
+                  fontSize: 24
+                },
+                wrapper: {
+                  flexDirection: 'column',
+                  alignItems: 'flex-end',
+                  justifyContent: 'flex-start',
+                  marginTop: 20,
+                  marginLeft: -20
+                }
+              }
+            },
+            right: {
+              title: 'LIKE',
+              style: {
+                label: {
+                  color: Colors.pallete.lapisLazuli,
+                  fontSize: 24
+                },
+                wrapper: {
+                  flexDirection: 'column',
+                  alignItems: 'flex-start',
+                  justifyContent: 'flex-start',
+                  marginTop: 20,
+                  marginLeft: 20
+                }
+              }
+            }
+          }}
+          />
+        </View>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}
+        >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>You got a match!</Text>
@@ -164,152 +224,58 @@ export default function TabHomeScreen()
           </View>
         </View>
       </Modal>
-      ) 
-      : (<> 
-      {/* <StatusBar hidden /> */}
-      <MaterialCommunityIcons
-        name='crop-square'
-        size={width}
-        color={colors.blue}
-        style={styles.diamondIcon}
-      />
-      <View style={styles.swiperContainer}>
-        <Swiper
-        ref={swiperRef}
-        cards={matches}
-        cardIndex={0}
-        renderCard={(card) => <Card card={card} />}
-        onSwipedLeft={onSwipedLeft}
-        onSwipedRight={onSwipedRight}
-        stackSize={4}
-        stackScale={10}
-        stackSeparation={14}
-        disableTopSwipe
-        disableBottomSwipe
-        animateOverlayLabelsOpacity
-        animateCardOpacity
-        infinite
-        backgroundColor={'transparent'}
-        overlayLabels={{
-          left: {
-            title: 'NOPE',
-            style: {
-              label: {
-                // backgroudColor: colors.red,
-                color: colors.white,
-                fontSize: 24
-              },
-              wrapper: {
-                flexDirection: 'column',
-                alignItems: 'flex-end',
-                justifyContent: 'flex-start',
-                marginTop: 20,
-                marginLeft: -20
-              }
-            }
-          },
-          right: {
-            title: 'LIKE',
-            style: {
-              label: {
-                // backgroudColor: colors.blue,
-                color: colors.white,
-                fontSize: 24
-              },
-              wrapper: {
-                flexDirection: 'column',
-                alignItems: 'flex-start',
-                justifyContent: 'flex-start',
-                marginTop: 20,
-                marginLeft: 20
-              }
-            }
-          }
-        }}
-        />
-        </View>
-      <View style={styles.bottomContainer}>
-        <Transitioning.View ref={transitionRef} transition={transition}>
-          <CardDetails index={0} />
-        </Transitioning.View>
-        <View style={styles.bottomButtonsContainer}>
-          <MaterialCommunityIcons.Button
-            name='close'
-            size={94}
-            backgroundColor='transparent'
-            underlayColor='transparent'
-            activeOpacity={-0.3}
-            color={colors.red}
-            onPress={() => swiperRef.current.swipeLeft()}
-          />
-          <MaterialCommunityIcons.Button
-            name='circle-outline'
-            size={94}
-            backgroundColor='transparent'
-            underlayColor='transparent'
-            activeOpacity={-0.3}
-            color={colors.blue}
-            onPress={() => swiperRef.current.swipeRight()}
-          />
-        </View>
-      </View>
-      </>)}
+      </>
+      :
+      (
+        <Text style={styles.noMatch}>{`No more matches with current settings... \n\nTry changing your top books in your profile or editing your search preferences.`}</Text>
+      )}
     </View>
   );
 }
-
-// define styles(CSS)
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
     height: "100%",
     width: "100%",
   },
   card: {
-    flex: 0.45,
-    borderRadius: 8,
-    shadowRadius: 25,
-    shadowColor: colors.black,
-    shadowOpacity: 0.08,
-    shadowOffset: { width: 0, height: 0 },
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: colors.white
+    flex: 0.8,
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    backgroundColor: Colors.pallete.apricot,
+    padding: 20,
+    borderColor: Colors.pallete.darkCornflowerBlue,
+    borderStyle: "solid",
+    borderWidth: 1,
+    borderRadius: 20,
+    shadowColor: Colors.pallete.darkCornflowerBlue,
+    shadowOffset: {
+      width: 0,
+      height: 0
+    },
+    shadowOpacity: 0.35,
+    shadowRadius: 30,
   },
-  cardImage: {
-    width: 160,
-    flex: 1,
-    resizeMode: 'contain'
-  },
+  // cardImage: {
+  //   width: 160,
+  //   flex: 1,
+  //   resizeMode: 'contain'
+  // },
   swiperContainer: {
-    flex: 0.55
+    flex: 1,
   },
-  bottomContainer: {
-    flex: 0.45,
-    justifyContent: 'space-evenly'
+  profileContainer: {
+    justifyContent: 'space-evenly',
+    backgroundColor: Colors.pallete.apricot,
   },
   cardDetails: {
     alignItems: 'center'
   },
-  text: {
-    // fontFamily: 'Courier'
-  },
-  name: {
-    fontSize: 24, marginBottom: 10, color: colors.gray
-  },
-  book: {
-    color: colors.blue, fontSize: 25, fontWeight: '500'
-  },
   bottomButtonsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-evenly'
-  },
-  diamondIcon: {
-    opacity: 0.05,
-    position: 'absolute',
-    top: 30,
-    left: -20
+    width: '100%',
+    justifyContent: 'space-between',
+    backgroundColor: Colors.pallete.apricot,
   },
   centeredView: {
     flex: 1,
@@ -342,77 +308,26 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center"
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 20,
+    alignSelf: 'center',
+  },
+  content: {
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+  },
+  text: {
+    lineHeight: 20,
+    fontSize: 14,
+    marginTop: 10,
+    marginBottom: 10,
+    fontWeight: 'bold',
+  },
+  noMatch: {
+    fontSize: 20,
+    margin: 50,
   }
 });
-
-
-// //previous code(tinder-card)
-// export default function TabHomeScreen()
-// {
-//   return (
-//     <View >
-//       <View style={styles.container}>
-//         {
-//           people.map((person) =>
-//             <TinderCard
-//               preventSwipe={['up', 'down']}
-//             >
-//               <Image source={{ uri: person.uri }} style={{width: 400, height: 400}}
-//               />
-//               <Text style={styles.name}>{person.name}</Text>
-//             </TinderCard>
-//           )
-//         }
-//         </View>
-//       <Text style={styles.title}>Matching</Text>
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   tinderCards__cardContainer: {
-//     display: 'flex',
-//     justifyContent: 'center',
-//     marginTop: 5,
-//   },
-//   card: {
-//     position: 'relative',
-//     marginTop: 10,
-//     width: 600,
-//     padding: 20,
-//     height: 600,
-//     borderRadius: 20,
-//   },
-//   swipe: {
-//     position: "absolute",
-//   },
-//   title: {
-//     fontSize: 20,
-//     fontWeight: 'bold',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-//   container: {
-//     flex: 1,
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-//   name: {
-//     fontSize: 30,
-//     justifyContent: 'center',
-//     alignItems: 'center'
-//   }
-// });
-
-
-// container: {
-//   flex: 1,
-//   alignItems: 'center',
-//   justifyContent: 'center',
-// },
-
-// separator: {
-//   marginVertical: 30,
-//   height: 1,
-//   width: '80%',
-// },
