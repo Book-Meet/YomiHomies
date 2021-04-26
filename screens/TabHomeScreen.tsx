@@ -110,20 +110,6 @@ export default function TabHomeScreen()
     }
   }
 
-  // useEffect(() => {
-  //   (async function  (){
-  //     const profiles = await API.graphql(graphqlOperation(listProfiles));
-  //     const eachProfile = profiles.data.listProfiles.items
-  //     // console.log(eachProfile);
-  //     // console.log(eachProfile.length)
-  //     // console.log(typeof eachProfile)
-  //     // eachProfile.map((val) =>
-  //     // {
-  //     //   console.log(val._version)
-  //     // })
-  //     setImage(eachProfile)
-  //   })()
-  // }, [])
   useEffect(() =>
   {
     if (state.user.id == '') return;
@@ -154,8 +140,6 @@ export default function TabHomeScreen()
     })()
   }, [state])
   
-  console.log(state.user)
-
 // DOM
   return (
     <View style={styles.container}>

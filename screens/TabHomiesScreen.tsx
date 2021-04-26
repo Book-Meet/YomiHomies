@@ -7,15 +7,13 @@ import chatRooms from '../data/ChatRooms';
 import {listMatchs} from '../src/graphql/queries';
 import API, {graphqlOperation} from '@aws-amplify/api'
 import UserContext from '../utils/userContext';
-import { onCreateMessage} from'../src/graphql/subscriptions'
-import { createMessage, createChatRoom, createChatRoomUser} from'../src/graphql/mutations'
+import { createChatRoom, createChatRoomUser} from'../src/graphql/mutations'
 import {listChatRooms} from '../utils/customQueries'
 import ChatRoomScreen from '../components/ChatRoomScreen'
 import { v4 as uuidv4 } from 'uuid';
 
-export default function TabHomiesScreen() 
-{
-  
+export default function TabHomiesScreen() {
+  const [newChatFlag, setNewChatFlag] = useState(false);
   const {state, dispatch} = useContext(UserContext);
   const [matches, setMatches] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
@@ -32,7 +30,6 @@ export default function TabHomiesScreen()
 
       let chatRooms = await API.graphql(graphqlOperation(listChatRooms, {userID:state.user.id}));
       chatRooms = chatRooms.data.listChatRooms.items;
-      console.log('chat rooms ', chatRooms)
       let chatRoomIDs = chatRooms.map(a=>{
         if(a.ChatRoomUsers.items[0] && a.ChatRoomUsers.items[0].userID === state.user.id){
           return a.ChatRoomUsers.items[1].userID;
@@ -40,37 +37,39 @@ export default function TabHomiesScreen()
           return a.ChatRoomUsers.items[0].userID;
         }
       })
-
+      console.log('matches ', matches)
+      console.log('chatRooms ', chatRooms);
+      let isNewChat = false;
       for(let match of matches){
         if(chatRoomIDs.includes(match.id)){
           match.chatRoomID = chatRooms[chatRoomIDs.indexOf(match.id)]
         }else {
+          isNewChat = true;
           let newUUID = uuidv4();
           let newChatRoom = await API.graphql(graphqlOperation(createChatRoom, {input:{id:newUUID}}));
           let newChatRoomUser = await API.graphql(graphqlOperation(createChatRoomUser, {input:{chatRoomID:newChatRoom.data.createChatRoom.id, userID: match.id}}))
           let myChatRoomUser = await API.graphql(graphqlOperation(createChatRoomUser, {input:{chatRoomID:newChatRoom.data.createChatRoom.id, userID: state.user.id}}))
-          //local matches doesn't upload so it crashes
         }
       }
-      setLoading(false)
+      if(isNewChat) setNewChatFlag(true);
       setMatches(matches)
+      setLoading(false)
     })()
-  }, [state]);
+  }, [state, newChatFlag]);
 
 
     return (
       <View>
-        {!currentChat && !loading && <View style={styles.container}>
-        <FlatList
-        style={{width: '100%'}}
-        data={matches}
-        renderItem={({ item }) => (<ChatListItem match={item} setCurrentChat={setCurrentChat}/>)}
-        keyExtractor={(item) => item.id}
-        />
+        {!currentChat && !loading && <View>
+          <FlatList style={{width: '100%'}}
+            data={matches}
+            renderItem={({item})=>(<ChatListItem match={item} setCurrentChat={setCurrentChat}/>)}
+            keyExtractor={(item)=>item.id}
+            />
         </View>}
         {currentChat && <ChatRoomScreen myID={state.user.id} currentChat={currentChat} setCurrentChat={setCurrentChat}/>}
-      </View>)
-
+      </View>
+    )
 };
 
 const styles = StyleSheet.create({

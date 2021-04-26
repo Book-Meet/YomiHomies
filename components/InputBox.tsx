@@ -15,18 +15,9 @@ export default function InputBox({myID, chatRoomID}) {
     }
 
     const onSendPress = () => {
-        console.log(`Sending: ${message}`);
-
-        // Need to send the message to back-end
-
-        // console.log(myID);
-        // console.log(chatRoomID);
-
         async function sendMessage(){
             input.input.content = message;
-            // console.log(input);
             let newMessage = await API.graphql(graphqlOperation(createMessage, input))
-            // console.log(newMessage);
         }
         sendMessage()
         input.content = null;

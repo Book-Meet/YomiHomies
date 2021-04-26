@@ -1,25 +1,32 @@
 import * as React from 'react';
+import {useEffect } from 'react';
 import { FlatList, ImageBackground, Button } from 'react-native';
 import { Text, View } from './Themed';
 import InputBox from './InputBox';
-
+import { onCreateMessage} from'../src/graphql/subscriptions'
+import API, {graphqlOperation} from '@aws-amplify/api'
 //import { useRoute } from '@react-navigation/native';
-
-import chatRoomData from '../data/Chats';
 import ChatMessage from './ChatRoomContent';
 
 export default function ChatRoomScreen({myID, currentChat, setCurrentChat}) {
-
     //const route = useRoute();
-    //console.log(route.params);
-    const chatRoomData = currentChat.chatRoomID;
+    let currentChatCopy = currentChat;
+    console.log('current chat ', currentChat)
+    useEffect(()=>{
+        const subscription = API.graphql( {query:onCreateMessage, variables:{chatRoomID:currentChat.chatRoomID.id}}).subscribe({
+            next:(data) =>{
+                console.log('data value data: ', data.value.data);
+            }
+        })
+    },[])
+
     return (
         <ImageBackground style={{width: '100%', height: '100%'}} source={require('../assets/images/BG.png')}>
             <FlatList
-                data = {chatRoomData.messages.items}
+                data = {currentChat.chatRoomID.messages.items}
                 renderItem={({item}) => <ChatMessage myID={myID} message={item} />}
             />
-            <InputBox chatRoomID={chatRoomData.id}myID={myID}/>
+            <InputBox chatRoomID={currentChat.chatRoomID.id}myID={myID}/>
             <Button title='Leave' onPress={()=>{setCurrentChat(null)}}/>
         </ImageBackground>
     );
