@@ -10,7 +10,6 @@ import { createChatRoom, createChatRoomUser} from'../src/graphql/mutations'
 import {listChatRooms} from '../utils/customQueries'
 import ChatRoomScreen from '../components/ChatRoomScreen'
 import { v4 as uuidv4 } from 'uuid';
-import { a } from '@aws-amplify/ui';
 
 export default function TabHomiesScreen() {
   const [newChatFlag, setNewChatFlag] = useState(false);
