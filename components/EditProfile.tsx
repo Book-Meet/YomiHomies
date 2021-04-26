@@ -9,9 +9,9 @@ import { Octicons } from '@expo/vector-icons';
 
 export default function EditProfile({ setViewMode, styles }) {
     const { state, dispatch } = useContext(UserContext);
-    const nicknameVal = useRef(null);
-    const genderVal = useRef(null);
-    const aboutMeVal = useRef(null);
+    const [nickname, setNickname] = useState(state.user.nickname || "");
+    const [gender, setGender] = useState(state.user.gender || "");
+    const [aboutMe, setAboutMe] = useState(state.user.about_me || "");
     const [book, setBook] = useState("");
     const [author, setAuthor] = useState("");
     const [searchResult, setSearchResult] = useState([]);
@@ -21,7 +21,7 @@ export default function EditProfile({ setViewMode, styles }) {
     //Google Books API
     async function bookSearch(val) {
         setBook(val);
-        if (val === "") {
+        if (val === "" || val.replace(/\s/g, '') === "") {
             setSearchResult([]);
             return;
         } 
@@ -51,20 +51,22 @@ export default function EditProfile({ setViewMode, styles }) {
     
     async function handleSave() {
         // validation checks
-        if (nicknameVal.current.value === "" || genderVal.current.value === ""
-        || aboutMeVal.current.value === "") {
+        if (nickname === "" || gender === ""
+        || aboutMe === "") {
             alert("No blank fields allowed!");
             return;
         }
         const newVals = {
             id: state.user.id,
-            nickname: nicknameVal.current.value,
-            gender: genderVal.current.value,
-            about_me: aboutMeVal.current.value,
+            nickname: nickname,
+            gender: gender,
+            about_me: aboutMe,
             latitude: state.user.latitude,
             longitude: state.user.longitude
         }
+        console.info(newVals);
         let updated:any = await API.graphql({query:updateProfile, variables: {input:newVals, id:state.user.id}})
+        console.info(updated)
         dispatch({type: ActionType.SetData, payload: updated.data.updateProfile});
         setViewMode("view");
     }
@@ -162,28 +164,28 @@ export default function EditProfile({ setViewMode, styles }) {
 
                 <Text style={editStyles.bold}>Nickname:</Text>
                 <TextInput
-                    ref={nicknameVal}
                     style={[styles.input, editStyles.inputPadding]}
                     selectTextOnFocus={true}
-                    defaultValue={state.user.nickname}
+                    value={nickname}
+                    onChangeText={setNickname}
                 />
 
                 <Text style={editStyles.bold} >Gender:</Text>
                 <TextInput
-                    ref={genderVal}
                     style={[styles.input, editStyles.inputPadding]}
                     selectTextOnFocus={true}
-                    defaultValue={state.user.gender}
+                    value={gender}
+                    onChangeText={setGender}
                 />
 
 
                 <Text style={editStyles.bold} >About me:</Text>
                     <TextInput
                         multiline
-                        ref={aboutMeVal}
                         style={[styles.input, editStyles.inputPadding]}
                         selectTextOnFocus={true}
-                        defaultValue={state.user.about_me}
+                        value={aboutMe}
+                        onChangeText={setAboutMe}
                         />
                 
                 <View style={[editStyles.buttons,]}>
