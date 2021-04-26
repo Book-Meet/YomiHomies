@@ -64,9 +64,7 @@ export default function EditProfile({ setViewMode, styles }) {
             latitude: state.user.latitude,
             longitude: state.user.longitude
         }
-        console.info(newVals);
         let updated:any = await API.graphql({query:updateProfile, variables: {input:newVals, id:state.user.id}})
-        console.info(updated)
         dispatch({type: ActionType.SetData, payload: updated.data.updateProfile});
         setViewMode("view");
     }
