@@ -106,24 +106,10 @@ export default function TabHomeScreen()
   async function updateUserLocation (){
     let now = Date.parse(new Date().toISOString())
     if (now - Date.parse(state.user.updatedAt) > 86400000){
-      await API.graphql({query:updateProfile, variables:{id:state.user.id, latitude:state.user.latitude, longitude:state.user.longitude}});
+      await API.graphql({query:updateProfile, variables:{input:{id:state.user.id, latitude:state.user.latitude, longitude:state.user.longitude}}});
     }
   }
 
-  // useEffect(() => {
-  //   (async function  (){
-  //     const profiles = await API.graphql(graphqlOperation(listProfiles));
-  //     const eachProfile = profiles.data.listProfiles.items
-  //     // console.log(eachProfile);
-  //     // console.log(eachProfile.length)
-  //     // console.log(typeof eachProfile)
-  //     // eachProfile.map((val) =>
-  //     // {
-  //     //   console.log(val._version)
-  //     // })
-  //     setImage(eachProfile)
-  //   })()
-  // }, [])
   useEffect(() =>
   {
     if (state.user.id == '') return;
@@ -154,7 +140,6 @@ export default function TabHomeScreen()
     })()
   }, [state])
   
-
 // DOM
   return (
     <View style={styles.container}>

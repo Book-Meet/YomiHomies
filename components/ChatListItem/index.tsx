@@ -9,7 +9,7 @@ export type ChatListItemProps = {
     chatRoom: ChatRoom;
 }
 
-    const ChatListItem = ({match, setCurrentChat}) =>
+const ChatListItem = ({match, setCurrentChat}) =>
     {
 
     function handlePress(e){
@@ -17,7 +17,6 @@ export type ChatListItemProps = {
     }
     return (
         <View>
-
             <TouchableWithoutFeedback onPress={handlePress}>
                 <View style={styles.container}>
                     <View style={styles.lefContainer}>

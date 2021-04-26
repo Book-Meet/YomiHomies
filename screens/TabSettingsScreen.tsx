@@ -34,7 +34,7 @@ export default function TabSettingsScreen() {
       <Text>Search Radius: {filterRadius}km</Text>
       <Text>User's Current Lat: {state.user.latitude}km</Text>
       <Text>User's Current Lng: {state.user.longitude}km</Text>
-      <Slider
+      {/* <Slider
         style={{width: 200, height: 30}}
         minimumValue={0}
         maximumValue={500}
@@ -43,7 +43,7 @@ export default function TabSettingsScreen() {
         onValueChange={(v)=>setFilterRadius(v)}
         value={500}
         onSlidingComplete={setUserFilter}
-      />
+      /> */}
       
       
       <View style={styles.container}>
