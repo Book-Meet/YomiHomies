@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useState } from 'react';
-import { StyleSheet, TextInput, Button, SafeAreaView, ScrollView, Pressable, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, TextInput, SafeAreaView, ScrollView, Pressable, FlatList, TouchableOpacity, Dimensions } from 'react-native';
 import { Text, View } from './Themed';
 import UserContext from '../utils/userContext'
 import { API } from 'aws-amplify'; 
@@ -360,6 +360,7 @@ const editStyles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
+        width: Dimensions.get('screen').width
     },
     buttons: {
         display: "flex",
