@@ -37,13 +37,11 @@ export default function TabHomiesScreen() {
           return a.ChatRoomUsers.items[0].userID;
         }
       })
-      console.log('matches ', matches)
-      console.log('chatRooms ', chatRooms);
       let isNewChat = false;
       for(let match of matches){
-        if(chatRoomIDs.includes(match.id)){
+        if(chatRoomIDs.includes(match.id)){ //if we already have a chatroom togther
           match.chatRoomID = chatRooms[chatRoomIDs.indexOf(match.id)]
-        }else {
+        }else { // create new chat room
           isNewChat = true;
           let newUUID = uuidv4();
           let newChatRoom = await API.graphql(graphqlOperation(createChatRoom, {input:{id:newUUID}}));

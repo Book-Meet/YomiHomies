@@ -15,7 +15,6 @@ const ChatListItem = ({match, setCurrentChat}) =>
     function handlePress(e){
         setCurrentChat(match)
     }
-    console.log('chatroom? ', match.chatRoomID)
     return (
         <View>
             <TouchableWithoutFeedback onPress={handlePress}>
