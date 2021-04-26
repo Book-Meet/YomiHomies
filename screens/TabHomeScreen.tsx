@@ -23,8 +23,6 @@ export default function TabHomeScreen()
   
   const Card = ({ card, index }:any) =>
   {
-    console.log("card", card, index);
-    console.log("matches", matches)
     if(matches.length === 0) return null;
     if(card === undefined) return null;
     return (
