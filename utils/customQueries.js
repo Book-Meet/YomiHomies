@@ -66,10 +66,6 @@ export const onCreateMessage = /* GraphQL */ `
             userID
             chatRoomID
             updatedAt
-            user{
-              id
-              username
-            }
           }
         }
       }
