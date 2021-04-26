@@ -32,3 +32,4 @@ amplifytools.xcconfig
 .secret-*
 
 install.cmd
+colors.md

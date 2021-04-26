@@ -53,10 +53,12 @@ export const initialUserState: User = {
 
 export interface AppState {
   user: User,
+  reSearch: Boolean
 }
 
 export const initialAppState: AppState = {
-    user: initialUserState
+    user: initialUserState,
+    reSearch: true
 }
 
 export interface Books {
@@ -77,12 +79,17 @@ export interface Genres {
 }
 
 export enum ActionType {
-  SetData
+  SetData,
+  Search
 }
 
 export interface SetData {
   type: ActionType.SetData;
   payload: User;
+}
+
+export interface Search {
+  type: ActionType.Search;
 }
 
 export type ChatUser = {
@@ -104,4 +111,4 @@ export type ChatRoom = {
   lastMessage: Message;
 }
 
-export type Actions = SetData; 
+export type Actions = SetData | Search; 

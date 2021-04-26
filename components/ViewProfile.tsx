@@ -10,7 +10,7 @@ export default function ViewProfile({ setViewMode, styles }) {
     <ScrollView>
       <View style={styles.container}>
         <Text style={styles.title}> {state.user.username}</Text>
-        <Image style={styles.profilePic} source={require('../assets/images/arina-reading.jpeg')} />
+        {/* <Image style={styles.profilePic} source={require('../assets/images/arina-reading.jpeg')} /> */}
 
 
         <View style={[{flexDirection: 'row'}, {alignContent: 'space-around'}]}>
