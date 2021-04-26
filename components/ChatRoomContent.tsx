@@ -9,7 +9,6 @@ export type ChatMessageProps = {
 }
 
 export default function ChatMessage({ message, myID }: ChatMessageProps) {
-
     const isMyMessage = () => {
         return message.user.id === myID;
     }

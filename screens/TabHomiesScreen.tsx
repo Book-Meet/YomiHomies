@@ -3,7 +3,6 @@ import {useEffect, useContext, useState} from 'react';
 import { StyleSheet, FlatList, SafeAreaView, Image, Pressable } from 'react-native';
 import { Text, View } from '../components/Themed'
 import  ChatListItem  from '../components/ChatListItem/index';
-import chatRooms from '../data/ChatRooms';
 import {listMatchs} from '../src/graphql/queries';
 import API, {graphqlOperation} from '@aws-amplify/api'
 import UserContext from '../utils/userContext';
@@ -11,6 +10,7 @@ import { createChatRoom, createChatRoomUser} from'../src/graphql/mutations'
 import {listChatRooms} from '../utils/customQueries'
 import ChatRoomScreen from '../components/ChatRoomScreen'
 import { v4 as uuidv4 } from 'uuid';
+import { a } from '@aws-amplify/ui';
 
 export default function TabHomiesScreen() {
   const [newChatFlag, setNewChatFlag] = useState(false);
@@ -50,7 +50,7 @@ export default function TabHomiesScreen() {
         }
       }
       if(isNewChat) setNewChatFlag(true);
-      setMatches(matches)
+      setMatches(matches.map((a,i)=>({...a,index:i})))
       setLoading(false)
     })()
   }, [state, newChatFlag]);
@@ -65,7 +65,7 @@ export default function TabHomiesScreen() {
             keyExtractor={(item)=>item.id}
             />
         </View>}
-        {currentChat && <ChatRoomScreen myID={state.user.id} currentChat={currentChat} setCurrentChat={setCurrentChat}/>}
+        {currentChat && <ChatRoomScreen myID={state.user.id} currentChat={currentChat} setCurrentChat={setCurrentChat} matches={matches} setMatches={setMatches}/>}
       </View>
     )
 };

@@ -43,3 +43,36 @@ export const listChatRooms = /* GraphQL */ `
     }
   }
 `;
+
+export const onCreateMessage = /* GraphQL */ `
+  subscription OnCreateMessage($chatRoomID: String!) {
+    onCreateMessage (chatRoomID: $chatRoomID) {
+      id
+      createdAt
+      content
+      userID
+      chatRoomID
+      updatedAt
+      user {
+        id
+        username
+      }
+      chatRoom {
+        messages {
+          items {
+            id
+            createdAt
+            content
+            userID
+            chatRoomID
+            updatedAt
+            user{
+              id
+              username
+            }
+          }
+        }
+      }
+    }
+  }
+`;
