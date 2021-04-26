@@ -15,13 +15,12 @@ export default function ChatRoomScreen({myID, currentChat, setCurrentChat, match
             next:(data) =>{
                 let localMatchesCopy = matches;
                 data = data.value.data.onCreateMessage
-                data.chatRoom.messages.items = data.chatRoom.messages.items.map(a=>({...a,user:{id:data.user.id, username:data.user.username}}))
-                localMatchesCopy[currentChat.index].chatRoomID.messages.items = data.chatRoom.messages.items;
+                if(messages[messages.length - 1].id === data.id) return;
+                localMatchesCopy[currentChat.index].chatRoomID.messages.items.push(data);
                 setMatches(localMatchesCopy);
-                setMessages(data.chatRoom.messages.items);
+                setMessages(localMatchesCopy[currentChat.index].chatRoomID.messages.items);
             }
         })
-        // return subscription.unsubscribe();
     },[])
 
     return (

@@ -57,18 +57,6 @@ export const onCreateMessage = /* GraphQL */ `
         id
         username
       }
-      chatRoom {
-        messages {
-          items {
-            id
-            createdAt
-            content
-            userID
-            chatRoomID
-            updatedAt
-          }
-        }
-      }
     }
   }
 `;
