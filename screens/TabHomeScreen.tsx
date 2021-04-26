@@ -111,11 +111,11 @@ export default function TabHomeScreen()
   async function updateUserLocation (){
     let now = Date.parse(new Date().toISOString())
     if (now - Date.parse(state.user.updatedAt) > 86400000){
-      await API.graphql({query:updateProfile, variables: {input: {id:state.user.id, latitude:state.user.latitude, longitude:state.user.longitude}}});
+      await API.graphql({query:updateProfile, variables:{input:{id:state.user.id, latitude:state.user.latitude, longitude:state.user.longitude}}});
     }
   }
-
-  useEffect(() => {
+  useEffect(() =>
+  {
     if (state.user.id == '') return;
     (async function fetchMatches (){
       let alreadySwiped = state.user.match.items.length > 0  
