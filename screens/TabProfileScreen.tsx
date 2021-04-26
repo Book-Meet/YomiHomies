@@ -3,6 +3,7 @@ import { StyleSheet, Dimensions } from 'react-native';
 import { View } from '../components/Themed';
 import ViewProfile from '../components/ViewProfile';
 import EditProfile from '../components/EditProfile';
+import Colors from '../constants/Colors';
 
 
 export default function TabProfileScreen() {
@@ -52,7 +53,8 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40, 
-    borderWidth: 1
+    borderWidth: 1,
+    width: "100%",
   },
   centeredView: {
     flex: 1,
@@ -84,10 +86,15 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   buttonOpen: {
-    backgroundColor: '#F194FF'
+    backgroundColor: Colors.pallete.lapisLazuli,
+    color: Colors.pallete.white
   },
   buttonClose: {
-    backgroundColor: '#2196F3'
+    backgroundColor: Colors.pallete.atomicTangerine,
+    color: Colors.pallete.darkCornflowerBlue,
+  },
+  darkButtonText: {
+    color: Colors.pallete.white,
   },
   textStyle: {
     color: 'white',
@@ -107,40 +114,10 @@ const styles = StyleSheet.create({
   },
   headingText: {
     fontSize: 20,
-  }
+  },
+  content: {
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+  },
 });
 
-      {/* <Text>Top Genres: </Text>
-      <View style={styles.centeredView}>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-            setModalVisible(!modalVisible);
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText} onPress={()=>{handleAddGenre("Thriller")}}>Genre1</Text>
-              <Text style={styles.modalText}>Genre2</Text>
-              <Text style={styles.modalText}>Genre3</Text>
-              <Text style={styles.modalText}>Genre4</Text>
-              <Text style={styles.modalText}>Genre5</Text>
-              <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                <Text style={styles.textStyle}>Close</Text>
-              </Pressable>
-            </View>
-          </View>
-        </Modal>
-        <Pressable
-          style={[styles.button, styles.buttonOpen]}
-          onPress={() => setModalVisible(true)}
-        >
-          <Text style={styles.textStyle}>Select Genre</Text>
-        </Pressable>
-      </View> */}

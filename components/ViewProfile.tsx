@@ -52,80 +52,9 @@ export default function ViewProfile({ setViewMode, styles }) {
           style={[styles.button, styles.buttonOpen]}
           onPress={() => setViewMode("edit")}
         >
-          <Text>Edit Profile</Text>
+          <Text style={styles.darkButtonText}>Edit Profile</Text>
         </Pressable>
       </View>
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  content: {
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-  },
-//   container: {
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-//   title: {
-//     fontSize: 20,
-//     fontWeight: 'bold',
-//   },
-//   profilePic: {
-//       width: 100,
-//       height: 100,
-//       borderRadius: 10,
-//   },
-//   separator: {
-//     marginVertical: 30,
-//     height: 1,
-//     width: '80%',
-//   },
-//   input: {
-//     height: 40, 
-//     borderWidth: 1
-//   },
-//   centeredView: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     marginTop: 22,
-//     marginBottom: 22
-//   },
-//   modalView: {
-//     margin: 20,
-//     backgroundColor: 'white',
-//     borderRadius: 20,
-//     padding: 35,
-//     alignItems: 'center',
-//     shadowColor: '#000',
-//     shadowOffset: {
-//       width: 0,
-//       height: 2
-//     },
-//     shadowOpacity: 0.25,
-//     shadowRadius: 4,
-//     elevation: 5
-//   },
-//   button: {
-//     borderRadius: 20,
-//     padding: 10,
-//     elevation: 2
-//   },
-//   buttonOpen: {
-//     backgroundColor: '#F194FF'
-//   },
-//   buttonClose: {
-//     backgroundColor: '#2196F3'
-//   },
-//   textStyle: {
-//     color: 'white',
-//     fontWeight: 'bold',
-//     textAlign: 'center'
-//   },
-//   modalText: {
-//     marginBottom: 15,
-//     textAlign: 'center'
-//   }
-});
