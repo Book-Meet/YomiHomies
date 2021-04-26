@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useEffect, useState, useContext, useRef } from "react";
 import { StyleSheet, Modal, Pressable } from 'react-native';
 import Swiper from 'react-native-deck-swiper';
-import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons'
 import {listProfiles} from '../src/graphql/queries';
 import {createMatch, updateProfile} from '../src/graphql/mutations';
 import UserContext from '../utils/userContext';
@@ -57,8 +57,8 @@ export default function TabHomeScreen()
           </View>
         </View>
         <View style={styles.bottomButtonsContainer}>
-          <MaterialCommunityIcons.Button
-            name='close'
+          <FontAwesome5
+            name='arrow-left'
             size={60}
             backgroundColor='transparent'
             underlayColor='transparent'
@@ -66,8 +66,8 @@ export default function TabHomeScreen()
             color={Colors.pallete.atomicTangerine}
             onPress={() => swiperRef.current.swipeLeft(index)}
           />
-          <MaterialCommunityIcons.Button
-            name='circle-outline'
+          <FontAwesome5
+            name='arrow-right'
             size={60}
             backgroundColor='transparent'
             underlayColor='transparent'
