@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useEffect, useState, useContext, useRef } from "react";
 import { StyleSheet, Modal, Pressable } from 'react-native';
 import Swiper from 'react-native-deck-swiper';
-import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { FontAwesome5 } from '@expo/vector-icons'
 import {listProfiles} from '../src/graphql/queries';
 import {createMatch, updateProfile} from '../src/graphql/mutations';
 import UserContext from '../utils/userContext';
@@ -44,9 +44,17 @@ export default function TabHomeScreen()
               : null
               }
             <Text style={styles.text}>Top Authors: </Text>
-              { card.authors !== undefined ? card.authors.items.map(auth => {
+              { card.authors !== undefined ? card.authors.items.map(author => {
               return (
-                <Text key={auth.id}>{auth.name}</Text>
+                <Text key={author.id}>{author.name}</Text>
+              )
+              })
+              : null
+              }
+            <Text style={styles.text}>Top Genres: </Text>
+              { card.genres !== undefined ? card.genres.items.map(genre => {
+              return (
+                <Text key={genre.id}>{genre.genre}</Text>
               )
               })
               : null
@@ -56,8 +64,8 @@ export default function TabHomeScreen()
           </View>
         </View>
         <View style={styles.bottomButtonsContainer}>
-          <MaterialCommunityIcons.Button
-            name='close'
+          <FontAwesome5
+            name='arrow-left'
             size={60}
             backgroundColor='transparent'
             underlayColor='transparent'
@@ -65,8 +73,8 @@ export default function TabHomeScreen()
             color={Colors.pallete.atomicTangerine}
             onPress={() => swiperRef.current.swipeLeft(index)}
           />
-          <MaterialCommunityIcons.Button
-            name='circle-outline'
+          <FontAwesome5
+            name='arrow-right'
             size={60}
             backgroundColor='transparent'
             underlayColor='transparent'
@@ -139,7 +147,7 @@ export default function TabHomeScreen()
         })
       })
       if(state.user.searchRadius){
-        profiles = profiles.filter(a=>isPointWithinRadius({latitude:a.latitude, longitude:a.longitude}, {latitude:state.user.latitude, longitude, state.user.longitude}, state.user.searchRadius* 1000))
+        profiles = profiles.filter(a=>isPointWithinRadius({latitude:a.latitude, longitude:a.longitude}, {latitude:state.user.latitude, longitude:state.user.longitude}, state.user.searchRadius* 1000))
       }
       setMatches(profiles);
       updateUserLocation();
