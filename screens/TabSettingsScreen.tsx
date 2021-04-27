@@ -7,6 +7,7 @@ import { Text, View } from '../components/Themed';
 import UserContext from '../utils/userContext';
 import { ActionType } from '../types';
 import { CheckBox } from 'react-native-elements';
+// import CheckBox from '@react-native-community/checkbox';
 import Colors from '../constants/Colors';
 
 
