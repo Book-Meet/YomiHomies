@@ -7,7 +7,7 @@ import {listMatchs} from '../src/graphql/queries';
 import API, {graphqlOperation} from '@aws-amplify/api'
 import UserContext from '../utils/userContext';
 import { createChatRoom, createChatRoomUser} from'../src/graphql/mutations'
-import {listChatRooms} from '../utils/customQueries'
+import {listChatRooms,onCreateMessage } from '../utils/customQueries'
 import ChatRoomScreen from '../components/ChatRoomScreen'
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
@@ -15,7 +15,7 @@ import { v4 as uuidv4 } from 'uuid';
 export default function TabHomiesScreen() {
   const [newChatFlag, setNewChatFlag] = useState(false);
   const {state, dispatch} = useContext(UserContext);
-  const [matches, setMatches] = useState([]);
+  const [chatRooms, setChatRooms] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const [loading, setLoading] = useState(true)
 
@@ -27,9 +27,9 @@ export default function TabHomiesScreen() {
       myMatchers = myMatchers.data.listMatchs.items;
       let myMatchees = state.user.match.items.filter(a => a.status === 'accepted').map(a => a.matcheeID);
       let matches = myMatchers.filter(a => myMatchees.includes(a.matcherID)).map(a=>a.matcherProfile);
-      let chatRooms = await API.graphql(graphqlOperation(listChatRooms, {userID:state.user.id}));
-      chatRooms = chatRooms.data.listChatRooms.items;
-      let chatRoomIDs = chatRooms.map(a=>{
+      let chatRoomsFetch = await API.graphql(graphqlOperation(listChatRooms, {userID:state.user.id}));
+      chatRoomsFetch = chatRoomsFetch.data.listChatRooms.items;
+      let chatRoomIDs = chatRoomsFetch.map(a=>{
         if(a.ChatRoomUsers.items[0] && a.ChatRoomUsers.items[0].userID === state.user.id){
           return a.ChatRoomUsers.items[1].userID;
         } else{
@@ -38,9 +38,7 @@ export default function TabHomiesScreen() {
       })
       let isNewChat = false;
       for(let match of matches){
-        if(chatRoomIDs.includes(match.id)){ //if we already have a chatroom togther
-          match.chatRoomID = chatRooms[chatRoomIDs.indexOf(match.id)]
-        }else { // create new chat room
+        if(!chatRoomIDs.includes(match.id)){ //create chat if one doesn't exist
           isNewChat = true;
           let newUUID = uuidv4();
           let newChatRoom = await API.graphql(graphqlOperation(createChatRoom, {input:{id:newUUID}}));
@@ -49,22 +47,41 @@ export default function TabHomiesScreen() {
         }
       }
       if(isNewChat) setNewChatFlag(true);
-      setMatches(matches.map((a,i)=>({...a,index:i})))
+      chatRoomsFetch = chatRoomsFetch.filter(room=>{
+        return room.ChatRoomUsers.items[0].userID === state.user.id || room.ChatRoomUsers.items[1].userID === state.user.id
+      })
+      setChatRooms(chatRoomsFetch.map((v,i)=>({...v,index:i})))
       setLoading(false)
     })()
-  }, [state, newChatFlag]);
+  }, [state.user.match, newChatFlag]);
 
+  
+  useEffect(()=>{
+    if(chatRooms.length === 0) return;
+    const subscription = API.graphql( {query:onCreateMessage}).subscribe({
+      next:(data) =>{
+        let chatRoomsCopy = [... chatRooms];
+        data = data.value.data.onCreateMessage
+        let room = chatRoomsCopy.find(a=>a.id === data.chatRoomID)
+        if(!room)return;
+        if(room.messages.items.length > 0 && room.messages.items[room.messages.items.length -1].id === data.id) return
+        room.messages.items.push(data)
+        setChatRooms(chatRoomsCopy)
+      }
+    })
+  },[chatRooms])
 
     return (
       <View>
-        {!currentChat && !loading && <View>
+        {currentChat === null && !loading && <View>
           <FlatList style={{width: '100%'}}
-            data={matches}
-            renderItem={({item})=>(<ChatListItem match={item} setCurrentChat={setCurrentChat}/>)}
+            data={chatRooms}
+            extraData={chatRooms.length}
+            renderItem={({item})=>(<ChatListItem chatRoom={item} setCurrentChat={setCurrentChat}/>)}
             keyExtractor={(item)=>item.id}
             />
         </View>}
-        {currentChat && <ChatRoomScreen myID={state.user.id} currentChat={currentChat} setCurrentChat={setCurrentChat} matches={matches} setMatches={setMatches}/>}
+        {currentChat !== null && <ChatRoomScreen myID={state.user.id} currentChat={chatRooms[currentChat]} setCurrentChat={setCurrentChat} chatRooms={chatRooms} setChatRooms={setChatRooms}/>}
       </View>
     )
 };
