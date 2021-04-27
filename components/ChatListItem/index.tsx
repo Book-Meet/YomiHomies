@@ -12,11 +12,15 @@ export type ChatListItemProps = {
 
 const ChatListItem = ({chatRoom, setCurrentChat}) =>{
     const {state, dispatch} = useContext(UserContext);
-    let username;
-    chatRoom.ChatRoomUsers.items[0].userID === state.user.id ? username = chatRoom.ChatRoomUsers.items[1].user.username : username = chatRoom.ChatRoomUsers.items[0].user.username
+    let user;
+    let visibleName;
+    chatRoom.ChatRoomUsers.items[0].userID === state.user.id ? user = chatRoom.ChatRoomUsers.items[1].user : user = chatRoom.ChatRoomUsers.items[0].user
+    user.nickname ? visibleName = user.nickname : visibleName = user.username
+    let book = user.books.items
     function handlePress(e){
         setCurrentChat(chatRoom.index)
     }
+    console.log(book);
     return (
         <View>
             <TouchableWithoutFeedback onPress={handlePress}>
@@ -24,7 +28,7 @@ const ChatListItem = ({chatRoom, setCurrentChat}) =>{
                     <View style={styles.lefContainer}>
                         {/* <Image source={{ uri: user.imageUri }} style={styles.avatar} /> */}
                         <View style={styles.midContainer}>
-                            <Text style={styles.username}>{username}</Text>
+                            <Text style={styles.username}>{visibleName}</Text>
                         </View>
                     </View>
                 </View>
