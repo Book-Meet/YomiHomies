@@ -139,7 +139,7 @@ export default function TabHomeScreen()
         })
       })
       if(state.user.searchRadius){
-        profiles = profiles.filter(a=>isPointWithinRadius({latitude:a.latitude, longitude:a.longitude}, {latitude:state.user.latitude, longitude, state.user.longitude}, state.user.searchRadius* 1000))
+        profiles = profiles.filter(a=>isPointWithinRadius({latitude:a.latitude, longitude:a.longitude}, {latitude:state.user.latitude, longitude:state.user.longitude}, state.user.searchRadius* 1000))
       }
       setMatches(profiles);
       updateUserLocation();

@@ -15,7 +15,7 @@ export default function ChatRoomScreen({myID, currentChat, setCurrentChat, match
             next:(data) =>{
                 let localMatchesCopy = matches;
                 data = data.value.data.onCreateMessage
-                if(messages[messages.length - 1].id === data.id) return;
+                if(messages.length > 0 && messages[messages.length - 1].id === data.id) return;
                 localMatchesCopy[currentChat.index].chatRoomID.messages.items.push(data);
                 setMatches(localMatchesCopy);
                 setMessages(localMatchesCopy[currentChat.index].chatRoomID.messages.items);
