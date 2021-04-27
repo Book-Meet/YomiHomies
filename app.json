@@ -24,10 +24,17 @@
     },
     "android": {
       "package": "com.cc18.yomihomies",
+      "icon": "./assets/images/YH_Logo_blue.png",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/YH_Logo_blue.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "splash": {
+        "image": "./assets/images/YH_Logo_blue.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#1F87AD"
+      },
+      "versionCode": 1,
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
