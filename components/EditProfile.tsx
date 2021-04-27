@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useState } from 'react';
-import { StyleSheet, TextInput, SafeAreaView, ScrollView, Pressable, FlatList, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, TextInput, SafeAreaView, ScrollView, Pressable, FlatList, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Text, View } from './Themed';
 import UserContext from '../utils/userContext'
 import { API } from 'aws-amplify'; 
@@ -154,199 +154,202 @@ export default function EditProfile({ setViewMode, styles }) {
 
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView>
-                <View style={styles.header}>
-                    <Text style={[editStyles.bold, styles.headingText]}>Edit Profile</Text>
-                </View>
+            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+                <ScrollView style={editStyles.margin}>
+                    <View style={styles.header}>
+                        <Text style={[editStyles.bold, styles.headingText]}>Edit Profile</Text>
+                    </View>
 
-                <View  style={styles.separator} ></View>
+                    <View  style={styles.separator} ></View>
 
-                <Text style={editStyles.bold}>Nickname:</Text>
-                <TextInput
-                    style={[styles.input, editStyles.inputPadding]}
-                    selectTextOnFocus={true}
-                    value={nickname}
-                    onChangeText={setNickname}
-                />
-
-                <Text style={editStyles.bold} >Gender:</Text>
-                <TextInput
-                    style={[styles.input, editStyles.inputPadding]}
-                    selectTextOnFocus={true}
-                    value={gender}
-                    onChangeText={setGender}
-                />
-
-
-                <Text style={editStyles.bold} >About me:</Text>
+                    <Text style={editStyles.bold}>Nickname:</Text>
                     <TextInput
-                        multiline
                         style={[styles.input, editStyles.inputPadding]}
                         selectTextOnFocus={true}
-                        value={aboutMe}
-                        onChangeText={setAboutMe}
-                        />
-                
-                <View style={[editStyles.buttons,]}>
-                    <Pressable
-                        onPress={() => setViewMode("view")}
-                        style={[styles.button, editStyles.cancelButton]}
-                        >
-                        <Text>Cancel</Text>
-                    </Pressable>
-                    <Pressable
-                        onPress={() => handleSave()}
-                        style={[styles.button, editStyles.saveButton]}
-                        >
-                        <Text style={styles.darkButtonText}>Save</Text>
-                    </Pressable>
-                </View>
+                        value={nickname}
+                        onChangeText={setNickname}
+                    />
 
-                <View  style={styles.separator} ></View>
+                    <Text style={editStyles.bold} >Gender:</Text>
+                    <TextInput
+                        style={[styles.input, editStyles.inputPadding]}
+                        selectTextOnFocus={true}
+                        value={gender}
+                        onChangeText={setGender}
+                    />
 
-                <Text style={[editStyles.bold,]} >Top Books (up to 5):</Text>
-                <View style={styles.content}>
-                    <View style={styles.lists}>
-                    { 
-                        state.user.books !== undefined ? state.user.books.items.map((book) => {
-                            return (
-                                <View key={book.id}
-                                style={[editStyles.flexContainer]}>
-                                <Pressable
-                                    onPress={() => handleDeleteBook(book)}
-                                    style={[editStyles.xContainer]}
-                                    >
-                                    <Octicons name="trashcan" size={20} color="#F00" style={editStyles.xButton} />
-                                </Pressable>
-                                <Text style={styles.listItem}>
-                                    {book.title} - {book.author}
-                                </Text>
-                            </View>
-                            )
-                        })
-                        : null
-                    }
+
+                    <Text style={editStyles.bold} >About me:</Text>
+                        <TextInput
+                            multiline
+                            style={[styles.input, editStyles.inputPadding]}
+                            selectTextOnFocus={true}
+                            value={aboutMe}
+                            onChangeText={setAboutMe}
+                            />
+                    
+                    <View style={[editStyles.buttons,]}>
+                        <Pressable
+                            onPress={() => setViewMode("view")}
+                            style={[styles.button, editStyles.cancelButton]}
+                            >
+                            <Text>Cancel</Text>
+                        </Pressable>
+                        <Pressable
+                            onPress={() => handleSave()}
+                            style={[styles.button, editStyles.saveButton]}
+                            >
+                            <Text style={styles.darkButtonText}>Save</Text>
+                        </Pressable>
                     </View>
-                    {
-                        state.user.books === undefined || state.user.books.items.length < 5 ?
-                        (<>
-                            <TextInput
-                                onChangeText={bookSearch}
-                                value={book}
-                                style={[styles.input, editStyles.inputPadding]}
-                                placeholder='book title?'
-                                />
-                                
-                            <FlatList
-                                renderItem={renderItem}
-                                data={searchResult.length > 0 ? searchResult : []}
-                                keyExtractor={(item, index) => index.toString()}
-                                />
 
-                            <Pressable
-                                onPress={() => handleAddBook()}
-                                style={[styles.button, editStyles.saveButton]}
-                                >
-                                <Text style={styles.darkButtonText}>Add Book</Text>
-                            </Pressable>
-                        </>)
-                        : null
-                    }
-                </View>
+                    <View  style={styles.separator} ></View>
 
-                <View  style={styles.separator} ></View>
+                    <Text style={[editStyles.bold,]} >Top Books (up to 5):</Text>
+                    <View style={styles.content}>
+                        <View style={styles.lists}>
+                        { 
+                            state.user.books !== undefined ? state.user.books.items.map((book) => {
+                                return (
+                                    <View key={book.id}
+                                    style={[editStyles.flexContainer]}>
+                                    <Pressable
+                                        onPress={() => handleDeleteBook(book)}
+                                        style={[editStyles.xContainer]}
+                                        >
+                                        <Octicons name="trashcan" size={20} color="#F00" style={editStyles.xButton} />
+                                    </Pressable>
+                                    <Text style={styles.listItem}>
+                                        {book.title} - {book.author}
+                                    </Text>
+                                </View>
+                                )
+                            })
+                            : null
+                        }
+                        </View>
+                        {
+                            state.user.books === undefined || state.user.books.items.length < 5 ?
+                            (<>
+                                <TextInput
+                                    onChangeText={bookSearch}
+                                    value={book}
+                                    style={[styles.input, editStyles.inputPadding]}
+                                    placeholder='book title?'
+                                    />
+                                    
+                                <FlatList
+                                    renderItem={renderItem}
+                                    data={searchResult.length > 0 ? searchResult : []}
+                                    keyExtractor={(item, index) => index.toString()}
+                                    style={editStyles.searchResult}
+                                    />
 
-                <Text style={[editStyles.bold,]}>Top Authors (up to 3):</Text>
-                <View style={styles.content}>
-                    <View style={styles.lists}>
-                    { 
-                        state.user.authors !== undefined ? state.user.authors.items.map((author) => {
-                            return (
-                                <View key={author.id}
-                                style={[editStyles.flexContainer]}>
                                 <Pressable
-                                    onPress={() => handleDeleteAuthor(author)}
-                                    style={[editStyles.xContainer]}
+                                    onPress={() => handleAddBook()}
+                                    style={[styles.button, editStyles.saveButton]}
                                     >
-                                    <Octicons name="trashcan" size={20} color="#F00" style={editStyles.xButton} />
+                                    <Text style={styles.darkButtonText}>Add Book</Text>
                                 </Pressable>
-                                <Text style={styles.listItem}>
-                                    {author.name}
-                                </Text>
-                            </View>
-                            )
-                        })
-                        : null
-                    }
+                            </>)
+                            : null
+                        }
                     </View>
-                    {
-                        state.user.authors === undefined || state.user.authors.items.length < 3 ?
-                        (<>
-                            <TextInput
-                                onChangeText={setFavAuthor}
-                                value={favAuthor}
-                                style={[styles.input, editStyles.inputPadding]}
-                                placeholder='Favorite Author?'
-                                />
 
-                            <Pressable
-                                onPress={() => handleAddAuthor()}
-                                style={[styles.button, editStyles.saveButton]}
-                                >
-                                <Text style={styles.darkButtonText}>Add Author</Text>
-                            </Pressable>
-                        </>)
-                        : null
-                    }
-                </View>
+                    <View  style={styles.separator} ></View>
 
-                <View  style={styles.separator} ></View>
+                    <Text style={[editStyles.bold,]}>Top Authors (up to 3):</Text>
+                    <View style={styles.content}>
+                        <View style={styles.lists}>
+                        { 
+                            state.user.authors !== undefined ? state.user.authors.items.map((author) => {
+                                return (
+                                    <View key={author.id}
+                                    style={[editStyles.flexContainer]}>
+                                    <Pressable
+                                        onPress={() => handleDeleteAuthor(author)}
+                                        style={[editStyles.xContainer]}
+                                        >
+                                        <Octicons name="trashcan" size={20} color="#F00" style={editStyles.xButton} />
+                                    </Pressable>
+                                    <Text style={styles.listItem}>
+                                        {author.name}
+                                    </Text>
+                                </View>
+                                )
+                            })
+                            : null
+                        }
+                        </View>
+                        {
+                            state.user.authors === undefined || state.user.authors.items.length < 3 ?
+                            (<>
+                                <TextInput
+                                    onChangeText={setFavAuthor}
+                                    value={favAuthor}
+                                    style={[styles.input, editStyles.inputPadding]}
+                                    placeholder='Favorite Author?'
+                                    />
 
-                <Text style={[editStyles.bold,]}>Top Genres (up to 3):</Text>
-                <View style={styles.content}>
-                    <View style={styles.lists}>
-                    { 
-                        state.user.genres !== undefined ? state.user.genres.items.map((genre) => {
-                            return (
-                                <View key={genre.id}
-                                style={[editStyles.flexContainer]}>
                                 <Pressable
-                                    onPress={() => handleDeleteGenre(genre)}
-                                    style={[editStyles.xContainer]}
+                                    onPress={() => handleAddAuthor()}
+                                    style={[styles.button, editStyles.saveButton]}
                                     >
-                                    <Octicons name="trashcan" size={20} color="#F00" style={editStyles.xButton} />
+                                    <Text style={styles.darkButtonText}>Add Author</Text>
                                 </Pressable>
-                                <Text style={styles.listItem}>
-                                    {genre.genre}
-                                </Text>
-                            </View>
-                            )
-                        })
-                        : null
-                    }
+                            </>)
+                            : null
+                        }
                     </View>
-                    {
-                        state.user.genres === undefined || state.user.genres.items.length < 3 ?
-                        (<>
-                            <TextInput
-                                onChangeText={setGenre}
-                                value={genre}
-                                style={[styles.input, editStyles.inputPadding]}
-                                placeholder='Favorite Genre?'
-                                />
 
-                            <Pressable
-                                onPress={() => handleAddGenre()}
-                                style={[styles.button, editStyles.saveButton]}
-                                >
-                                <Text style={styles.darkButtonText}>Add Genre</Text>
-                            </Pressable>
-                        </>)
-                        : null
-                    }
-                </View>
+                    <View  style={styles.separator} ></View>
 
-            </ScrollView>
+                    <Text style={[editStyles.bold,]}>Top Genres (up to 3):</Text>
+                    <View style={styles.content}>
+                        <View style={styles.lists}>
+                        { 
+                            state.user.genres !== undefined ? state.user.genres.items.map((genre) => {
+                                return (
+                                    <View key={genre.id}
+                                    style={[editStyles.flexContainer]}>
+                                    <Pressable
+                                        onPress={() => handleDeleteGenre(genre)}
+                                        style={[editStyles.xContainer]}
+                                        >
+                                        <Octicons name="trashcan" size={20} color="#F00" style={editStyles.xButton} />
+                                    </Pressable>
+                                    <Text style={styles.listItem}>
+                                        {genre.genre}
+                                    </Text>
+                                </View>
+                                )
+                            })
+                            : null
+                        }
+                        </View>
+                        {
+                            state.user.genres === undefined || state.user.genres.items.length < 3 ?
+                            (<>
+                                <TextInput
+                                    onChangeText={setGenre}
+                                    value={genre}
+                                    style={[styles.input, editStyles.inputPadding]}
+                                    placeholder='Favorite Genre?'
+                                    />
+
+                                <Pressable
+                                    onPress={() => handleAddGenre()}
+                                    style={[styles.button, editStyles.saveButton]}
+                                    >
+                                    <Text style={styles.darkButtonText}>Add Genre</Text>
+                                </Pressable>
+                            </>)
+                            : null
+                        }
+                    </View>
+
+                </ScrollView>
+            </TouchableWithoutFeedback>
         </SafeAreaView>
     );
 };
@@ -356,7 +359,7 @@ const editStyles = StyleSheet.create({
         flexDirection: "row", 
         display: "flex", 
         alignContent:"flex-start",
-        alignItems: "center"
+        alignItems: "center",
     },
     buttons: {
         display: "flex",
@@ -402,4 +405,11 @@ const editStyles = StyleSheet.create({
     inputPadding: {
         padding: 5,
     },
+    searchResult: {
+        width: '100%',
+        paddingHorizontal: 10,
+    },
+    margin: {
+        marginHorizontal: 10
+    }
 });

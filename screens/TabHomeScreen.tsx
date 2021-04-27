@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useEffect, useState, useContext, useRef } from "react";
-import { StyleSheet, Modal, Pressable } from 'react-native';
+import { StyleSheet, Modal, Pressable, Dimensions } from 'react-native';
 import Swiper from 'react-native-deck-swiper';
 import { FontAwesome5 } from '@expo/vector-icons'
 import {listProfiles} from '../src/graphql/queries';
