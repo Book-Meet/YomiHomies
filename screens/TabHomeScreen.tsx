@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useEffect, useState, useContext, useRef } from "react";
-import { StyleSheet, Modal, Pressable } from 'react-native';
+import { StyleSheet, Modal, Pressable, Dimensions } from 'react-native';
 import Swiper from 'react-native-deck-swiper';
 import { FontAwesome5 } from '@expo/vector-icons'
 import {listProfiles} from '../src/graphql/queries';
@@ -222,17 +222,16 @@ export default function TabHomeScreen()
             setModalVisible(!modalVisible);
           }}
         >
-        <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>You got a match!</Text>
+            <Text style={[styles.modalText, styles.title]}>It's a match!</Text>
+            <Text style={styles.modalText}>You made a YomiHomie! Head to the Homies screen to start chatting...</Text>
             <Pressable
               style={[styles.button,]}
               onPress={() => setModalVisible(false)}
             >
-              <Text>Hide Modal</Text>
+              <Text style={styles.darkButtonText}>Close</Text>
             </Pressable>
           </View>
-        </View>
       </Modal>
       </>
       :
@@ -287,18 +286,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: Colors.pallete.apricot,
   },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    alignSelf: "center",
-    marginTop: 75
-  },
   modalView: {
-    margin: 20,
-    backgroundColor: "white",
+    margin: 50,
+    marginTop: 150,
     borderRadius: 20,
-    padding: 100,
+    padding: 30,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -313,7 +305,12 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     elevation: 2,
-    backgroundColor: "#333",
+    margin: 10,
+    textAlign: "center",
+    backgroundColor: Colors.pallete.lapisLazuli,
+  },
+  darkButtonText: {
+    color: Colors.pallete.white,
   },
   modalText: {
     marginBottom: 15,
