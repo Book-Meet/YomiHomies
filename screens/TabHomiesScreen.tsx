@@ -9,6 +9,7 @@ import UserContext from '../utils/userContext';
 import { createChatRoom, createChatRoomUser} from'../src/graphql/mutations'
 import {listChatRooms} from '../utils/customQueries'
 import ChatRoomScreen from '../components/ChatRoomScreen'
+import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 
 export default function TabHomiesScreen() {
@@ -26,7 +27,6 @@ export default function TabHomiesScreen() {
       myMatchers = myMatchers.data.listMatchs.items;
       let myMatchees = state.user.match.items.filter(a => a.status === 'accepted').map(a => a.matcheeID);
       let matches = myMatchers.filter(a => myMatchees.includes(a.matcherID)).map(a=>a.matcherProfile);
-
       let chatRooms = await API.graphql(graphqlOperation(listChatRooms, {userID:state.user.id}));
       chatRooms = chatRooms.data.listChatRooms.items;
       let chatRoomIDs = chatRooms.map(a=>{
