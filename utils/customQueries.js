@@ -25,6 +25,10 @@ export const listChatRooms = /* GraphQL */ `
         ChatRoomUsers {
           items {
             userID
+            user{
+              id
+              username
+            }
           }
         }
         messages {
@@ -45,8 +49,8 @@ export const listChatRooms = /* GraphQL */ `
 `;
 
 export const onCreateMessage = /* GraphQL */ `
-  subscription OnCreateMessage($chatRoomID: String!) {
-    onCreateMessage (chatRoomID: $chatRoomID) {
+  subscription OnCreateMessage {
+    onCreateMessage{
       id
       createdAt
       content

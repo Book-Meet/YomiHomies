@@ -1416,8 +1416,8 @@ export const onDeleteChatRoom = /* GraphQL */ `
   }
 `;
 export const onCreateMessage = /* GraphQL */ `
-  subscription OnCreateMessage($chatRoomID: String!) {
-    onCreateMessage (chatRoomID: $chatRoomID) {
+  subscription OnCreateMessage{
+    onCreateMessage{
       id
       createdAt
       content
