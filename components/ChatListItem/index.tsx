@@ -24,7 +24,8 @@ const ChatListItem = ({chatRoom, setCurrentChat}) =>{
                     <View style={styles.lefContainer}>
                         {/* <Image source={{ uri: user.imageUri }} style={styles.avatar} /> */}
                         <View style={styles.midContainer}>
-                            <Text style={styles.username}>{username}</Text>                        </View>
+                            <Text style={styles.username}>{username}</Text>
+                        </View>
                     </View>
                 </View>
             </TouchableWithoutFeedback>
