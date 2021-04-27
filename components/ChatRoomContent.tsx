@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { Text, View } from './Themed';
 import { Message } from '../types';
-// import moment from "moment";
+import moment from "moment";
 
 export type ChatMessageProps = {
     message: Message;
@@ -23,7 +23,7 @@ export default function ChatMessage({ message, myID }: ChatMessageProps) {
             ]}>
                 {!isMyMessage() && <Text style={chatStyles.name}>{message.user.username}</Text>}
                 <Text>{message.content}</Text>
-                <Text style={chatStyles.time}>{message.createdAt}</Text>
+                <Text style={chatStyles.time}>{moment(message.createdAt).fromNow()}</Text>
             </View>
         </View>
     );
