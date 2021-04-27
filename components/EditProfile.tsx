@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useState } from 'react';
-import { StyleSheet, TextInput, SafeAreaView, ScrollView, Pressable, FlatList, TouchableOpacity, Dimensions, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { StyleSheet, TextInput, SafeAreaView, ScrollView, Pressable, FlatList, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Text, View } from './Themed';
 import UserContext from '../utils/userContext'
 import { API } from 'aws-amplify'; 
@@ -155,7 +155,7 @@ export default function EditProfile({ setViewMode, styles }) {
     return (
         <SafeAreaView style={styles.container}>
             <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
-                <ScrollView>
+                <ScrollView style={editStyles.margin}>
                     <View style={styles.header}>
                         <Text style={[editStyles.bold, styles.headingText]}>Edit Profile</Text>
                     </View>
@@ -359,7 +359,7 @@ const editStyles = StyleSheet.create({
         flexDirection: "row", 
         display: "flex", 
         alignContent:"flex-start",
-        alignItems: "center"
+        alignItems: "center",
     },
     buttons: {
         display: "flex",
@@ -406,6 +406,10 @@ const editStyles = StyleSheet.create({
         padding: 5,
     },
     searchResult: {
-        width:Dimensions.get('window').width
+        width: '100%',
+        paddingHorizontal: 10,
+    },
+    margin: {
+        marginHorizontal: 10
     }
 });

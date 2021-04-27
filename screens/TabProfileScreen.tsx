@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { View } from '../components/Themed';
 import ViewProfile from '../components/ViewProfile';
 import EditProfile from '../components/EditProfile';
@@ -33,7 +33,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: "100%",
-    width: Dimensions.get('window').width
   },
   title: {
     fontSize: 20,
