@@ -87,11 +87,9 @@ const styles = StyleSheet.create({
   },
   buttonOpen: {
     backgroundColor: Colors.pallete.lapisLazuli,
-    color: Colors.pallete.white
   },
   buttonClose: {
     backgroundColor: Colors.pallete.atomicTangerine,
-    color: Colors.pallete.darkCornflowerBlue,
   },
   darkButtonText: {
     color: Colors.pallete.white,
