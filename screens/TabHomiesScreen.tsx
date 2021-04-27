@@ -53,7 +53,7 @@ export default function TabHomiesScreen() {
       setChatRooms(chatRoomsFetch.map((v,i)=>({...v,index:i})))
       setLoading(false)
     })()
-  }, [state, newChatFlag]);
+  }, [state.user.match, newChatFlag]);
 
   
   useEffect(()=>{
@@ -76,6 +76,7 @@ export default function TabHomiesScreen() {
         {currentChat === null && !loading && <View>
           <FlatList style={{width: '100%'}}
             data={chatRooms}
+            extraData={chatRooms.length}
             renderItem={({item})=>(<ChatListItem chatRoom={item} setCurrentChat={setCurrentChat}/>)}
             keyExtractor={(item)=>item.id}
             />
