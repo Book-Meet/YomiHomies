@@ -20,16 +20,18 @@ const ChatListItem = ({chatRoom, setCurrentChat}) =>{
     function handlePress(e){
         setCurrentChat(chatRoom.index)
     }
-    console.log(book);
+    console.log(chatRoom)
+    // console.log(book);
     return (
         <View>
             <TouchableWithoutFeedback onPress={handlePress}>
                 <View style={styles.container}>
                     <View style={styles.lefContainer}>
-                        {/* <Image source={{ uri: user.imageUri }} style={styles.avatar} /> */}
+                        <Image source={{ uri: book[0].imgURL }} style={styles.avatar} />
                         <View style={styles.midContainer}>
                             <Text style={styles.username}>{visibleName}</Text>
-                        </View>
+                            {chatRoom.messages.items.length > 0 && <Text>{chatRoom.messages.items[chatRoom.messages.items.length - 1].content}</Text>}
+                            </View>
                     </View>
                 </View>
             </TouchableWithoutFeedback>
