@@ -18,7 +18,7 @@ const ChatListItem = ({chatRoom, setCurrentChat}) =>{
     user.nickname ? visibleName = user.nickname : visibleName = user.username
     let book = user.books.items
     function handlePress(e){
-        setCurrentChat(chatRoom.index)
+        setCurrentChat(chatRoom)
     }
     let messages = chatRoom.messages.items.filter(a=>a.user.id!=state.user.id);
     return (
