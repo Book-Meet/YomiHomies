@@ -4,7 +4,7 @@
     "slug": "YomiHomies",
     "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./assets/images/YomiHomiesLogo.png",
+    "icon": "./assets/images/YH_Logo_blue.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
@@ -24,10 +24,17 @@
     },
     "android": {
       "package": "com.cc18.yomihomies",
+      "icon": "./assets/images/YH_Logo_blue.png",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/YomiHomiesLogo.png",
+        "foregroundImage": "./assets/images/YH_Logo_blue.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "splash": {
+        "image": "./assets/images/YH_Logo_blue.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#1F87AD"
+      },
+      "versionCode": 1,
     },
     "web": {
       "favicon": "./assets/images/favicon.png"

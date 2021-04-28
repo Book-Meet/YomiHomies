@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useState } from 'react';
-import { StyleSheet, TextInput, SafeAreaView, ScrollView, Pressable, FlatList, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { StyleSheet, TextInput, SafeAreaView, ScrollView, Pressable, FlatList, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Dimensions } from 'react-native';
 import { Text, View } from './Themed';
 import UserContext from '../utils/userContext'
 import { API } from 'aws-amplify'; 
@@ -45,7 +45,10 @@ export default function EditProfile({ setViewMode, styles }) {
     const renderItem = ({item}) => {
         if(searchResult.length === 0) return null;
         return (
-            <TouchableOpacity onPress={() => pressHandler(item.volumeInfo)}>
+            <TouchableOpacity
+                onPress={() => pressHandler(item.volumeInfo)}
+                style={editStyles.searchResult}
+            >
                 <Text>{item.volumeInfo.title}</Text>
             </TouchableOpacity>
         )
@@ -166,7 +169,7 @@ export default function EditProfile({ setViewMode, styles }) {
 
                     <Text style={editStyles.bold}>Nickname:</Text>
                     <TextInput
-                        style={[styles.input, editStyles.inputPadding]}
+                        style={[styles.input, editStyles.inputPadding, ]}
                         selectTextOnFocus={true}
                         value={nickname}
                         onChangeText={setNickname}
@@ -236,7 +239,7 @@ export default function EditProfile({ setViewMode, styles }) {
                                 <TextInput
                                     onChangeText={bookSearch}
                                     value={book}
-                                    style={[styles.input, editStyles.inputPadding]}
+                                    style={[styles.input, editStyles.inputPadding, editStyles.width]}
                                     placeholder='book title?'
                                     />
                                     
@@ -413,5 +416,8 @@ const editStyles = StyleSheet.create({
     },
     margin: {
         marginHorizontal: 10
+    },
+    width: {
+        width: Dimensions.get('window').width - 20
     }
 });

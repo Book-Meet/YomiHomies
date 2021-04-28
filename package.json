@@ -16,6 +16,7 @@
     "@expo/vector-icons": "^12.0.0",
     "@freakycoder/react-native-bounceable": "^0.1.0",
     "@freakycoder/react-native-multiple-select": "^0.3.0",
+    "@react-native-community/checkbox": "^0.5.7",
     "@react-native-community/masked-view": "0.1.10",
     "@react-native-community/netinfo": "^6.0.0",
     "@react-native-community/slider": "^3.0.3",
