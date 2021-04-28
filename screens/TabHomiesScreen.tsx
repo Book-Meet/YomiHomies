@@ -20,6 +20,7 @@ export default function TabHomiesScreen() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    console.log("Use effect run");
     if(state.user.id === '') return
     (async function() {
       let filter = { and: [{matcheeID: {eq: state.user.id }}, {status: {eq: "accepted"}}]}
@@ -57,7 +58,7 @@ export default function TabHomiesScreen() {
       setChatRooms(chatRoomsFetch.map((v,i)=>({...v,index:i})))
       setLoading(false)
     })()
-  }, [state.user.match, newChatFlag]);
+  }, [state.user, newChatFlag]);
 
   
   useEffect(()=>{
@@ -69,7 +70,7 @@ export default function TabHomiesScreen() {
         let room = chatRoomsCopy.find(a=>a.id === data.chatRoomID)
         if(!room)return;
         if(room.messages.items.length > 0 && room.messages.items[room.messages.items.length -1].id === data.id) return
-        let currentChatID = currentChat.id
+        // let currentChatID = currentChat.id
         room.messages.items.push(data)
         // moveToTop(chatRoomsCopy, room.index)
         chatRoomsCopy = chatRoomsCopy.map((v,i)=>({...v,index:i}))
