@@ -70,10 +70,18 @@ export default function TabHomiesScreen() {
         if(!room)return;
         if(room.messages.items.length > 0 && room.messages.items[room.messages.items.length -1].id === data.id) return
         room.messages.items.push(data)
+        // moveToTop(chatRoomsCopy, room.index)
+        // setCurrentChat(chatRoomsCopy[chatRoomsCopy.indexOf(currentChat)])
         setChatRooms(chatRoomsCopy)
       }
     })
   },[chatRooms])
+
+  function moveToTop(arr, fromIndex) {
+    var element = arr[fromIndex];
+    arr.splice(fromIndex, 1);
+    arr.splice(0, 0, element);
+}
 
     return (
       <View style={styles.container}>
@@ -85,7 +93,7 @@ export default function TabHomiesScreen() {
             keyExtractor={(item)=>item.id}
             />
         </View>}
-        {currentChat !== null && <ChatRoomScreen myID={state.user.id} currentChat={chatRooms[currentChat]} setCurrentChat={setCurrentChat} chatRooms={chatRooms} setChatRooms={setChatRooms}/>}
+        {currentChat !== null && <ChatRoomScreen myID={state.user.id} currentChat={currentChat} setCurrentChat={setCurrentChat} chatRooms={chatRooms} setChatRooms={setChatRooms}/>}
       </View>
     )
 };

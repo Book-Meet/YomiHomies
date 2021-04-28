@@ -24,6 +24,7 @@ type Book
   profileID: ID
   title: String
   author: String
+  imgURL: String
 }
 
 type Profile @model @key(fields: ["id"]) @auth(rules: [{ allow: public }]) {

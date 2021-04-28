@@ -29,6 +29,7 @@ export default function TabSettingsScreen() {
     let updatedUser ={...state.user};
     updatedUser.searchRadius = filterRadius;
     dispatch({type:ActionType.SetData, payload:updatedUser});
+    dispatch({type:ActionType.Search})
   }
 
   return (
@@ -37,7 +38,7 @@ export default function TabSettingsScreen() {
       <Text>Search Radius: {filterRadius}km</Text>
       <Text>User's Current Lat: {state.user.latitude}km</Text>
       <Text>User's Current Lng: {state.user.longitude}km</Text>
-      {/* <Slider
+      <Slider
         style={{width: 200, height: 30}}
         minimumValue={0}
         maximumValue={500}
@@ -46,11 +47,11 @@ export default function TabSettingsScreen() {
         onValueChange={(v)=>setFilterRadius(v)}
         value={500}
         onSlidingComplete={setUserFilter}
-      /> */}
+      />
       
       
       <View style={styles.container}>
-        <Text>Matching Genders:</Text>
+        {/* <Text>Matching Genders:</Text>
         <CheckBox
           title='Male'
           value={isSelected}
@@ -69,7 +70,7 @@ export default function TabSettingsScreen() {
           checked={state.checked}
           />
           <Text>Open to Meet Face to Face?</Text>
-        <Text>Yes</Text><Text>No</Text>
+        <Text>Yes</Text><Text>No</Text> */}
 
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
         <Pressable style={styles.button} accessibilityLabel="Log out" onPress={()=>Auth.signOut()}>

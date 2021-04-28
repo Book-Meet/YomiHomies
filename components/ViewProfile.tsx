@@ -5,23 +5,24 @@ import UserContext from '../utils/userContext';
 
 export default function ViewProfile({ setViewMode, styles }) {
   const { state } = useContext(UserContext);
-
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Text style={styles.title}> {state.user.username}</Text>
-        {/* <Image style={styles.profilePic} source={require('../assets/images/arina-reading.jpeg')} /> */}
-
-
+        <Text style={styles.title}>{state.user.username}</Text>
+        <Image source={{uri:state.user.books.items[0].imgURL}} style={styles.profilePic} resizeMode="contain"></Image>
         <View style={[{flexDirection: 'row'}, {alignContent: 'space-around'}]}>
           <Text style={[styles.text, {margin: 10}, {borderBottomWidth: 1}]}>Nickname: <Text>{state.user.nickname}</Text></Text>
           <Text style={[styles.text, {margin: 10}, {borderBottomWidth: 1}]}>Gender: <Text>{state.user.gender}</Text></Text>
         </View>
         <View style={styles.content}>
           <Text style={styles.text}>Top Books: </Text>
-            { state.user.books !== undefined ? state.user.books.items.map(book => {
+            { state.user.books !== undefined ? state.user.books.items.map((book) => {
             return (
-              <Text key={book.id}>{book.title} - {book.author}</Text>
+              <View key={book.id}>
+                <View>
+                  <Text>{book.title} - {book.author}</Text>
+                </View>
+              </View>
             )
             })
             : null
