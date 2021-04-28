@@ -54,7 +54,12 @@ export default function TabHomiesScreen() {
       chatRoomsFetch = chatRoomsFetch.filter(room=>{
         return room.ChatRoomUsers.items[0].userID === state.user.id || room.ChatRoomUsers.items[1].userID === state.user.id
       })
-      if(!isNewChat)setChatRooms(chatRoomsFetch.map((v,i)=>({...v,index:i})))
+      if(!isNewChat){
+        chatRoomsFetch = chatRoomsFetch.sort((a,b)=>{
+          return a.messages.items[a.messages.items.length - 1].createdAt < b.messages.items[b.messages.items.length - 1].createdAt
+        })
+        setChatRooms(chatRoomsFetch.map((v,i)=>({...v,index:i})))
+      }
       setLoading(false)
     })()
   }, [state.user, newChatFlag]);
@@ -84,7 +89,6 @@ export default function TabHomiesScreen() {
   }
 
   useEffect(()=>{
-    console.log(currentChat)
     if(currentChat === null) return
     setCurrentChat(chatRooms[chatRooms.findIndex(a=>a.id===currentChat.id)])
   }, [chatRooms])
