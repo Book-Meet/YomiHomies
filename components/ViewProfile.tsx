@@ -8,10 +8,8 @@ export default function ViewProfile({ setViewMode, styles }) {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Text style={styles.title}> {state.user.username}</Text>
-        {/* <Image style={styles.profilePic} source={require('../assets/images/arina-reading.jpeg')} /> */}
-
-
+        <Text style={styles.title}>{state.user.username}</Text>
+        <Image source={{uri:state.user.books.items[0].imgURL}} style={styles.profilePic} resizeMode="contain"></Image>
         <View style={[{flexDirection: 'row'}, {alignContent: 'space-around'}]}>
           <Text style={[styles.text, {margin: 10}, {borderBottomWidth: 1}]}>Nickname: <Text>{state.user.nickname}</Text></Text>
           <Text style={[styles.text, {margin: 10}, {borderBottomWidth: 1}]}>Gender: <Text>{state.user.gender}</Text></Text>
@@ -21,7 +19,6 @@ export default function ViewProfile({ setViewMode, styles }) {
             { state.user.books !== undefined ? state.user.books.items.map((book) => {
             return (
               <View key={book.id}>
-                <Image source={{uri:book.imgURL}} style={{width:50, height:50}} resizeMode="contain"></Image>
                 <View>
                   <Text>{book.title} - {book.author}</Text>
                 </View>
