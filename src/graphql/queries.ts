@@ -67,6 +67,7 @@ export const getBook = /* GraphQL */ `
       profileID
       title
       author
+      imgURL
       createdAt
       updatedAt
     }
@@ -84,6 +85,7 @@ export const listBooks = /* GraphQL */ `
         profileID
         title
         author
+        imgURL
         createdAt
         updatedAt
       }
@@ -145,6 +147,7 @@ export const listProfiles = /* GraphQL */ `
             profileID
             title
             author
+            imgURL
             createdAt
             updatedAt
           }
@@ -218,6 +221,7 @@ export const getProfile = /* GraphQL */ `
           profileID
           title
           author
+          imgURL
           createdAt
           updatedAt
         }
@@ -344,6 +348,7 @@ export const getMatch = /* GraphQL */ `
             profileID
             title
             author
+            imgURL
             createdAt
             updatedAt
           }
@@ -411,6 +416,7 @@ export const getMatch = /* GraphQL */ `
             profileID
             title
             author
+            imgURL
             createdAt
             updatedAt
           }
@@ -567,6 +573,7 @@ export const getChatRoomUser = /* GraphQL */ `
             profileID
             title
             author
+            imgURL
             createdAt
             updatedAt
           }
@@ -835,6 +842,7 @@ export const getMessage = /* GraphQL */ `
             profileID
             title
             author
+            imgURL
             createdAt
             updatedAt
           }

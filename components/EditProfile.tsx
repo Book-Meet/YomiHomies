@@ -18,6 +18,7 @@ export default function EditProfile({ setViewMode, styles }) {
     const [searchResult, setSearchResult] = useState([]);
     const [favAuthor, setFavAuthor] = useState("");
     const [genre, setGenre] = useState("");
+    const [imgURL, setImgURL] = useState('');
 
     //Google Books API
     async function bookSearch(val) {
@@ -37,12 +38,12 @@ export default function EditProfile({ setViewMode, styles }) {
     const pressHandler = (item) => {
         setSearchResult([]);
         setBook(item.title);
+        setImgURL(item.imageLinks.smallThumbnail)
         setAuthor(item.authors[0]);
     }
 
     const renderItem = ({item}) => {
         if(searchResult.length === 0) return null;
-
         return (
             <TouchableOpacity
                 onPress={() => pressHandler(item.volumeInfo)}
@@ -83,7 +84,8 @@ export default function EditProfile({ setViewMode, styles }) {
         const newBook:Books = {
             author: author,
             title: book,
-            profileID: state.user.id
+            profileID: state.user.id,
+            imgURL: imgURL
         }
         let addedBook = await API.graphql({query:createBook, variables:{input:newBook}});
         let updatedUser = {...state.user}

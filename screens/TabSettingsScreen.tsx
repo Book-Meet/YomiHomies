@@ -9,6 +9,7 @@ import { ActionType } from '../types';
 import { CheckBox } from 'react-native-elements';
 // import CheckBox from '@react-native-community/checkbox';
 import Colors from '../constants/Colors';
+import * as Linking from 'expo-linking';
 
 
 export default function TabSettingsScreen() {
@@ -28,6 +29,7 @@ export default function TabSettingsScreen() {
     let updatedUser ={...state.user};
     updatedUser.searchRadius = filterRadius;
     dispatch({type:ActionType.SetData, payload:updatedUser});
+    dispatch({type:ActionType.Search})
   }
 
   return (
@@ -36,7 +38,7 @@ export default function TabSettingsScreen() {
       <Text>Search Radius: {filterRadius}km</Text>
       <Text>User's Current Lat: {state.user.latitude}km</Text>
       <Text>User's Current Lng: {state.user.longitude}km</Text>
-      {/* <Slider
+      <Slider
         style={{width: 200, height: 30}}
         minimumValue={0}
         maximumValue={500}
@@ -45,11 +47,11 @@ export default function TabSettingsScreen() {
         onValueChange={(v)=>setFilterRadius(v)}
         value={500}
         onSlidingComplete={setUserFilter}
-      /> */}
+      />
       
       
       <View style={styles.container}>
-        <Text>Matching Genders:</Text>
+        {/* <Text>Matching Genders:</Text>
         <CheckBox
           title='Male'
           value={isSelected}
@@ -68,10 +70,16 @@ export default function TabSettingsScreen() {
           checked={state.checked}
           />
           <Text>Open to Meet Face to Face?</Text>
-        <Text>Yes</Text><Text>No</Text>
+        <Text>Yes</Text><Text>No</Text> */}
+
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
         <Pressable style={styles.button} accessibilityLabel="Log out" onPress={()=>Auth.signOut()}>
           <Text>Log Out</Text>
+        </Pressable>
+        <Pressable>
+          <Text onPress={() => Linking.openURL('https://www.privacypolicies.com/live/b30a8a88-df01-4cf4-8083-99b75e2ea9fa')}>
+            Tap to view privacy policy
+          </Text>
         </Pressable>
       </View>
     </View>

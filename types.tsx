@@ -66,6 +66,7 @@ export interface Books {
   author: String;
   profileID?: String;
   id?: String;
+  imgURL?: String;
 }
 export interface Authors {
   name: String;
