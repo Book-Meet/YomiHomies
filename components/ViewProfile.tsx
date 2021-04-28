@@ -1,15 +1,22 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import { StyleSheet, Image, Pressable, ScrollView } from 'react-native';
 import { Text, View } from '../components/Themed';
 import UserContext from '../utils/userContext';
 
 export default function ViewProfile({ setViewMode, styles }) {
   const { state } = useContext(UserContext);
+  const [usersBigBook, setUsersBigBook] = useState('')
+  
+  useEffect(()=>{
+    if(!state.user.books || state.user.books.items.length === 0) return;
+    setUsersBigBook(state.user.books.items[0].imgURL)
+  }, [state])
+
   return (
     <ScrollView>
       <View style={styles.container}>
         <Text style={styles.title}>{state.user.username}</Text>
-        <Image source={{uri:state.user.books.items[0].imgURL}} style={styles.profilePic} resizeMode="contain"></Image>
+        <Image source={{uri:usersBigBook}} style={styles.profilePic} resizeMode="contain"></Image>
         <View style={[{flexDirection: 'row'}, {alignContent: 'space-around'}]}>
           <Text style={[styles.text, {margin: 10}, {borderBottomWidth: 1}]}>Nickname: <Text>{state.user.nickname}</Text></Text>
           <Text style={[styles.text, {margin: 10}, {borderBottomWidth: 1}]}>Gender: <Text>{state.user.gender}</Text></Text>
