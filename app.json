@@ -22,7 +22,12 @@
       "bundleIdentifier": "com.cc18.yomihomies",
       "supportsTablet": true,
       "icon":"./assets/images/YH_Logo_blue.png",
-      "buildNumber": "1.0.0"
+      "buildNumber": "1.0.0",
+      "splash": {
+        "image": "./assets/images/YH_Logo_blue.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#1F87AD"
+      }
     },
     "android": {
       "package": "com.cc18.yomihomies",
