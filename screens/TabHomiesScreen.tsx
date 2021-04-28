@@ -25,18 +25,14 @@ export default function TabHomiesScreen() {
       let filter = { and: [{matcheeID: {eq: state.user.id }}, {status: {eq: "accepted"}}]}
       let myMatchers = await API.graphql({query:listMatchs, variables: {filter: filter}});
       myMatchers = myMatchers.data.listMatchs.items;
-      console.log("matchers", myMatchers);
       let myMatchees = state.user.match.items.filter(a => a.status === 'accepted').map(a => a.matcheeID);
-      console.log("matchees", myMatchees);
       let matches = myMatchers.filter(a => myMatchees.includes(a.matcherID)).map(a=>a.matcherProfile);
-      console.log("filtered matches", matches);
       let chatRoomsFetch = await API.graphql(graphqlOperation(listChatRooms, {userID:state.user.id})); // Fetching all chat rooms? should get just mine
       chatRoomsFetch = chatRoomsFetch.data.listChatRooms.items;
       chatRoomsFetch = chatRoomsFetch.filter(a => {
         if (a.ChatRoomUsers.items[0].userID === state.user.id || a.ChatRoomUsers.items[1].userID === state.user.id) return true;
         return false;
       })
-      console.log(chatRoomsFetch);
       let chatRoomIDs = chatRoomsFetch.map(a=>{
         if(a.ChatRoomUsers.items[0] && a.ChatRoomUsers.items[0].userID === state.user.id){
           return a.ChatRoomUsers.items[1].userID;
@@ -44,7 +40,6 @@ export default function TabHomiesScreen() {
           return a.ChatRoomUsers.items[0].userID;
         }
       })
-      console.log(chatRoomIDs);
       let isNewChat = false;
       for(let match of matches){
         if(!chatRoomIDs.includes(match.id)){ //create chat if one doesn't exist
