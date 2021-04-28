@@ -78,7 +78,6 @@ export default function EditProfile({ setViewMode, styles }) {
             alert("Book and author fields must have a value");
             return;
         }
-        console.log(imgURL);
         const newBook:Books = {
             author: author,
             title: book,

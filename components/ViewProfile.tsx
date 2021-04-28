@@ -21,8 +21,10 @@ export default function ViewProfile({ setViewMode, styles }) {
             { state.user.books !== undefined ? state.user.books.items.map((book) => {
             return (
               <View key={book.id}>
-                <Image source={{uri:book.imgURL}} style={{width:50, height:50}}></Image>
-                <Text>{book.title} - {book.author}</Text>
+                <Image source={{uri:book.imgURL}} style={{width:50, height:50}} resizeMode="contain"></Image>
+                <View>
+                  <Text>{book.title} - {book.author}</Text>
+                </View>
               </View>
             )
             })
