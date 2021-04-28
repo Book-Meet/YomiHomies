@@ -28,6 +28,12 @@ export const listChatRooms = /* GraphQL */ `
             user{
               id
               username
+              nickname
+              books{
+                items{
+                  imgURL
+                }
+              }
             }
           }
         }
@@ -40,6 +46,7 @@ export const listChatRooms = /* GraphQL */ `
             user{
               id
               username
+              nickname
             }
           }
         }
@@ -60,6 +67,7 @@ export const onCreateMessage = /* GraphQL */ `
       user {
         id
         username
+        nickname
       }
     }
   }

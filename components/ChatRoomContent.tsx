@@ -9,6 +9,7 @@ export type ChatMessageProps = {
 }
 
 export default function ChatMessage({ message, myID }: ChatMessageProps) {
+    let username = message.user.nickname ?? message.user.username;
     const isMyMessage = () => {
         return message.user.id === myID;
     }
@@ -21,7 +22,7 @@ export default function ChatMessage({ message, myID }: ChatMessageProps) {
                     marginRight: isMyMessage() ? 0 : 50,
                 }
             ]}>
-                {!isMyMessage() && <Text style={chatStyles.name}>{message.user.username}</Text>}
+                {!isMyMessage() && <Text style={chatStyles.name}>{username}</Text>}
                 <Text>{message.content}</Text>
                 <Text style={chatStyles.time}>{moment(message.createdAt).fromNow()}</Text>
             </View>

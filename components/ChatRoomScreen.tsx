@@ -6,6 +6,7 @@ import ChatMessage from './ChatRoomContent';
 
 export default function ChatRoomScreen({myID, currentChat, setCurrentChat, chatRooms, setChatRooms}) {
     const list=useRef(null)
+    console.log(currentChat)
     return (
         <ImageBackground style={{width: '100%', height: '100%'}} source={require('../assets/images/BG.png')}>
             <FlatList

@@ -96,6 +96,7 @@ export const createBook = /* GraphQL */ `
       profileID
       title
       author
+      imgURL
       createdAt
       updatedAt
     }
@@ -111,6 +112,7 @@ export const updateBook = /* GraphQL */ `
       profileID
       title
       author
+      imgURL
       createdAt
       updatedAt
     }
@@ -126,6 +128,7 @@ export const deleteBook = /* GraphQL */ `
       profileID
       title
       author
+      imgURL
       createdAt
       updatedAt
     }
@@ -175,6 +178,7 @@ export const createProfile = /* GraphQL */ `
           profileID
           title
           author
+          imgURL
           createdAt
           updatedAt
         }
@@ -296,6 +300,7 @@ export const updateProfile = /* GraphQL */ `
           profileID
           title
           author
+          imgURL
           createdAt
           updatedAt
         }
@@ -417,6 +422,7 @@ export const deleteProfile = /* GraphQL */ `
           profileID
           title
           author
+          imgURL
           createdAt
           updatedAt
         }
@@ -546,6 +552,7 @@ export const createMatch = /* GraphQL */ `
             profileID
             title
             author
+            imgURL
             createdAt
             updatedAt
           }
@@ -613,6 +620,7 @@ export const createMatch = /* GraphQL */ `
             profileID
             title
             author
+            imgURL
             createdAt
             updatedAt
           }
@@ -696,6 +704,7 @@ export const updateMatch = /* GraphQL */ `
             profileID
             title
             author
+            imgURL
             createdAt
             updatedAt
           }
@@ -763,6 +772,7 @@ export const updateMatch = /* GraphQL */ `
             profileID
             title
             author
+            imgURL
             createdAt
             updatedAt
           }
@@ -846,6 +856,7 @@ export const deleteMatch = /* GraphQL */ `
             profileID
             title
             author
+            imgURL
             createdAt
             updatedAt
           }
@@ -913,6 +924,7 @@ export const deleteMatch = /* GraphQL */ `
             profileID
             title
             author
+            imgURL
             createdAt
             updatedAt
           }
@@ -994,6 +1006,7 @@ export const createChatRoomUser = /* GraphQL */ `
             profileID
             title
             author
+            imgURL
             createdAt
             updatedAt
           }
@@ -1101,6 +1114,7 @@ export const updateChatRoomUser = /* GraphQL */ `
             profileID
             title
             author
+            imgURL
             createdAt
             updatedAt
           }
@@ -1208,6 +1222,7 @@ export const deleteChatRoomUser = /* GraphQL */ `
             profileID
             title
             author
+            imgURL
             createdAt
             updatedAt
           }
@@ -1529,6 +1544,7 @@ export const createMessage = /* GraphQL */ `
             profileID
             title
             author
+            imgURL
             createdAt
             updatedAt
           }
@@ -1637,6 +1653,7 @@ export const updateMessage = /* GraphQL */ `
             profileID
             title
             author
+            imgURL
             createdAt
             updatedAt
           }
@@ -1745,6 +1762,7 @@ export const deleteMessage = /* GraphQL */ `
             profileID
             title
             author
+            imgURL
             createdAt
             updatedAt
           }
