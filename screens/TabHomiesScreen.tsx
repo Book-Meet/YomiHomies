@@ -69,7 +69,7 @@ export default function TabHomiesScreen() {
         let room = chatRoomsCopy.find(a=>a.id === data.chatRoomID)
         if(!room)return;
         if(room.messages.items.length > 0 && room.messages.items[room.messages.items.length -1].id === data.id) return
-        let currentChatID = currentChat.id
+        // let currentChatID = currentChat.id
         room.messages.items.push(data)
         // moveToTop(chatRoomsCopy, room.index)
         chatRoomsCopy = chatRoomsCopy.map((v,i)=>({...v,index:i}))
