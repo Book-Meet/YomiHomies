@@ -11,7 +11,6 @@ import { CheckBox } from 'react-native-elements';
 import Colors from '../constants/Colors';
 import * as Linking from 'expo-linking';
 
-
 export default function TabSettingsScreen() {
 
   const [gender, setGender] = useState([
@@ -47,8 +46,8 @@ export default function TabSettingsScreen() {
         value={500}
         onSlidingComplete={setUserFilter}
       /> */}
-      
-      
+
+
       <View style={styles.container}>
         <Text>Matching Genders:</Text>
         <CheckBox
