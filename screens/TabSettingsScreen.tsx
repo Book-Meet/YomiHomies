@@ -1,6 +1,6 @@
 import Auth from '@aws-amplify/auth';
 import React, {useState, useContext} from 'react';
-import { StyleSheet, Pressable } from 'react-native';
+import { StyleSheet, Pressable, Switch } from 'react-native';
 import Slider from '@react-native-community/slider';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
@@ -23,6 +23,14 @@ export default function TabSettingsScreen() {
   const [filterRadius, setFilterRadius] = useState(100);
   const { state, dispatch } = useContext(UserContext)
   const [isSelected, setSelection] = useState(false);
+  const [selectMale, setSelectMale] = useState(false);
+  const [selectFemale, setSelectFemale] = useState(false);
+  const [selectOthers, setSelectOthers] = useState(false);
+  const [selectAny, setSelectAny] = useState(false);
+  const toggleSwitch = () => setSelectMale(previousState => !previousState);
+  const toggleSwitch2 = () => setSelectFemale(previousState => !previousState);
+  const toggleSwitch3 = () => setSelectOthers(previousState => !previousState);
+  const toggleSwitch4 = () => setSelectAny(previousState => !previousState);
 
   function setUserFilter(){
     let updatedUser ={...state.user};
@@ -34,9 +42,9 @@ export default function TabSettingsScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Preferences</Text>
-      <Text>Search Radius: {filterRadius}km</Text>
-      <Text>User's Current Lat: {state.user.latitude}km</Text>
-      <Text>User's Current Lng: {state.user.longitude}km</Text>
+      <Text style={styles.radius}>Search Radius: {(Math.round(filterRadius * 10)) / 10}km</Text>
+      <Text>User's Current Lat: {(Math.round(state.user.latitude * 10)) / 10}km</Text>
+      <Text>User's Current Lng: {(Math.round(state.user.longitude * 10)) / 10}km</Text>
       <Slider
         style={{width: 200, height: 30}}
         minimumValue={0}
@@ -48,8 +56,36 @@ export default function TabSettingsScreen() {
         onSlidingComplete={setUserFilter}
       />
 
-
-      <View style={styles.container}>
+      <Switch
+        trackColor={{ false: "#767577", true: "#81b0ff" }}
+        thumbColor={selectMale ? "#f5dd4b" : "#f4f3f4"}
+        ios_backgroundColor="#3e3e3e"
+        onValueChange={toggleSwitch}
+        value={selectMale}
+      />
+      <>
+      <Switch
+        trackColor={{ false: "#767577", true: "#81b0ff" }}
+        thumbColor={selectFemale ? "#f5dd4b" : "#f4f3f4"}
+        ios_backgroundColor="#3e3e3e"
+        onValueChange={toggleSwitch2}
+        value={selectFemale}
+      />
+      </>
+      <Switch
+        trackColor={{ false: "#767577", true: "#81b0ff" }}
+        thumbColor={selectOthers ? "#f5dd4b" : "#f4f3f4"}
+        ios_backgroundColor="#3e3e3e"
+        onValueChange={toggleSwitch3}
+        value={selectOthers}
+      />
+      <Switch
+        trackColor={{ false: "#767577", true: "#81b0ff" }}
+        thumbColor={selectAny ? "#f5dd4b" : "#f4f3f4"}
+        ios_backgroundColor="#3e3e3e"
+        onValueChange={toggleSwitch4}
+        value={selectAny}
+      />
         {/* <Text>Matching Genders:</Text>
         <CheckBox
           title='Male'
@@ -70,6 +106,7 @@ export default function TabSettingsScreen() {
           />
           <Text>Open to Meet Face to Face?</Text>
         <Text>Yes</Text><Text>No</Text> */}
+      <View style={styles.container}>
 
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
         <Pressable style={styles.button} accessibilityLabel="Log out" onPress={()=>Auth.signOut()}>
@@ -93,8 +130,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
+    marginTop: 50,
     fontSize: 20,
     fontWeight: 'bold',
+  },
+  radius: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   separator: {
     marginVertical: 30,
@@ -108,5 +150,8 @@ const styles = StyleSheet.create({
     margin: 10,
     textAlign: "center",
     backgroundColor: Colors.pallete.atomicTangerine,
+  },
+  switches: {
+    alignItems: "flex-start"
   },
 });
