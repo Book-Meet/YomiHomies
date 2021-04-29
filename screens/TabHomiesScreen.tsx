@@ -56,7 +56,7 @@ export default function TabHomiesScreen() {
       })
       if(!isNewChat){
         chatRoomsFetch = chatRoomsFetch.sort((a,b)=>{
-          return a.messages.items[a.messages.items.length - 1].createdAt < b.messages.items[b.messages.items.length - 1].createdAt
+          return a.messages.items[a.messages.items.length - 1]?.createdAt < b.messages.items[b.messages.items.length - 1]?.createdAt
         })
         setChatRooms(chatRoomsFetch.map((v,i)=>({...v,index:i})))
       }
