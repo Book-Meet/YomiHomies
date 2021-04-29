@@ -17,7 +17,7 @@ const ChatListItem = ({chatRoom, setCurrentChat}) =>{
     
     let user;
     let visibleName;
-    chatRoom.ChatRoomUsers.items[0].userID === state.user.id ? user = chatRoom.ChatRoomUsers.items[1].user : user = chatRoom.ChatRoomUsers.items[0].user
+    chatRoom.ChatRoomUsers.items[0].user.id === state.user.id ? user = chatRoom.ChatRoomUsers.items[1].user : user = chatRoom.ChatRoomUsers.items[0].user
     user.nickname ? visibleName = user.nickname : visibleName = user.username
     let messages = chatRoom.messages.items.filter(a=>a.user.id!=state.user.id);
     let book = user.books.items

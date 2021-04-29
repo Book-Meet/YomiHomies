@@ -19,7 +19,7 @@ export default function EditProfile({ setViewMode, styles }) {
     const [favAuthor, setFavAuthor] = useState("");
     const [genre, setGenre] = useState("");
     const [imgURL, setImgURL] = useState('');
-
+    const [cache, setCache] = useState([])
     //Google Books API
     async function bookSearch(val) {
         setBook(val);
@@ -27,12 +27,16 @@ export default function EditProfile({ setViewMode, styles }) {
             setSearchResult([]);
             return;
         } 
-        await fetch(`https://www.googleapis.com/books/v1/volumes?q=${val}&key=AIzaSyDVFsYvujIZ4F2up2VWFu5MXvahYaeRUXA`)
+        if(val.length === 1){
+            await fetch(`https://www.googleapis.com/books/v1/volumes?q=${val}&key=AIzaSyDVFsYvujIZ4F2up2VWFu5MXvahYaeRUXA`)
             .then(res => res.json())
             .then(result => {
-                setSearchResult(result.items);
+                setCache(result.items);
             });
-        
+            return
+        }
+        console.log(cache)
+        setSearchResult(cache.filter(a=>a.volumeInfo.title.startsWith(val)))
     }
 
     const pressHandler = (item) => {
