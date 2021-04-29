@@ -13,7 +13,7 @@ export type ChatListItemProps = {
 
 const ChatListItem = ({chatRoom, setCurrentChat}) =>{
     const {state, dispatch} = useContext(UserContext);
-    const [numUnread, setNumUndread] = useState(0)
+    const [numUnread, setNumUnread] = useState(0)
     
     let user;
     let visibleName;
@@ -31,7 +31,7 @@ const ChatListItem = ({chatRoom, setCurrentChat}) =>{
                 let value = await AsyncStorage.getItem(`chatRoom:${chatRoom.id}`)
                 if(value === null) return
                 let unread = chatRoom.messages.items.length - chatRoom.messages.items.findIndex(a=>a.id === value) - 1;
-                setNumUndread(unread)
+                setNumUnread(unread)
             }catch(err){
                 console.log(err)
             }

@@ -20,12 +20,14 @@ export default function TabHomiesScreen() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if(state.user.id === '') return
+    if(state.user.id === '') return;
     (async function() {
+      console.log(state.user.match)
       let filter = { and: [{matcheeID: {eq: state.user.id }}, {status: {eq: "accepted"}}]}
       let myMatchers = await API.graphql({query:listMatchs, variables: {filter: filter}});
       myMatchers = myMatchers.data.listMatchs.items;
       let myMatchees = state.user.match.items.filter(a => a.status === 'accepted').map(a => a.matcheeID);
+      console.log(myMatchers)
       let matches = myMatchers.filter(a => myMatchees.includes(a.matcherID)).map(a=>a.matcherProfile);
       let chatRoomsFetch = await API.graphql(graphqlOperation(listChatRooms, {userID:state.user.id})); // Fetching all chat rooms? should get just mine
       chatRoomsFetch = chatRoomsFetch.data.listChatRooms.items;
