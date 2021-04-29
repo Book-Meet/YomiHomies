@@ -20,13 +20,14 @@ export default function TabHomiesScreen() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    console.log("Use effect run");
-    if(state.user.id === '') return
+    if(state.user.id === '') return;
     (async function() {
+      console.log(state.user.match)
       let filter = { and: [{matcheeID: {eq: state.user.id }}, {status: {eq: "accepted"}}]}
       let myMatchers = await API.graphql({query:listMatchs, variables: {filter: filter}});
       myMatchers = myMatchers.data.listMatchs.items;
       let myMatchees = state.user.match.items.filter(a => a.status === 'accepted').map(a => a.matcheeID);
+      console.log(myMatchers)
       let matches = myMatchers.filter(a => myMatchees.includes(a.matcherID)).map(a=>a.matcherProfile);
       let chatRoomsFetch = await API.graphql(graphqlOperation(listChatRooms, {userID:state.user.id})); // Fetching all chat rooms? should get just mine
       chatRoomsFetch = chatRoomsFetch.data.listChatRooms.items;
@@ -55,7 +56,12 @@ export default function TabHomiesScreen() {
       chatRoomsFetch = chatRoomsFetch.filter(room=>{
         return room.ChatRoomUsers.items[0].userID === state.user.id || room.ChatRoomUsers.items[1].userID === state.user.id
       })
-      setChatRooms(chatRoomsFetch.map((v,i)=>({...v,index:i})))
+      if(!isNewChat){
+        chatRoomsFetch = chatRoomsFetch.sort((a,b)=>{
+          return a.messages.items[a.messages.items.length - 1]?.createdAt < b.messages.items[b.messages.items.length - 1]?.createdAt
+        })
+        setChatRooms(chatRoomsFetch.map((v,i)=>({...v,index:i})))
+      }
       setLoading(false)
     })()
   }, [state.user, newChatFlag]);
@@ -70,12 +76,10 @@ export default function TabHomiesScreen() {
         let room = chatRoomsCopy.find(a=>a.id === data.chatRoomID)
         if(!room)return;
         if(room.messages.items.length > 0 && room.messages.items[room.messages.items.length -1].id === data.id) return
-        // let currentChatID = currentChat.id
         room.messages.items.push(data)
-        // moveToTop(chatRoomsCopy, room.index)
+        moveToTop(chatRoomsCopy, room.index)
         chatRoomsCopy = chatRoomsCopy.map((v,i)=>({...v,index:i}))
         setChatRooms(chatRoomsCopy)
-        // setCurrentChat(chatRoomsCopy[chatRoomsCopy.findIndex(a=>a.id===currentChatID)])
       }
     })
   },[chatRooms])
@@ -84,7 +88,12 @@ export default function TabHomiesScreen() {
     var element = arr[fromIndex];
     arr.splice(fromIndex, 1);
     arr.splice(0, 0, element);
-}
+  }
+
+  useEffect(()=>{
+    if(currentChat === null) return
+    setCurrentChat(chatRooms[chatRooms.findIndex(a=>a.id===currentChat.id)])
+  }, [chatRooms])
 
     return (
       <View style={styles.container}>
