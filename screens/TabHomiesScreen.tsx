@@ -28,7 +28,7 @@ export default function TabHomiesScreen() {
       let IDsOfMyAccepted = myMatches.filter(a => a.status === 'accepted').map(a => a.matcheeID);
       let matches = usersWhoAcceptedMe.filter(a => IDsOfMyAccepted.includes(a.matcherID))
       let myChatRooms = (await API.graphql({query:listChatRoomUsers, variables:{filter:{userID:{eq:state.user.id}}}})).data.listChatRoomUsers.items.map(a=>a.chatRoom);
-      if(myMatches.includes(null)) deleteNullChatRoomUsers()
+      if(myChatRooms.includes(null)) deleteNullChatRoomUsers()
       let IDOfOtherChatRoomUser = myChatRooms.map(a => a.ChatRoomUsers.items[0].user.id === state.user.id ? a.ChatRoomUsers.items[1].user.id : a.ChatRoomUsers.items[0].user.id)
       let isNewChat = false;
       for(let match of matches){
@@ -37,7 +37,7 @@ export default function TabHomiesScreen() {
           isNewChat = true;
           let newUUID = uuidv4();
           let newChatRoom = await API.graphql(graphqlOperation(createChatRoom, {input:{id:newUUID}}));
-          let newChatRoomUser = await API.graphql(graphqlOperation(createChatRoomUser, {input:{chatRoomID:newChatRoom.data.createChatRoom.id, userID: match.id}}))
+          let newChatRoomUser = await API.graphql(graphqlOperation(createChatRoomUser, {input:{chatRoomID:newChatRoom.data.createChatRoom.id, userID: match.matcherID}}))
           let myChatRoomUser = await API.graphql(graphqlOperation(createChatRoomUser, {input:{chatRoomID:newChatRoom.data.createChatRoom.id, userID: state.user.id}}))
         }
       }
