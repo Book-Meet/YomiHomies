@@ -45,7 +45,11 @@ export default function TabHomiesScreen() {
         setNewChatFlag(true);
         return
       } 
-      myChatRooms = myChatRooms.sort((a,b)=>a.messages.items[a.messages.items.length - 1]?.createdAt < b.messages.items[b.messages.items.length - 1]?.createdAt)
+      myChatRooms = myChatRooms.sort((a,b)=>{
+        if(a.messages.items.length === 0) return + 1;
+        if(b.messages.items.length === 0) return - 1;
+        return b.messages.items[b.messages.items.length - 1].createdAt > a.messages.items[a.messages.items.length - 1].createdAt;
+      })
       setChatRooms(myChatRooms.map((v,i)=>({...v,index:i})))
       setLoading(false)
     })()
