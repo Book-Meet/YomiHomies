@@ -28,6 +28,7 @@ export default function TabSettingsScreen() {
       <Text>User's Current Lng: {(Math.round(state.user.longitude * 10)) / 10}km</Text>
       <Slider
         style={{width: 200, height: 30}}
+        marginTop={10}
         minimumValue={0}
         maximumValue={500}
         minimumTrackTintColor="black"
@@ -56,15 +57,17 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: 30
   },
   title: {
-    marginTop: 50,
+    marginTop: 70,
     fontSize: 20,
     fontWeight: 'bold',
   },
   radius: {
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop: 10,
   },
   separator: {
     marginVertical: 30,
