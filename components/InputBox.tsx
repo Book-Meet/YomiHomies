@@ -63,7 +63,7 @@ const inputStyles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'flex-end',
         padding: 10,
-        backgroundColor: 'lightgrey'
+        backgroundColor: '#ecedee'
     },
     mainContainer: {
         flexDirection: 'row',
