@@ -77,18 +77,6 @@ function App() {
 
   useEffect(() => {
     if (state.user.id === '') return;
-    
-    Notifier.showNotification({
-      title: 'John Doe',
-      description: 'Hello! Can you help me with notifications?',
-      duration: 0,
-      showAnimationDuration: 800,
-      showEasing: Easing.bounce,
-      onHidden: () => console.log('Hidden'),
-      onPress: () => console.log('Press'),
-      hideOnPress: false,
-    });
-
     (async function() {
       const newMatchSub = await API.graphql({query: onCreateMatch}).subscribe({
         next:(data) => {

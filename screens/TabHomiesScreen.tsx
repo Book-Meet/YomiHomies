@@ -11,6 +11,7 @@ import {onCreateMessage, listChatRoomUsers } from '../utils/customQueries'
 import ChatRoomScreen from '../components/ChatRoomScreen'
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
+import { Notifier, Easing} from 'react-native-notifier'
 
 export default function TabHomiesScreen() {
   const [newChatFlag, setNewChatFlag] = useState(false);
@@ -69,6 +70,15 @@ export default function TabHomiesScreen() {
         moveToTop(chatRoomsCopy, room.index)
         chatRoomsCopy = chatRoomsCopy.map((v,i)=>({...v,index:i}))
         setChatRooms(chatRoomsCopy)
+        if(data.user.id === state.user.id) return
+        Notifier.showNotification({
+          title:data.user.nickname,
+          description:data.content,
+          showAnimationDuration: 800,
+          showEasing: Easing.bounce,
+          hideOnPress: true,
+        })
+        return;
       }
     })
   },[chatRooms])
