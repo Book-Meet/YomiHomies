@@ -77,29 +77,27 @@ function App() {
 
   useEffect(() => {
     if (state.user.id === '') return;
-    
-    Notifier.showNotification({
-      title: 'John Doe',
-      description: 'Hello! Can you help me with notifications?',
-      duration: 0,
-      showAnimationDuration: 800,
-      showEasing: Easing.bounce,
-      onHidden: () => console.log('Hidden'),
-      onPress: () => console.log('Press'),
-      hideOnPress: false,
-    });
-
     (async function() {
       const newMatchSub = await API.graphql({query: onCreateMatch}).subscribe({
         next:(data) => {
           data = data.value.data.onCreateMatch;
+          console.log("data", data);
           if (data.matcheeID === state.user.id) {
             console.log("this is your match!");
             let index = state.user.match.items.findIndex(match => 
               match.status=== "accepted" && match.matcheeID === data.matcherID);
             if (index > -1){
               console.log("It's a complete match", index);
-              // This is where we add a notification.
+              Notifier.showNotification({
+                title: 'New Match!',
+                description: `You matched with ${data.matcherProfile.nickname}!`,
+                duration: 5000,
+                showAnimationDuration: 800,
+                showEasing: Easing.bounce,
+                onHidden: () => console.log('Hidden'),
+                onPress: () => console.log('Press'),
+                hideOnPress: true,
+              });
             } else {
               console.log("They like you but you don't like them yet...");
             }
