@@ -1,36 +1,17 @@
 import Auth from '@aws-amplify/auth';
 import React, {useState, useContext} from 'react';
-import { StyleSheet, Pressable, Switch } from 'react-native';
+import { StyleSheet, Pressable } from 'react-native';
 import Slider from '@react-native-community/slider';
 // import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import UserContext from '../utils/userContext';
 import { ActionType } from '../types';
-// import { CheckBox } from 'react-native-elements';
-// import CheckBox from '@react-native-community/checkbox';
 import Colors from '../constants/Colors';
 import * as Linking from 'expo-linking';
 
 export default function TabSettingsScreen() {
-
-  // const [gender, setGender] = useState([
-  //   {name: 'male', id: '1'},
-  //   {name: 'female', id: '2'},
-  //   {name: 'Others', id: '3'},
-  //   {name: 'Any', id: '4'},
-  // ]);
-
   const [filterRadius, setFilterRadius] = useState(100);
   const { state, dispatch } = useContext(UserContext)
-  // const [isSelected, setSelection] = useState(false);
-  const [selectMale, setSelectMale] = useState(false);
-  const [selectFemale, setSelectFemale] = useState(false);
-  const [selectOthers, setSelectOthers] = useState(false);
-  const [selectAny, setSelectAny] = useState(false);
-  const toggleSwitch = () => setSelectMale(previousState => !previousState);
-  const toggleSwitch2 = () => setSelectFemale(previousState => !previousState);
-  const toggleSwitch3 = () => setSelectOthers(previousState => !previousState);
-  const toggleSwitch4 = () => setSelectAny(previousState => !previousState);
 
   function setUserFilter(){
     let updatedUser ={...state.user};
@@ -55,39 +36,6 @@ export default function TabSettingsScreen() {
         value={500}
         onSlidingComplete={setUserFilter}
       />
-      <Text>Matching Genders:</Text>
-      <Text>Male</Text>
-      <Switch
-        trackColor={{ false: "#767577", true: "#81b0ff" }}
-        thumbColor={selectMale ? "#f5dd4b" : "#f4f3f4"}
-        ios_backgroundColor="#FD935D"
-        onValueChange={toggleSwitch}
-        value={selectMale}
-      />
-      <Text>Female</Text>
-      <Switch
-        trackColor={{ false: "#767577", true: "#81b0ff" }}
-        thumbColor={selectFemale ? "#f5dd4b" : "#f4f3f4"}
-        ios_backgroundColor="#FD935D"
-        onValueChange={toggleSwitch2}
-        value={selectFemale}
-      />
-      <Text>Others</Text>
-      <Switch
-        trackColor={{ false: "#767577", true: "#81b0ff" }}
-        thumbColor={selectOthers ? "#f5dd4b" : "#f4f3f4"}
-        ios_backgroundColor="#FD935D"
-        onValueChange={toggleSwitch3}
-        value={selectOthers}
-      />
-      <Text>Any</Text>
-      <Switch
-        trackColor={{ false: "#767577", true: "#81b0ff" }}
-        thumbColor={selectAny ? "#f5dd4b" : "#f4f3f4"}
-        ios_backgroundColor="#FD935D"
-        onValueChange={toggleSwitch4}
-        value={selectAny}
-      />
       <View style={styles.container}>
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
         <Pressable style={styles.button} accessibilityLabel="Log out" onPress={()=>Auth.signOut()}>
@@ -100,7 +48,6 @@ export default function TabSettingsScreen() {
         </Pressable>
       </View>
     </View>
-
   );
 }
 
@@ -134,6 +81,8 @@ const styles = StyleSheet.create({
   },
   switches: {
     alignItems: "flex-start"
-
   },
+  matchGender: {
+    marginTop: 50,
+  }
 });
