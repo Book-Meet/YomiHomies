@@ -14,6 +14,7 @@ import * as Location from 'expo-location'
 import { withAuthenticator} from 'aws-amplify-react-native';
 import { AppState, Actions, ActionType, initialAppState, User } from './types'
 import UserContext from './utils/userContext'
+import { onCreateMatch } from './src/graphql/subscriptions';
 
 
 // Amplify.configure(config) //this was the original config import 
@@ -50,6 +51,7 @@ function App() {
 
   useEffect(()=>{
     (async function () {
+      let user;
       let [longitude, latitude]= await getLocation()
       let currentUser = await Auth.currentUserInfo()
       const query:any = await API.graphql(graphqlOperation(getProfile, { id:currentUser.id  }));
@@ -61,16 +63,38 @@ function App() {
           longitude
         };
         const newProfile = await API.graphql(graphqlOperation(createProfile, { input }))
-        let user = newProfile.data.createProfile;
+        user = newProfile.data.createProfile;
         dispatch({type: ActionType.SetData, payload: user});
       }else {
-        let user = query.data.getProfile;
+        user = query.data.getProfile;
         user.latitude = latitude;
         user.longitude = longitude;
         dispatch({type: ActionType.SetData, payload: user});
       }
-    })()
+    })();
   }, [])
+
+  useEffect(() => {
+    if (state.user.id === '') return;
+    (async function() {
+      const newMatchSub = await API.graphql({query: onCreateMatch}).subscribe({
+        next:(data) => {
+          data = data.value.data.onCreateMatch;
+          if (data.matcheeID === state.user.id) {
+            console.log("this is your match!");
+            let index = state.user.match.items.findIndex(match => 
+              match.status=== "accepted" && match.matcheeID === data.matcherID);
+            if (index > -1){
+              console.log("It's a complete match", index);
+              // This is where we add a notification.
+            } else {
+              console.log("They like you but you don't like them yet...");
+            }
+          }
+        }
+      })
+    })()
+  }, [state.user])
   
   async function getLocation(){
     try{

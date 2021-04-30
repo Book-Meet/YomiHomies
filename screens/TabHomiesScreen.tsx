@@ -6,8 +6,8 @@ import  ChatListItem  from '../components/ChatListItem/index';
 import {listMatchs} from '../src/graphql/queries';
 import API, {graphqlOperation} from '@aws-amplify/api'
 import UserContext from '../utils/userContext';
-import { createChatRoom, createChatRoomUser} from'../src/graphql/mutations'
-import {listChatRooms,onCreateMessage } from '../utils/customQueries'
+import { createChatRoom, createChatRoomUser, deleteChatRoomUser} from'../src/graphql/mutations'
+import {onCreateMessage, listChatRoomUsers } from '../utils/customQueries'
 import ChatRoomScreen from '../components/ChatRoomScreen'
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
@@ -20,42 +20,33 @@ export default function TabHomiesScreen() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    console.log("Use effect run");
-    if(state.user.id === '') return
+    if(state.user.id === '') return;
     (async function() {
-      let filter = { and: [{matcheeID: {eq: state.user.id }}, {status: {eq: "accepted"}}]}
-      let myMatchers = await API.graphql({query:listMatchs, variables: {filter: filter}});
-      myMatchers = myMatchers.data.listMatchs.items;
-      let myMatchees = state.user.match.items.filter(a => a.status === 'accepted').map(a => a.matcheeID);
-      let matches = myMatchers.filter(a => myMatchees.includes(a.matcherID)).map(a=>a.matcherProfile);
-      let chatRoomsFetch = await API.graphql(graphqlOperation(listChatRooms, {userID:state.user.id})); // Fetching all chat rooms? should get just mine
-      chatRoomsFetch = chatRoomsFetch.data.listChatRooms.items;
-      chatRoomsFetch = chatRoomsFetch.filter(a => {
-        if (a.ChatRoomUsers.items[0].userID === state.user.id || a.ChatRoomUsers.items[1].userID === state.user.id) return true;
-        return false;
-      })
-      let chatRoomIDs = chatRoomsFetch.map(a=>{
-        if(a.ChatRoomUsers.items[0] && a.ChatRoomUsers.items[0].userID === state.user.id){
-          return a.ChatRoomUsers.items[1].userID;
-        } else{
-          return a.ChatRoomUsers.items[0].userID;
-        }
-      })
+      let myMatches = state.user.match.items
+      let filterByAcceptedAndMyID = { and: [{matcheeID: {eq: state.user.id }}, {status: {eq: "accepted"}}]}; 
+      let usersWhoAcceptedMe = (await API.graphql({query:listMatchs, variables: {filter: filterByAcceptedAndMyID}})).data.listMatchs.items;
+      let IDsOfMyAccepted = myMatches.filter(a => a.status === 'accepted').map(a => a.matcheeID);
+      let matches = usersWhoAcceptedMe.filter(a => IDsOfMyAccepted.includes(a.matcherID))
+      let myChatRooms = (await API.graphql({query:listChatRoomUsers, variables:{filter:{userID:{eq:state.user.id}}}})).data.listChatRoomUsers.items.map(a=>a.chatRoom);
+      if(myChatRooms.includes(null)) deleteNullChatRoomUsers()
+      let IDOfOtherChatRoomUser = myChatRooms.map(a => a.ChatRoomUsers.items[0].user.id === state.user.id ? a.ChatRoomUsers.items[1].user.id : a.ChatRoomUsers.items[0].user.id)
       let isNewChat = false;
       for(let match of matches){
-        if(!chatRoomIDs.includes(match.id)){ //create chat if one doesn't exist
+        if(!IDOfOtherChatRoomUser.includes(match.matcherID)){ //create chat if one doesn't exist
+          console.log('new Chat Room being made')
           isNewChat = true;
           let newUUID = uuidv4();
           let newChatRoom = await API.graphql(graphqlOperation(createChatRoom, {input:{id:newUUID}}));
-          let newChatRoomUser = await API.graphql(graphqlOperation(createChatRoomUser, {input:{chatRoomID:newChatRoom.data.createChatRoom.id, userID: match.id}}))
+          let newChatRoomUser = await API.graphql(graphqlOperation(createChatRoomUser, {input:{chatRoomID:newChatRoom.data.createChatRoom.id, userID: match.matcherID}}))
           let myChatRoomUser = await API.graphql(graphqlOperation(createChatRoomUser, {input:{chatRoomID:newChatRoom.data.createChatRoom.id, userID: state.user.id}}))
         }
       }
-      if(isNewChat) setNewChatFlag(true);
-      chatRoomsFetch = chatRoomsFetch.filter(room=>{
-        return room.ChatRoomUsers.items[0].userID === state.user.id || room.ChatRoomUsers.items[1].userID === state.user.id
-      })
-      setChatRooms(chatRoomsFetch.map((v,i)=>({...v,index:i})))
+      if(isNewChat){
+        setNewChatFlag(true);
+        return
+      } 
+      myChatRooms = myChatRooms.sort((a,b)=>a.messages.items[a.messages.items.length - 1]?.createdAt < b.messages.items[b.messages.items.length - 1]?.createdAt)
+      setChatRooms(myChatRooms.map((v,i)=>({...v,index:i})))
       setLoading(false)
     })()
   }, [state.user, newChatFlag]);
@@ -70,12 +61,10 @@ export default function TabHomiesScreen() {
         let room = chatRoomsCopy.find(a=>a.id === data.chatRoomID)
         if(!room)return;
         if(room.messages.items.length > 0 && room.messages.items[room.messages.items.length -1].id === data.id) return
-        // let currentChatID = currentChat.id
         room.messages.items.push(data)
-        // moveToTop(chatRoomsCopy, room.index)
+        moveToTop(chatRoomsCopy, room.index)
         chatRoomsCopy = chatRoomsCopy.map((v,i)=>({...v,index:i}))
         setChatRooms(chatRoomsCopy)
-        // setCurrentChat(chatRoomsCopy[chatRoomsCopy.findIndex(a=>a.id===currentChatID)])
       }
     })
   },[chatRooms])
@@ -84,8 +73,19 @@ export default function TabHomiesScreen() {
     var element = arr[fromIndex];
     arr.splice(fromIndex, 1);
     arr.splice(0, 0, element);
-}
+  }
 
+  useEffect(()=>{
+    if(currentChat === null) return
+    setCurrentChat(chatRooms[chatRooms.findIndex(a=>a.id===currentChat.id)])
+  }, [chatRooms])
+
+  async function deleteNullChatRoomUsers(){
+    let allChatRooms = (await API.graphql({query:listChatRoomUsers, variables:{filter:{userID:{eq:state.user.id}}}})).data.listChatRoomUsers.items.filter(a=>a.chatRoom===null)
+    allChatRooms.forEach(async chatRoom=>{
+      await API.graphql({query:deleteChatRoomUser, variables:{input:{id:chatRoom.id}}})
+    }) 
+  }
     return (
       <View style={styles.container}>
         {currentChat === null && !loading && <View>
