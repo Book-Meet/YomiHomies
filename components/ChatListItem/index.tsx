@@ -19,7 +19,7 @@ const ChatListItem = ({chatRoom, setCurrentChat}) =>{
     let visibleName;
     chatRoom.ChatRoomUsers.items[0].user.id === state.user.id ? user = chatRoom.ChatRoomUsers.items[1].user : user = chatRoom.ChatRoomUsers.items[0].user
     user.nickname ? visibleName = user.nickname : visibleName = user.username
-    let messages = chatRoom.messages.items.filter(a=>a.user.id!=state.user.id);
+    let messages = chatRoom.messages.items;
     let book = user.books.items
     function handlePress(e){
         setCurrentChat(chatRoom)
@@ -47,7 +47,10 @@ const ChatListItem = ({chatRoom, setCurrentChat}) =>{
                         <Image source={{ uri: book[0].imgURL }} style={{width:60,height:60,marginRight:10}} resizeMode="contain"/>
                         <View style={styles.midContainer}>
                             <Text style={styles.username}>{visibleName}</Text>
-                            {messages.length > 0 ? <Text>{messages[messages.length - 1].content}</Text> : <Text>No Message from partner</Text>}
+                            {messages.length > 0 ? <Text
+                            style={{width:250}}
+                            ellipsizeMode="tail"
+                            numberOfLines={1}>{messages[messages.length - 1].content}</Text> : <Text style={{width:250}}>No Message from partner</Text>}
                             </View>
                             <Text>{numUnread}</Text>
                     </View>
