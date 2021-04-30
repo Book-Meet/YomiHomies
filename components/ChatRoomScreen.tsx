@@ -23,7 +23,7 @@ export default function ChatRoomScreen({myID, currentChat, setCurrentChat, chatR
     }
 
     return (
-        <ImageBackground style={{width: '100%', height: '100%'}} source={require('../assets/images/BG.png')}>
+        <ImageBackground style={{width: '100%', height: '100%'}} source={require('../assets/images/chatbg.jpg')}>
             <FlatList
                 ref={list}
                 extraData={chatRooms}

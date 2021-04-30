@@ -8,7 +8,7 @@
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/images/YH_Logo_white.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -20,7 +20,14 @@
     ],
     "ios": {
       "bundleIdentifier": "com.cc18.yomihomies",
-      "supportsTablet": true
+      "supportsTablet": true,
+      "icon":"./assets/images/YH_Logo_blue.png",
+      "buildNumber": "1.0.0",
+      "splash": {
+        "image": "./assets/images/YH_Logo_blue.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#1F87AD"
+      }
     },
     "android": {
       "package": "com.cc18.yomihomies",
@@ -34,10 +41,10 @@
         "resizeMode": "contain",
         "backgroundColor": "#1F87AD"
       },
-      "versionCode": 3,
+      "versionCode": 3
     },
     "web": {
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/YH_Logo_white.png"
     }
   }
 }

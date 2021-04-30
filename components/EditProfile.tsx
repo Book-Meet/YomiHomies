@@ -53,7 +53,7 @@ export default function EditProfile({ setViewMode, styles }) {
         return (
             <TouchableOpacity
                 onPress={() => pressHandler(item.volumeInfo)}
-                style={editStyles.searchResult}
+                style={editStyles.searchedItems}
             >
                 <Text>{item.volumeInfo.title}</Text>
             </TouchableOpacity>
@@ -417,20 +417,36 @@ const editStyles = StyleSheet.create({
         backgroundColor: Colors.pallete.lapisLazuli,
         color: Colors.pallete.white,
         width: 100,
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
     },
     cancelButton: {
         backgroundColor: Colors.pallete.atomicTangerine,
-        width: 100
+        width: 100,
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
     },
     bold: {
         fontWeight: "bold",
     },
     inputPadding: {
         padding: 5,
+        marginBottom: 5,
+        backgroundColor: 'white'
     },
     searchResult: {
         width: '100%',
         paddingHorizontal: 10,
+        paddingVertical: 5,
+    },
+    searchedItems: {
+        width: '100%',
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        borderWidth: 1,
+        borderColor: 'gray',
+        fontSize: 40,
+        backgroundColor: 'white'
     },
     margin: {
         marginHorizontal: 10
