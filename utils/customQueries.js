@@ -72,3 +72,49 @@ export const onCreateMessage = /* GraphQL */ `
     }
   }
 `;
+
+export const listChatRoomUsers = /* GraphQL */ `
+  query ListChatRoomUsers(
+    $filter: ModelChatRoomUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listChatRoomUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        userID
+        chatRoomID
+        chatRoom {
+          id
+          ChatRoomUsers {
+            items {
+              user{
+                id
+                username
+                nickname
+                books{
+                  items{
+                    imgURL
+                  }
+                }
+              }
+            }
+          }
+          messages {
+            items {
+              id
+              createdAt
+              content
+              updatedAt
+              user{
+                id
+                username
+                nickname
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;

@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useState, useCallback } from 'react';
 import { StyleSheet, TextInput, SafeAreaView, ScrollView, Pressable, FlatList, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Dimensions } from 'react-native';
 import { Text, View } from './Themed';
 import UserContext from '../utils/userContext'
@@ -19,20 +19,26 @@ export default function EditProfile({ setViewMode, styles }) {
     const [favAuthor, setFavAuthor] = useState("");
     const [genre, setGenre] = useState("");
     const [imgURL, setImgURL] = useState('');
+    
+    
+    
+    const debouncedFetch = useCallback(debounce(async (val)=>{
+        await fetch(`https://www.googleapis.com/books/v1/volumes?q=${val}&key=AIzaSyDVFsYvujIZ4F2up2VWFu5MXvahYaeRUXA`)
+        .then(res => res.json())
+        .then(result => {
+            setSearchResult(result.items);
+        });
+        return
+    }, 500), [])
 
     //Google Books API
-    async function bookSearch(val) {
+    function bookSearch(val) {
         setBook(val);
         if (val === "" || val.replace(/\s/g, '') === "") {
             setSearchResult([]);
             return;
-        } 
-        await fetch(`https://www.googleapis.com/books/v1/volumes?q=${val}&key=AIzaSyDVFsYvujIZ4F2up2VWFu5MXvahYaeRUXA`)
-            .then(res => res.json())
-            .then(result => {
-                setSearchResult(result.items);
-            });
-        
+        }
+        debouncedFetch(val)
     }
 
     const pressHandler = (item) => {
@@ -357,6 +363,18 @@ export default function EditProfile({ setViewMode, styles }) {
             </TouchableWithoutFeedback>
         </SafeAreaView>
     );
+
+    function debounce(func, wait) {
+        let timeout;
+        return function(...args) {
+          const context = this;
+          if (timeout) clearTimeout(timeout);
+          timeout = setTimeout(() => {
+            timeout = null;
+            func.apply(context, args);
+          }, wait);
+        };
+      }
 };
 
 const editStyles = StyleSheet.create({
