@@ -82,15 +82,19 @@ function App() {
         next:(data) => {
           data = data.value.data.onCreateMatch;
           if (data.matcheeID === state.user.id) {
-            console.log("this is your match!");
             let index = state.user.match.items.findIndex(match => 
               match.status=== "accepted" && match.matcheeID === data.matcherID);
             if (index > -1){
-              console.log("It's a complete match", index);
-              // This is where we add a notification.
-            } else {
-              console.log("They like you but you don't like them yet...");
-            }
+              Notifier.showNotification({
+                title: 'New Match!',
+                description: `You matched with ${data.matcherProfile.nickname}!`,
+                duration: 4000,
+                showAnimationDuration: 800,
+                showEasing: Easing.bounce,
+                queueMode: "standby",
+                hideOnPress: true,
+              });
+            } 
           }
         }
       })

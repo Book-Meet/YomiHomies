@@ -74,8 +74,10 @@ export default function TabHomiesScreen() {
         Notifier.showNotification({
           title:data.user.nickname,
           description:data.content,
+          duration: 4000,
           showAnimationDuration: 800,
           showEasing: Easing.bounce,
+          queueMode: "standby",
           hideOnPress: true,
         })
         return;
