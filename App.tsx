@@ -10,6 +10,7 @@ import { getProfile} from './src/graphql/queries';
 import {createProfile} from './src/graphql/mutations';
 import { Auth } from "@aws-amplify/auth";
 import * as Location from 'expo-location'
+import {NotifierWrapper, Notifier, Easing} from 'react-native-notifier'
 // @ts-ignore
 import { withAuthenticator} from 'aws-amplify-react-native';
 import { AppState, Actions, ActionType, initialAppState, User } from './types'
@@ -76,6 +77,18 @@ function App() {
 
   useEffect(() => {
     if (state.user.id === '') return;
+    
+    Notifier.showNotification({
+      title: 'John Doe',
+      description: 'Hello! Can you help me with notifications?',
+      duration: 0,
+      showAnimationDuration: 800,
+      showEasing: Easing.bounce,
+      onHidden: () => console.log('Hidden'),
+      onPress: () => console.log('Press'),
+      hideOnPress: false,
+    });
+
     (async function() {
       const newMatchSub = await API.graphql({query: onCreateMatch}).subscribe({
         next:(data) => {
@@ -116,12 +129,14 @@ function App() {
     return (
       <>
         <SafeAreaProvider>
+          <NotifierWrapper>
           <UserContext.Provider
             value={ contextValue }
-          >
+            >
             <Navigation colorScheme={colorScheme}/>
             <StatusBar />
           </UserContext.Provider>
+            </NotifierWrapper>
         </SafeAreaProvider>
       </>
     );
