@@ -17,7 +17,7 @@ export default function ChatMessage({ message, myID }: ChatMessageProps) {
         <View style={chatStyles.container}>
             <View style={[
                 chatStyles.messageBox, {
-                    backgroundColor: isMyMessage() ? '#DCF8C5' : 'white',
+                    backgroundColor: isMyMessage() ? '#b2d4f0' : 'white',
                     marginLeft: isMyMessage() ? 50 : 0,
                     marginRight: isMyMessage() ? 0 : 50,
                 }
@@ -33,7 +33,7 @@ export default function ChatMessage({ message, myID }: ChatMessageProps) {
 const chatStyles = StyleSheet.create({
     container: {
         padding: 10,
-        backgroundColor: 'lightgrey'
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
     },
     messageBox: {
         borderRadius: 5,

@@ -11,7 +11,7 @@ export default function ChatRoomScreen({myID, currentChat, setCurrentChat, chatR
     function handleLeave(){
         setCurrentChat(null);
         async function storeData(){
-            let lastMessage = currentChat.messages.items[currentChat.messages.items.length - 1].id || null
+            let lastMessage = currentChat.messages.items[currentChat.messages.items.length - 1]?.id || null
             if(!lastMessage) return;
             try{
                await AsyncStorage.setItem(`chatRoom:${currentChat.id}`, lastMessage)
@@ -23,7 +23,7 @@ export default function ChatRoomScreen({myID, currentChat, setCurrentChat, chatR
     }
 
     return (
-        <ImageBackground style={{width: '100%', height: '100%'}} source={require('../assets/images/BG.png')}>
+        <ImageBackground style={{width: '100%', height: '100%'}} source={require('../assets/images/chatbg.jpg')}>
             <FlatList
                 ref={list}
                 extraData={chatRooms}
