@@ -11,7 +11,7 @@ export default function ChatRoomScreen({myID, currentChat, setCurrentChat, chatR
     function handleLeave(){
         setCurrentChat(null);
         async function storeData(){
-            let lastMessage = currentChat.messages.items[currentChat.messages.items.length - 1].id || null
+            let lastMessage = currentChat.messages.items[currentChat.messages.items.length - 1]?.id || null
             if(!lastMessage) return;
             try{
                await AsyncStorage.setItem(`chatRoom:${currentChat.id}`, lastMessage)
