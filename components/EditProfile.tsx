@@ -27,7 +27,7 @@ export default function EditProfile({ setViewMode, styles }) {
             setSearchResult([]);
             return;
         } 
-        await fetch(`https://www.googleapis.com/books/v1/volumes?q=${val}&key=AIzaSyAwyO1wyyKB3ymXXdLNxI8a-sHnHjAku88`)
+        await fetch(`https://www.googleapis.com/books/v1/volumes?q=${val}&key=AIzaSyDVFsYvujIZ4F2up2VWFu5MXvahYaeRUXA`)
             .then(res => res.json())
             .then(result => {
                 setSearchResult(result.items);
