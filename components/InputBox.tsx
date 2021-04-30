@@ -6,10 +6,10 @@ import { MaterialCommunityIcons, FontAwesome5, Entypo, Fontisto, MaterialIcons }
 import API, { graphqlOperation } from '@aws-amplify/api'
 import { createMessage } from '../src/graphql/mutations';
 
-export default function InputBox({myID, chatRoomID}) {
+export default function InputBox({myID, currentChat}) {
 
     const [message, setMessage] = useState('');
-    const input = {input:{userID:myID,chatRoomID, content:null}}
+    const input = {input:{userID:myID,chatRoomID:currentChat.id, content:null}}
     const onMicrophonePress = () => {
         console.log('Microphone');
     }
@@ -63,7 +63,7 @@ const inputStyles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'flex-end',
         padding: 10,
-        backgroundColor: 'lightgrey'
+        backgroundColor: '#ecedee'
     },
     mainContainer: {
         flexDirection: 'row',
