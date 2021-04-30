@@ -91,11 +91,10 @@ function App() {
               Notifier.showNotification({
                 title: 'New Match!',
                 description: `You matched with ${data.matcherProfile.nickname}!`,
-                duration: 5000,
+                duration: 4000,
                 showAnimationDuration: 800,
                 showEasing: Easing.bounce,
-                onHidden: () => console.log('Hidden'),
-                onPress: () => console.log('Press'),
+                queueMode: "standby",
                 hideOnPress: true,
               });
             } else {
