@@ -57,10 +57,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 30
+    marginBottom: 30,
   },
   title: {
-    marginTop: 70,
+    marginTop: 80,
     fontSize: 20,
     fontWeight: 'bold',
   },
