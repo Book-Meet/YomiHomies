@@ -71,7 +71,7 @@ export default function TabHomeScreen()
             underlayColor='transparent'
             activeOpacity={-0.3}
             color={Colors.pallete.atomicTangerine}
-            onPress={() => swiperRef.current.swipeLeft(index)}
+            // onPress={() => swiperRef.current.swipeLeft(index)}
           />
           <FontAwesome5
             name='arrow-right'
@@ -80,7 +80,7 @@ export default function TabHomeScreen()
             underlayColor='transparent'
             activeOpacity={-0.3}
             color={Colors.pallete.blueNcs}
-            onPress={() => swiperRef.current.swipeRight(index)}
+            // onPress={() => swiperRef.current.swipeRight(index)}
           />
         </View>
       </View>
