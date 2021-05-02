@@ -19,6 +19,8 @@ export default function TabHomiesScreen() {
   const [chatRooms, setChatRooms] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const [loading, setLoading] = useState(true)
+  const [subscriptionIsOpen, setSubscriptionIsOpen] = useState(false)
+  let subscription = null;
 
   useEffect(() => {
     if(state.user.id === '') return;
@@ -55,22 +57,23 @@ export default function TabHomiesScreen() {
       setLoading(false)
     })()
   }, [state.user, newChatFlag]);
-
   
-  useEffect(()=>{
-    if(chatRooms.length === 0) return;
-    const subscription = API.graphql( {query:onCreateMessage}).subscribe({
+  function openSubscription(){
+    console.log(subscription);
+    if(subscriptionIsOpen) return;
+    setSubscriptionIsOpen(true)
+    subscription = API.graphql( {query:onCreateMessage}).subscribe({
       next:(data) =>{
         let chatRoomsCopy = [... chatRooms];
         data = data.value.data.onCreateMessage
         let room = chatRoomsCopy.find(a=>a.id === data.chatRoomID)
-        if(!room)return;
+        if(!room) return
         if(room.messages.items.length > 0 && room.messages.items[room.messages.items.length -1].id === data.id) return
         room.messages.items.push(data)
         moveToTop(chatRoomsCopy, room.index)
         chatRoomsCopy = chatRoomsCopy.map((v,i)=>({...v,index:i}))
         setChatRooms(chatRoomsCopy)
-        if(data.user.id === state.user.id) return
+        if(data.user.id === state.user.id) return 
         Notifier.showNotification({
           title:data.user.nickname,
           description:data.content,
@@ -78,9 +81,16 @@ export default function TabHomiesScreen() {
           showEasing: Easing.bounce,
           hideOnPress: true,
         })
-        return;
+      },
+      error:(err)=>{
+        console.log(err);
       }
     })
+  }
+
+  useEffect(()=>{
+    if(chatRooms.length === 0) return;
+    openSubscription()    
   },[chatRooms])
 
   function moveToTop(arr, fromIndex) {

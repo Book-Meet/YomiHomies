@@ -178,6 +178,7 @@ export default function EditProfile({ setViewMode, styles }) {
                         style={[styles.input, editStyles.inputPadding, ]}
                         selectTextOnFocus={true}
                         value={nickname}
+                        multiline={true}
                         onChangeText={setNickname}
                     />
 
@@ -188,17 +189,14 @@ export default function EditProfile({ setViewMode, styles }) {
                         value={gender}
                         onChangeText={setGender}
                     />
-
-
-                    <Text style={editStyles.bold} >About me:</Text>
+                    <Text style={editStyles.bold} >About me: </Text>
                         <TextInput
-                            multiline
+                            // multiline={true}
                             style={[styles.input, editStyles.inputPadding]}
                             selectTextOnFocus={true}
                             value={aboutMe}
                             onChangeText={setAboutMe}
                             />
-                    
                     <View style={[editStyles.buttons,]}>
                         <Pressable
                             onPress={() => setViewMode("view")}
@@ -214,8 +212,7 @@ export default function EditProfile({ setViewMode, styles }) {
                         </Pressable>
                     </View>
 
-                    <View  style={styles.separator} ></View>
-
+                    <View style={styles.separator} ></View>
                     <Text style={[editStyles.bold,]} >Top Books (up to 5):</Text>
                     <View style={styles.content}>
                         <View style={styles.lists}>

@@ -1,6 +1,6 @@
 import Auth from '@aws-amplify/auth';
 import React, {useState, useContext} from 'react';
-import { StyleSheet, Pressable } from 'react-native';
+import { StyleSheet, Pressable, Button } from 'react-native';
 import Slider from '@react-native-community/slider';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
@@ -21,8 +21,8 @@ export default function TabSettingsScreen() {
     {name: 'Any', id: '4'},
   ]);
 
-  const [filterRadius, setFilterRadius] = useState(100);
   const { state, dispatch } = useContext(UserContext)
+  const [filterRadius, setFilterRadius] = useState(state.user.searchRadius);
   const [isSelected, setSelection] = useState(false);
 
   function setUserFilter(){
@@ -35,7 +35,8 @@ export default function TabSettingsScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Preferences</Text>
-      <Text>Search Radius: {filterRadius}km</Text>
+      {filterRadius && <Text>Search Radius: {filterRadius}km</Text>}
+      {!filterRadius && <Text>No Search Limit</Text>}
       <Text>User's Current Lat: {state.user.latitude}km</Text>
       <Text>User's Current Lng: {state.user.longitude}km</Text>
       <Slider
@@ -48,6 +49,7 @@ export default function TabSettingsScreen() {
         value={500}
         onSlidingComplete={setUserFilter}
       />
+      <Button title="No limit" onPress={()=>setFilterRadius(null)}></Button>
       
       
       <View style={styles.container}>
