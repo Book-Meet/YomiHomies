@@ -46,7 +46,7 @@ console.log(state.user.searchRadius)
         onSlidingComplete={setUserFilter}
       />
       
-      <Pressable style={styles.button} accessibilityLabel="remove search radius limit" onPress={()=>setUserFilter(null}>
+      <Pressable style={styles.button} accessibilityLabel="remove search radius limit" onPress={()=>setUserFilter(null)}>
         <Text>No limit</Text>
       </Pressable>
       
