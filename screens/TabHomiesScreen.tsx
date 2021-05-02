@@ -64,7 +64,7 @@ export default function TabHomiesScreen() {
         let chatRoomsCopy = [... chatRooms];
         data = data.value.data.onCreateMessage
         let room = chatRoomsCopy.find(a=>a.id === data.chatRoomID)
-        if(!room)return;
+        if(!room) return
         if(room.messages.items.length > 0 && room.messages.items[room.messages.items.length -1].id === data.id) return
         room.messages.items.push(data)
         moveToTop(chatRoomsCopy, room.index)
@@ -80,9 +80,12 @@ export default function TabHomiesScreen() {
           queueMode: "standby",
           hideOnPress: true,
         })
-        return;
+      },
+      error:(err)=>{
+        console.log(err)
       }
     })
+    return () => subscription.unsubscribe();
   },[chatRooms])
 
   function moveToTop(arr, fromIndex) {

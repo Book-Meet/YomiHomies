@@ -1,6 +1,6 @@
 import Auth from '@aws-amplify/auth';
 import React, {useState, useContext} from 'react';
-import { StyleSheet, Pressable } from 'react-native';
+import { StyleSheet, Pressable, Button } from 'react-native';
 import Slider from '@react-native-community/slider';
 // import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
@@ -10,22 +10,30 @@ import Colors from '../constants/Colors';
 import * as Linking from 'expo-linking';
 
 export default function TabSettingsScreen() {
-  const [filterRadius, setFilterRadius] = useState(100);
-  const { state, dispatch } = useContext(UserContext)
+const { state, dispatch } = useContext(UserContext)
+const [filterRadius, setFilterRadius] = useState(state.user.searchRadius);// should we load from storage the users search radius?
 
-  function setUserFilter(){
+console.log(state.user.searchRadius)
+  function setUserFilter(v){
+    setFilterRadius(v)
     let updatedUser ={...state.user};
-    updatedUser.searchRadius = filterRadius;
+    updatedUser.searchRadius = v;
     dispatch({type:ActionType.SetData, payload:updatedUser});
     dispatch({type:ActionType.Search})
+  }
+
+  function logOut(){
+    dispatch({type:ActionType.setData, payload:null})
+    Auth.signOut()
   }
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Preferences</Text>
-      <Text style={styles.radius}>Search Radius: {(Math.round(filterRadius * 10)) / 10}km</Text>
-      <Text>User's Current Lat: {(Math.round(state.user.latitude * 10)) / 10}km</Text>
-      <Text>User's Current Lng: {(Math.round(state.user.longitude * 10)) / 10}km</Text>
+      {filterRadius && <Text>Search Radius: {filterRadius}km</Text>}
+      {!filterRadius && <Text>No Search Limit</Text>}
+      <Text>User's Current Lat: {(Math.round(state.user.latitude * 10)) / 10}</Text>
+      <Text>User's Current Lng: {(Math.round(state.user.longitude * 10)) / 10}</Text>
       <Slider
         style={{width: 200, height: 30}}
         marginTop={10}
@@ -37,9 +45,14 @@ export default function TabSettingsScreen() {
         value={500}
         onSlidingComplete={setUserFilter}
       />
+      
+      <Pressable style={styles.button} accessibilityLabel="remove search radius limit" onPress={()=>setUserFilter(null}>
+        <Text>No limit</Text>
+      </Pressable>
+      
       <View style={styles.container}>
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-        <Pressable style={styles.button} accessibilityLabel="Log out" onPress={()=>Auth.signOut()}>
+        <Pressable style={styles.button} accessibilityLabel="Log out" onPress={logOut}>
           <Text>Log Out</Text>
         </Pressable>
         <Pressable>
