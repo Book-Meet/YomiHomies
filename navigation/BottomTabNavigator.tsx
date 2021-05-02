@@ -9,7 +9,7 @@ import TabHomiesScreen from '../screens/TabHomiesScreen';
 import TabHomeScreen from '../screens/TabHomeScreen';
 import TabProfileScreen from '../screens/TabProfileScreen';
 import TabSettingsScreen from '../screens/TabSettingsScreen';
-import { BottomTabParamList, TabHomiesParamList, TabHomeParamList, 
+import { BottomTabParamList, TabHomiesParamList, TabHomeParamList,
   TabProfileParamList, TabSettingsParamList  } from '../types';
 import { StyleSheet } from 'react-native';
 
@@ -72,11 +72,11 @@ const TabHomiesStack = createStackNavigator<TabHomiesParamList>()
 function TabHomiesNavigator() {
   return (
     <TabHomiesStack.Navigator>
-      <TabHomiesStack.Screen 
+      <TabHomiesStack.Screen
         name="TabHomiesScreen"
         component={TabHomiesScreen}
         options={{
-          headerStyle: headerStyles.header, 
+          headerStyle: headerStyles.header,
           headerTintColor,
           headerTitleStyle: headerStyles.title,
           headerTitle: "Homies"}}
@@ -89,11 +89,11 @@ const TabHomeStack = createStackNavigator<TabHomeParamList>()
 function TabHomeNavigator() {
   return (
     <TabHomeStack.Navigator>
-      <TabHomeStack.Screen 
+      <TabHomeStack.Screen
         name="TabHomeScreen"
         component={TabHomeScreen}
         options={{
-          headerStyle: headerStyles.header, 
+          headerStyle: headerStyles.header,
           headerTintColor,
           headerTitleStyle: headerStyles.title,
           headerTitle: "Home"}}
@@ -106,11 +106,11 @@ const TabProfileStack = createStackNavigator<TabProfileParamList>()
 function TabProfileNavigator() {
   return (
     <TabProfileStack.Navigator>
-      <TabProfileStack.Screen 
+      <TabProfileStack.Screen
         name="TabProfileScreen"
         component={TabProfileScreen}
         options={{
-          headerStyle: headerStyles.header, 
+          headerStyle: headerStyles.header,
           headerTintColor,
           headerTitleStyle: headerStyles.title,
           headerTitle: "Profile"}}
@@ -123,11 +123,11 @@ const TabSettingsStack = createStackNavigator<TabSettingsParamList>()
 function TabSettingsNavigator() {
   return (
     <TabSettingsStack.Navigator>
-      <TabSettingsStack.Screen 
+      <TabSettingsStack.Screen
         name="TabSettingsScreen"
         component={TabSettingsScreen}
         options={{
-          headerStyle: headerStyles.header, 
+          headerStyle: headerStyles.header,
           headerTintColor,
           headerTitleStyle: headerStyles.title,
           headerTitle: "Settings"}}
