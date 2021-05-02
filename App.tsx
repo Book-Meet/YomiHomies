@@ -53,7 +53,13 @@ function App() {
   useEffect(()=>{
     (async function () {
       let user;
-      let [longitude, latitude]= await getLocation()
+      let longitude, latitude
+      try {
+        [longitude, latitude]= await getLocation()
+      } catch(e){
+        longitude = 35;
+        latitude = 140;
+      }
       let currentUser = await Auth.currentUserInfo()
       const query:any = await API.graphql(graphqlOperation(getProfile, { id:currentUser.id  }));
       if(query.data.getProfile === null){

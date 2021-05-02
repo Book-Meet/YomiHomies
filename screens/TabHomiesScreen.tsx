@@ -19,8 +19,6 @@ export default function TabHomiesScreen() {
   const [chatRooms, setChatRooms] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const [loading, setLoading] = useState(true)
-  const [subscriptionIsOpen, setSubscriptionIsOpen] = useState(false)
-  let subscription = null;
 
   useEffect(() => {
     if(state.user.id === '') return;
@@ -57,12 +55,11 @@ export default function TabHomiesScreen() {
       setLoading(false)
     })()
   }, [state.user, newChatFlag]);
+
   
-  function openSubscription(){
-    console.log(subscription);
-    if(subscriptionIsOpen) return;
-    setSubscriptionIsOpen(true)
-    subscription = API.graphql( {query:onCreateMessage}).subscribe({
+  useEffect(()=>{
+    if(chatRooms.length === 0) return;
+    const subscription = API.graphql( {query:onCreateMessage}).subscribe({
       next:(data) =>{
         let chatRoomsCopy = [... chatRooms];
         data = data.value.data.onCreateMessage
@@ -73,7 +70,7 @@ export default function TabHomiesScreen() {
         moveToTop(chatRoomsCopy, room.index)
         chatRoomsCopy = chatRoomsCopy.map((v,i)=>({...v,index:i}))
         setChatRooms(chatRoomsCopy)
-        if(data.user.id === state.user.id) return 
+        if(data.user.id === state.user.id) return
         Notifier.showNotification({
           title:data.user.nickname,
           description:data.content,
@@ -83,14 +80,10 @@ export default function TabHomiesScreen() {
         })
       },
       error:(err)=>{
-        console.log(err);
+        console.log(err)
       }
     })
-  }
-
-  useEffect(()=>{
-    if(chatRooms.length === 0) return;
-    openSubscription()    
+    return () => subscription.unsubscribe();
   },[chatRooms])
 
   function moveToTop(arr, fromIndex) {

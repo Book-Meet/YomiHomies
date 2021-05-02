@@ -25,11 +25,16 @@ export default function TabSettingsScreen() {
   const [filterRadius, setFilterRadius] = useState(state.user.searchRadius);
   const [isSelected, setSelection] = useState(false);
 
-  function setUserFilter(){
+  function setUserFilter(v){
     let updatedUser ={...state.user};
-    updatedUser.searchRadius = filterRadius;
+    updatedUser.searchRadius = v;
     dispatch({type:ActionType.SetData, payload:updatedUser});
     dispatch({type:ActionType.Search})
+  }
+
+  function logOut(){
+    dispatch({type:ActionType.setData, payload:null})
+    Auth.signOut()
   }
 
   return (
@@ -37,8 +42,8 @@ export default function TabSettingsScreen() {
       <Text style={styles.title}>Preferences</Text>
       {filterRadius && <Text>Search Radius: {filterRadius}km</Text>}
       {!filterRadius && <Text>No Search Limit</Text>}
-      <Text>User's Current Lat: {state.user.latitude}km</Text>
-      <Text>User's Current Lng: {state.user.longitude}km</Text>
+      <Text>User's Current Lat: {state.user.latitude}</Text>
+      <Text>User's Current Lng: {state.user.longitude}</Text>
       <Slider
         style={{width: 200, height: 30}}
         minimumValue={0}
@@ -49,7 +54,7 @@ export default function TabSettingsScreen() {
         value={500}
         onSlidingComplete={setUserFilter}
       />
-      <Button title="No limit" onPress={()=>setFilterRadius(null)}></Button>
+      <Button title="No limit" onPress={()=>setUserFilter(null)}></Button>
       
       
       <View style={styles.container}>
@@ -75,7 +80,7 @@ export default function TabSettingsScreen() {
         <Text>Yes</Text><Text>No</Text> */}
 
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-        <Pressable style={styles.button} accessibilityLabel="Log out" onPress={()=>Auth.signOut()}>
+        <Pressable style={styles.button} accessibilityLabel="Log out" onPress={logOut}>
           <Text>Log Out</Text>
         </Pressable>
         <Pressable>
