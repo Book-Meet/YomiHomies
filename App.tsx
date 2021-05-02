@@ -97,7 +97,6 @@ function App() {
                 duration: 4000,
                 showAnimationDuration: 800,
                 showEasing: Easing.bounce,
-                queueMode: "standby",
                 hideOnPress: true,
               });
             } 
