@@ -27,14 +27,13 @@ export default function TabHomiesScreen() {
       let filterByAcceptedAndMyID = { and: [{matcheeID: {eq: state.user.id }}, {status: {eq: "accepted"}}]}; 
       let usersWhoAcceptedMe = (await API.graphql({query:listMatchs, variables: {filter: filterByAcceptedAndMyID}})).data.listMatchs.items;
       let IDsOfMyAccepted = myMatches.filter(a => a.status === 'accepted').map(a => a.matcheeID);
-      let matches = usersWhoAcceptedMe.filter(a => IDsOfMyAccepted.includes(a.matcherID))
+      let matches = usersWhoAcceptedMe.filter(a => IDsOfMyAccepted.includes(a.matcherID));
       let myChatRooms = (await API.graphql({query:listChatRoomUsers, variables:{filter:{userID:{eq:state.user.id}}}})).data.listChatRoomUsers.items.map(a=>a.chatRoom);
       if(myChatRooms.includes(null)) deleteNullChatRoomUsers()
       let IDOfOtherChatRoomUser = myChatRooms.map(a => a.ChatRoomUsers.items[0].user.id === state.user.id ? a.ChatRoomUsers.items[1].user.id : a.ChatRoomUsers.items[0].user.id)
       let isNewChat = false;
       for(let match of matches){
         if(!IDOfOtherChatRoomUser.includes(match.matcherID)){ //create chat if one doesn't exist
-          console.log('new Chat Room being made')
           isNewChat = true;
           let newUUID = uuidv4();
           let newChatRoom = await API.graphql(graphqlOperation(createChatRoom, {input:{id:newUUID}}));
@@ -77,8 +76,8 @@ export default function TabHomiesScreen() {
           duration: 4000,
           showAnimationDuration: 800,
           showEasing: Easing.bounce,
-          queueMode: "standby",
           hideOnPress: true,
+          queueMode: 'standby'
         })
       },
       error:(err)=>{

@@ -82,7 +82,7 @@ function App() {
   }, [])
 
   useEffect(() => {
-    if(state.user.id === '') return;
+    if (state.user.id === '') return;
     const newMatchSub = API.graphql({query: onCreateMatch}).subscribe({
       next:(data) => {
         data = data.value.data.onCreateMatch;
@@ -96,14 +96,14 @@ function App() {
               duration: 4000,
               showAnimationDuration: 800,
               showEasing: Easing.bounce,
-              queueMode: "standby",
               hideOnPress: true,
+              queueMode: 'standby'
             });
           } 
         }
       }
     })
-    return () => newMatchSub.unsubscribe()
+    return () => newMatchSub.unsubscribe();
   }, [state.user])
   
   async function getLocation(){

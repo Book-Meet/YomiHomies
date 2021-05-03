@@ -2,7 +2,7 @@
   "expo": {
     "name": "YomiHomies",
     "slug": "YomiHomies",
-    "version": "1.0.2",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/YH_Logo_blue.png",
     "scheme": "myapp",
