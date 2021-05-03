@@ -13,7 +13,6 @@ export default function TabSettingsScreen() {
 const { state, dispatch } = useContext(UserContext)
 const [filterRadius, setFilterRadius] = useState(state.user.searchRadius);// should we load from storage the users search radius?
 
-console.log(state.user.searchRadius)
   function setUserFilter(v){
     setFilterRadius(v)
     let updatedUser ={...state.user};
@@ -30,14 +29,14 @@ console.log(state.user.searchRadius)
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Preferences</Text>
-      {filterRadius && <Text>Search Radius: {filterRadius}km</Text>}
+      {filterRadius && <Text>Search Radius: {Math.round(filterRadius)*10/10}km</Text>}
       {!filterRadius && <Text>No Search Limit</Text>}
       <Text>User's Current Lat: {(Math.round(state.user.latitude * 10)) / 10}</Text>
       <Text>User's Current Lng: {(Math.round(state.user.longitude * 10)) / 10}</Text>
       <Slider
         style={{width: 200, height: 30}}
         marginTop={10}
-        minimumValue={0}
+        minimumValue={20}
         maximumValue={500}
         minimumTrackTintColor="black"
         maximumTrackTintColor="blue"

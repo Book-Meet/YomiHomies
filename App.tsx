@@ -82,29 +82,28 @@ function App() {
   }, [])
 
   useEffect(() => {
-    if (state.user.id === '') return;
-    (async function() {
-      const newMatchSub = await API.graphql({query: onCreateMatch}).subscribe({
-        next:(data) => {
-          data = data.value.data.onCreateMatch;
-          if (data.matcheeID === state.user.id) {
-            let index = state.user.match.items.findIndex(match => 
-              match.status=== "accepted" && match.matcheeID === data.matcherID);
-            if (index > -1){
-              Notifier.showNotification({
-                title: 'New Match!',
-                description: `You matched with ${data.matcherProfile.nickname}!`,
-                duration: 4000,
-                showAnimationDuration: 800,
-                showEasing: Easing.bounce,
-                queueMode: "standby",
-                hideOnPress: true,
-              });
-            } 
-          }
+    if(state.user.id === '') return;
+    const newMatchSub = API.graphql({query: onCreateMatch}).subscribe({
+      next:(data) => {
+        data = data.value.data.onCreateMatch;
+        if (data.matcheeID === state.user.id) {
+          let index = state.user.match.items.findIndex(match => 
+            match.status=== "accepted" && match.matcheeID === data.matcherID);
+          if (index > -1){
+            Notifier.showNotification({
+              title: 'New Match!',
+              description: `You matched with ${data.matcherProfile.nickname}!`,
+              duration: 4000,
+              showAnimationDuration: 800,
+              showEasing: Easing.bounce,
+              queueMode: "standby",
+              hideOnPress: true,
+            });
+          } 
         }
-      })
-    })()
+      }
+    })
+    return () => newMatchSub.unsubscribe()
   }, [state.user])
   
   async function getLocation(){
