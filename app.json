@@ -41,7 +41,7 @@
         "resizeMode": "contain",
         "backgroundColor": "#1F87AD"
       },
-      "versionCode": 2
+      "versionCode": 3
     },
     "web": {
       "favicon": "./assets/images/YH_Logo_white.png"
