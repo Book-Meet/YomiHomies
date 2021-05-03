@@ -14,7 +14,7 @@ export type ChatListItemProps = {
 const ChatListItem = ({chatRoom, setCurrentChat}) =>{
     const {state, dispatch} = useContext(UserContext);
     const [numUnread, setNumUnread] = useState(0)
-    
+
     let user;
     let visibleName;
     chatRoom.ChatRoomUsers.items[0].user.id === state.user.id ? user = chatRoom.ChatRoomUsers.items[1].user : user = chatRoom.ChatRoomUsers.items[0].user
@@ -52,7 +52,7 @@ const ChatListItem = ({chatRoom, setCurrentChat}) =>{
                             ellipsizeMode="tail"
                             numberOfLines={1}>{messages[messages.length - 1].content}</Text> : <Text style={{width:250}}>No Message from partner</Text>}
                             </View>
-                            <Text>{numUnread}</Text>
+                            {numUnread > 0 && <Text>{numUnread}</Text>}
                     </View>
                 </View>
             </TouchableWithoutFeedback>
