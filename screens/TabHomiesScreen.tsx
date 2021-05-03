@@ -77,6 +77,7 @@ export default function TabHomiesScreen() {
           showAnimationDuration: 800,
           showEasing: Easing.bounce,
           hideOnPress: true,
+          queueMode: 'standby'
         })
       },
       error:(err)=>{
