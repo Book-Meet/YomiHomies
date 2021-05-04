@@ -161,7 +161,7 @@ export default function TabHomeScreen({navigation})
 
   return (
     <View style={styles.container}>
-      { matches.length > 0 ? <>
+      { matches.length > 0 ?
         <View style={styles.swiperContainer}>
           <Swiper
           ref={swiperRef}
@@ -219,7 +219,11 @@ export default function TabHomeScreen({navigation})
           }}
           />
         </View>
-        <Modal
+      :
+      (
+        <Text style={styles.noMatch}>{`No more matches with current settings... \n\nTry changing your top books in your profile or editing your search preferences.`}</Text>
+      )}
+      <Modal
           animationType="slide"
           transparent={true}
           visible={modalVisible}
@@ -238,11 +242,6 @@ export default function TabHomeScreen({navigation})
             </Pressable>
           </View>
       </Modal>
-      </>
-      :
-      (
-        <Text style={styles.noMatch}>{`No more matches with current settings... \n\nTry changing your top books in your profile or editing your search preferences.`}</Text>
-      )}
     </View>
   );
 }
