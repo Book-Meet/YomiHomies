@@ -1,5 +1,5 @@
 # YomiHomies                  <img src="./assets/images/YH_Logo_blue.png" width="10%" height="10%" />
-A matching app to connect with others based on the books you love! YomiHomies was built with React Native and Expo on the front end and utilized AWS Amplify on the backend. Specifically, Cognito for authentication and Dynamo with AppSync and a GraphQL API.
+A matching app to connect with others based on the books you love! YomiHomies was built with React Native and Expo on the front end and utilized AWS Amplify on the backend. Specifically, Cognito for authentication and DynamoDB with AppSync and a GraphQL API.
 
 <img src="./assets/images/readme/Swipe page.jpg" width="30%"/>  <img src="./assets/images/readme/Homies Page.jpg" width="30%"/> <img src="./assets/images/readme/Chat.png" width="30%"/>  <img src="./assets/images/readme/Profile Page.jpg" width="30%"/>  <img src="./assets/images/readme/Edit Profile.jpg" width="30%"/>  <img src="./assets/images/readme/Made a Match.jpg" width="30%"/>
 
@@ -28,6 +28,7 @@ npm install -g @aws-amplify/cli
 ```
 
 #### Cognito setup
+The two main components of Amazon Cognito are user pools and identity pools. You'll have to create an AWS account. After you signed in through a user pool, you'll recieve user pool tokens. And you can exchange it for AWS credentials through an identity pool. Then, you can access other AWS services sech as DynamoDB.
 
 #### GraphQL setup
 Turn off collision settings. 
