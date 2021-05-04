@@ -127,13 +127,13 @@ function App() {
       <>
         <SafeAreaProvider>
           <NotifierWrapper>
-          <UserContext.Provider
-            value={ contextValue }
-            >
-            <Navigation colorScheme={colorScheme}/>
-            <StatusBar />
-          </UserContext.Provider>
-            </NotifierWrapper>
+            <UserContext.Provider
+              value={ contextValue }
+              >
+              <Navigation colorScheme={colorScheme}/>
+              <StatusBar />
+            </UserContext.Provider>
+          </NotifierWrapper>
         </SafeAreaProvider>
       </>
     );

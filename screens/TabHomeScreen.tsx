@@ -14,7 +14,7 @@ import Colors from '../constants/Colors';
 import {isPointWithinRadius} from 'geolib'
 
 
-export default function TabHomeScreen()
+export default function TabHomeScreen({navigation})
 {
   const { state, dispatch } = useContext(UserContext)
   const [matches, setMatches] = useState([]);
@@ -152,6 +152,13 @@ export default function TabHomeScreen()
     })()
   }, [state.user.id, state.reSearch])
   
+  useEffect(()=>{
+    let unsubscribe = navigation.addListener('focus', ()=>{
+      dispatch({type:ActionType.Search})
+    })
+    return unsubscribe;
+  }, [navigation])
+
   return (
     <View style={styles.container}>
       { matches.length > 0 ? <>
