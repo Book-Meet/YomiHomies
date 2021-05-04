@@ -28,7 +28,7 @@ npm install -g @aws-amplify/cli
 ```
 
 #### Cognito setup
-The two main components of Amazon Cognito are user pools and identity pools. You'll have to create an AWS account. After you signed in through a user pool, you'll recieve user pool tokens. And you can exchange it for AWS credentials through an identity pool. Then, you can access other AWS services sech as DynamoDB.
+The two main components of Amazon Cognito are user pools and identity pools. You'll have to create an AWS account. After you signed in through a user pool, you'll recieve user pool tokens. And you can exchange it for AWS credentials through an identity pool. Then, you can access other AWS services such as DynamoDB.
 
 #### GraphQL setup
 Turn off collision settings. 
