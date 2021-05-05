@@ -36,9 +36,9 @@ other config
 
 
 ## Using Expo
-With expo installed, you can run ```javascript npm start``` and run the app on the expo server. You can use the QR code to run it on a phone through Expo Go or run in the web browser. Beware of running in the web browser as some functionality will not work properly. With YomiHomies, the "you've got a match modal" is always visible in browser mode instead of only appearing when the users gets a match. 
+With expo installed, you can run ```npm start``` and run the app on the expo server. You can use the QR code to run it on a phone through Expo Go or run in the web browser. Beware of running in the web browser as some functionality will not work properly. With YomiHomies, the "you've got a match modal" is always visible in browser mode instead of only appearing when the users gets a match. 
 
 We recommend running on your smartphone through the Expo Go app so you know if the app is working properly or not. 
 
 ## Build
-To build, simply run ```javascript expo build:android``` or ```javascript expo build:ios```. Once the build has been created, you can update with ```javascript expo publish```.
+To build, simply run ```expo build:android``` or ```expo build:ios```. Once the build has been created, you can update with ```expo publish```.
