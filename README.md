@@ -56,3 +56,6 @@ Once the build has been created, you can update it with ```expo publish```.
 ## Download the app in the play store
 YomiHomies is available in the play store! We'll be coming to the app store soon tooo!
 https://play.google.com/store/apps/details?id=com.cc18.yomihomies 
+
+## Product Name
+Why YomiHomies? Our team is made up of two Japanese and two Americans. So we thought it would be nice if our name reflected drew from both Japanese and English. The literal meaning of YomieHomies would be 'reading friend' where Yomi (or 読 in Japanese) means reading and homies is a colloquial word for friend. Hence, YomiHomies, an app to make friends based on the books you love to read.
